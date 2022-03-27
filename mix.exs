@@ -52,7 +52,8 @@ defmodule Engage.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
-      {:ueberauth, "~> 0.7"}
+      {:ueberauth, "~> 0.7"},
+      {:ueberauth_github, "~> 0.7"}
     ]
   end
 
