@@ -62,3 +62,14 @@ config :tailwind,
   ),
     cd: Path.expand("../assets", __DIR__)
   ]
+
+# Configure ueberauth
+config :ueberauth, Ueberauth,
+  providers: [
+    github: {Ueberauth.Strategy.Github, [default_scope: "user,user:email"]}
+  ]
+
+# Configure ueberauth GitHub strategy
+config :ueberauth, Ueberauth.Strategy.Github.OAuth,
+  client_id: System.get_env("GITHUB_CLIENT_ID"),
+  client_secret: System.get_env("GITHUB_CLIENT_SECRET")
