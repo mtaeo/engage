@@ -11,7 +11,7 @@ defmodule EngageWeb.UserOauthController do
     # render(conn, "request.html", callback_url: Helpers.callback_url(conn))
   end
 
-  def callback(%{assigns: %{ueberauth_auth: %{info: user_info}}} = conn, %{"provider" => "github"}) do
+  def callback(%{assigns: %{ueberauth_auth: %{info: user_info}}} = conn, %{"provider" => _}) do
     user_params = %{email: user_info.email, password: random_password()}
 
     case Users.fetch_or_create_user(user_params) do
