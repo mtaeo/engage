@@ -7,7 +7,10 @@
     </div>
   <% end %>
 
-  <%= link "LOGIN WITH GOOGLE", to: Routes.user_oauth_path(@conn, :request, "github") %>
+  <%= link "LOGIN WITH GITHUB", to: Routes.user_oauth_path(@conn, :request, "github") %>
+  <br>
+  <%= link "LOGIN WITH GOOGLE", to: Routes.user_oauth_path(@conn, :request, "google") %>
+  <br>
 
   <%= label f, :email %>
   <%= email_input f, :email, required: true %>
