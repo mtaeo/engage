@@ -7,7 +7,12 @@ module.exports = {
     '../lib/*_web/**/*.*ex'
   ],
   theme: {
-    extend: {},
+    extend: {
+		backgroundImage: {
+			'pattern-dark': "url('/images/background-dark.svg')",
+			'pattern-light': "url('/images/background-light.svg')"
+		}
+	},
   },
   plugins: [
     require('@tailwindcss/forms')

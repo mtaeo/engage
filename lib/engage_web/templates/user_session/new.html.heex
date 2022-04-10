@@ -1,32 +1,47 @@
-<h1>Log in</h1>
+<div class="grid place-items-center min-h-screen bg-pattern-dark text-zinc-200">
+	<div class="flex flex-col gap-2 md:gap-4 w-full max-w-sm p-6 md:p-8 rounded-3xl bg-slate-800">
+		<h1 class="sr-only">Log in</h1>
 
-<.form let={f} for={@conn} action={Routes.user_session_path(@conn, :create)} as={:user}>
-  <%= if @error_message do %>
-    <div class="alert alert-danger">
-      <p><%= @error_message %></p>
-    </div>
-  <% end %>
+		<.form class="contents" let={f} for={@conn} action={Routes.user_session_path(@conn, :create)} as={:user}>
+		  <%= if @error_message do %>
+			  <div class="alert alert-danger">
+		  	  <p><%= @error_message %></p>
+	  		</div>
+		  <% end %>
 
-  <%= link "LOGIN WITH GITHUB", to: Routes.user_oauth_path(@conn, :request, "github") %>
-  <br>
-  <%= link "LOGIN WITH GOOGLE", to: Routes.user_oauth_path(@conn, :request, "google") %>
-  <br>
+      <%= link to: Routes.user_oauth_path(@conn, :request, "github"), class: "p-3 rounded-xl border-2 border-zinc-200 hover:border-zinc-400 transition-colors" do %>
+        <img src="" alt="[logo]" class="inline">
+        Login with GitHub
+      <% end %>
+      
+		  <div class="m-auto my-2 p-1.5 bg-current rounded-full"></div>
+      
+      <%= link to: Routes.user_oauth_path(@conn, :request, "google"), class: "p-3 rounded-xl border-2 border-zinc-200 hover:border-zinc-400 transition-colors" do %>
+        <img src="" alt="[logo]" class="inline">
+        Login with Google
+      <% end %>
 
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
+		  <div class="m-auto my-2 p-1.5 bg-current rounded-full"></div>
 
-  <%= label f, :password %>
-  <%= password_input f, :password, required: true %>
+		  <%= label f, :email, class: "sr-only" %>
+		  <%= email_input f, :email, required: true, placeholder: "E-mail", class: "p-3 rounded-xl bg-transparent border-2 border-zinc-200 hover:border-zinc-400 transition-colors" %>
 
-  <%= label f, :remember_me, "Keep me logged in for 60 days" %>
-  <%= checkbox f, :remember_me %>
+		  <%= label f, :password, class: "sr-only" %>
+		  <%= password_input f, :password, required: true, placeholder: "Password", class: "p-3 rounded-xl bg-transparent border-2 border-zinc-200 hover:border-zinc-400 transition-colors" %>
 
-  <div>
-    <%= submit "Log in" %>
-  </div>
-</.form>
+  	  <%= submit "Log in", class: "block p-3 rounded-xl text-slate-800 bg-zinc-200 hover:bg-zinc-400 transition-colors" %>
 
-<p>
-  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
-</p>
+      <label class="flex justify-between items-center">
+        Remember me for 60 days
+        <input type="checkbox" name="remember_me" class="sr-only peer">
+        <div class="w-14 h-7 rounded-full border-2 border-zinc-200 peer-checked:border-violet-700 peer-checked:bg-violet-700 transition-colors before:block before:w-4 before:h-4 before:m-1 before:rounded-full before:bg-current peer-checked:before:translate-x-7 before:transition-transform"></div>
+      </label>
+
+		</.form>
+
+		<p class="text-center text-zinc-400 mt-4">
+		  <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "underline hover:text-zinc-200 transition-colors" %> |
+		  <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new), class: "underline hover:text-zinc-200 transition-colors" %>
+		</p>
+	</div>
+</div>
