@@ -1,26 +1,50 @@
-<h1>Register</h1>
+<div class="grid place-items-center min-h-screen bg-pattern-dark text-zinc-200">
+  <div class="flex flex-col gap-2 md:gap-4 w-full max-w-sm p-6 md:p-8 rounded-3xl bg-slate-800">
+    <h1 class="sr-only">Register</h1>
+    
+    <.form class="contents" let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)}>
+      <%= if @changeset.action do %>
+        <div class="alert alert-danger">
+          <p>Oops, something went wrong! Please check the errors below.</p>
+        </div>
+      <% end %>
+      
+      <%= link to: Routes.user_oauth_path(@conn, :request, "github"), class: "p-3 rounded-xl border-2 border-zinc-200 hover:border-zinc-400 transition-colors" do %>
+        <img src="" alt="[logo]" class="inline">
+        Login with GitHub
+      <% end %>
+      
+      <div class="m-auto my-2 p-1.5 bg-current rounded-full"></div>
+      
+      <%= link to: Routes.user_oauth_path(@conn, :request, "google"), class: "p-3 rounded-xl border-2 border-zinc-200 hover:border-zinc-400 transition-colors" do %>
+        <img src="" alt="[logo]" class="inline">
+        Login with Google
+      <% end %>
 
-<.form let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)}>
-  <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
-    </div>
-  <% end %>
-
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
-  <%= error_tag f, :email %>
-
-  <%= label f, :password %>
-  <%= password_input f, :password, required: true %>
-  <%= error_tag f, :password %>
-
-  <div>
-    <%= submit "Register" %>
+      <div class="m-auto my-2 p-1.5 bg-current rounded-full"></div>
+      
+      <%= label f, :username, class: "sr-only" %>
+      <%= text_input f, :username, required: true, placeholder: "Username", class: "p-3 rounded-xl bg-transparent border-2 border-zinc-200 hover:border-zinc-400 transition-colors" %>
+      <%= error_tag f, :username %>
+      
+      <%= label f, :email, class: "sr-only" %>
+      <%= email_input f, :email, required: true, placeholder: "E-mail", class: "p-3 rounded-xl bg-transparent border-2 border-zinc-200 hover:border-zinc-400 transition-colors" %>
+      <%= error_tag f, :email %>
+      
+      <%= label f, :password, class: "sr-only" %>
+      <%= password_input f, :password, required: true, placeholder: "Password", class: "p-3 rounded-xl bg-transparent border-2 border-zinc-200 hover:border-zinc-400 transition-colors" %>
+      <%= error_tag f, :password %>
+      
+      <%= label f, :repeat_password, class: "sr-only" %>
+      <%= password_input f, :repeat_password, required: true, placeholder: "Repeat password", class: "p-3 rounded-xl bg-transparent border-2 border-zinc-200 hover:border-zinc-400 transition-colors" %>
+      <%= error_tag f, :repeat_password %>
+      
+      <%= submit "Register", class: "block p-3 rounded-xl text-slate-800 bg-zinc-200 hover:bg-zinc-400 transition-colors" %>
+    </.form>
+    
+    <p class="text-center text-zinc-400 mt-4">
+      <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "underline hover:text-zinc-200 transition-colors" %> |
+      <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new), class: "underline hover:text-zinc-200 transition-colors" %>
+    </p>
   </div>
-</.form>
-
-<p>
-  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %> |
-  <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
-</p>
+</div>
