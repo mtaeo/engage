@@ -27,8 +27,9 @@ To start Engage web application:
 
 2. Make sure you have PostgreSQL installed and then configure the database accordingly in config/dev.exs and config/test.exs.
 
-4. Create and migrate the database with:
+3. Create and migrate the database with:
     ```bash
+    $ source .env.dev
     $ mix ecto.create
     $ mix ecto.migrate
     ```
