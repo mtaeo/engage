@@ -20,7 +20,9 @@ defmodule EngageWeb.Router do
   scope "/", EngageWeb do
     pipe_through :browser
 
-    live "/", HomescreenLive, :index
+    get "/", LandingPageController, :index
+    
+    live "/tmp/home", HomescreenLive, :index # TODO: pick a meaninful route
   end
 
   if Mix.env() in [:dev, :test] do
