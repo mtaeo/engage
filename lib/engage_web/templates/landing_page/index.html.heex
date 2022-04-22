@@ -1,0 +1,67 @@
+<div class="min-h-screen bg-white text-lg md:text-xl">
+  <nav class="bg-purple-800 p-3 text-white sticky top-0">
+    <div class="w-11/12 max-w-7xl mx-auto flex items-center">
+      <a href="/" class="mr-auto">
+        <img src={ Routes.static_path(@conn, "/images/logo-white.svg") } alt="Engage logo">
+      </a>
+      
+      <a href="" class="underline hover:text-neutral-300 transition-colors">Login</a>
+      &nbsp;|&nbsp;
+      <a href="" class="underline hover:text-neutral-300 transition-colors">Register</a>
+    </div>
+  </nav>
+  
+  <div class="text-center">
+    <div class="flex flex-col items-center gap-6 md:gap-12 w-11/12 md:w-6/12 max-w-3xl mx-auto py-16 md:py-32">
+      <h1 class="text-3xl md:text-5xl">Engage in activities!</h1>
+      <p>A place to engage in fun games with your friends. Earn coins to purchase extras and XP to show off your profile to your friends.</p>
+      <%= link "Join now!", to: Routes.user_registration_path(@conn, :new), class: "block px-6 py-3 rounded-xl text-white bg-purple-600 hover:bg-purple-500 transition-colors" %>
+    </div>
+  </div>
+  
+  <section class="bg-neutral-200">
+    <div class="grid md:grid-cols-presentation items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
+      <div>
+        <img src="https://unsplash.it/800/500" alt="" class="w-full">
+      </div>
+      
+      <div class="flex flex-col gap-4">
+        <h2 class="text-2xl md:text-4xl">Lorem ipsum dolor sit amet</h2>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio rem, veniam expedita debitis laudantium aliquid sapiente ut nesciunt explicabo.</p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="">
+    <div class="grid md:grid-cols-presentation-reverse items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
+      <div class="flex flex-col gap-4 order-2 md:order-1">
+        <h2 class="text-2xl md:text-4xl">Adipisicing elit laboriosam consequuntur facilis</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam repellat corrupti quo consequuntur, veniam mollitia enim, nisi minima ratione excepturi, consequatur repudiandae fugit.</p>
+      </div>
+      
+      <div class="order-1 md:order-2">
+        <img src="https://unsplash.it/800/500#" alt="" class="w-full">
+      </div>
+    </div>
+  </section>
+  
+  <section class="bg-neutral-200">
+    <div class="grid md:grid-cols-presentation items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
+      <div>
+      
+        <img src="https://unsplash.it/800/500##" alt="" class="w-full">
+      </div>
+      <div class="flex flex-col gap-4 order-2">
+        <h2 class="text-2xl md:text-4xl">Cupiditate ipsa similique eum necessitatibus</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam, nam quae. Earum quisquam, odit consequatur nemo autem numquam alias quasi blanditiis.</p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="text-center">
+    <div class="flex flex-col items-center gap-6 md:gap-12 w-11/12 mx-auto md:py-16 py-32">
+      <h2 class="text-2xl md:text-4xl">Are you ready?</h2>
+      <%= link "Start playing!", to: Routes.user_registration_path(@conn, :new), class: "block px-6 py-3 rounded-xl text-white bg-purple-600 hover:bg-purple-500 transition-colors" %>
+    </div>
+  </section>
+</div>
