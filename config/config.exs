@@ -69,7 +69,8 @@ config :ueberauth, Ueberauth,
     github: {Ueberauth.Strategy.Github, [default_scope: "user,user:email"]},
     google: {Ueberauth.Strategy.Google, []},
     discord: {Ueberauth.Strategy.Discord, [default_scope: "identify email connections guilds"]},
-    facebook: {Ueberauth.Strategy.Facebook, [default_scope: "email,public_profile"]}
+    facebook: {Ueberauth.Strategy.Facebook, [default_scope: "email,public_profile"]},
+    twitter: {Ueberauth.Strategy.Twitter, []}
   ]
 
 # Configure ueberauth Github strategy
@@ -86,3 +87,13 @@ config :ueberauth, Ueberauth.Strategy.Google.OAuth,
 config :ueberauth, Ueberauth.Strategy.Discord.OAuth,
   client_id: System.get_env("DISCORD_CLIENT_ID"),
   client_secret: System.get_env("DISCORD_CLIENT_SECRET")
+
+# Configure ueberauth Facebook strategy
+config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
+  client_id: System.get_env("FACEBOOK_CLIENT_ID"),
+  client_secret: System.get_env("FACEBOOK_CLIENT_SECRET")
+
+# Configure ueberauth Twitter strategy
+config :ueberauth, Ueberauth.Strategy.Twitter.OAuth,
+  consumer_key: System.get_env("TWITTER_CONSUMER_KEY"),
+  consumer_secret: System.get_env("TWITTER_CONSUMER_SECRET")

@@ -56,7 +56,8 @@ defmodule Engage.MixProject do
       {:ueberauth_github, "~> 0.7"},
       {:ueberauth_google, "~> 0.10"},
       {:ueberauth_discord, "~> 0.7"},
-      {:ueberauth_facebook, "~> 0.9"}
+      {:ueberauth_facebook, "~> 0.9"},
+      {:ueberauth_twitter, "~> 0.4"}
     ]
   end
 
