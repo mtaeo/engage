@@ -67,14 +67,21 @@ config :tailwind,
 config :ueberauth, Ueberauth,
   providers: [
     github: {Ueberauth.Strategy.Github, [default_scope: "user,user:email"]},
-    google: {Ueberauth.Strategy.Google, []}
+    google: {Ueberauth.Strategy.Google, []},
+    discord: {Ueberauth.Strategy.Discord, [default_scope: "identify email connections guilds"]}
   ]
 
-# Configure ueberauth GitHub strategy
+# Configure ueberauth Github strategy
 config :ueberauth, Ueberauth.Strategy.Github.OAuth,
   client_id: System.get_env("GITHUB_CLIENT_ID"),
   client_secret: System.get_env("GITHUB_CLIENT_SECRET")
 
+# Configure ueberauth Google strategy
 config :ueberauth, Ueberauth.Strategy.Google.OAuth,
   client_id: System.get_env("GOOGLE_CLIENT_ID"),
   client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
+
+# Configure ueberauth Discord strategy
+config :ueberauth, Ueberauth.Strategy.Discord.OAuth,
+  client_id: System.get_env("DISCORD_CLIENT_ID"),
+  client_secret: System.get_env("DISCORD_CLIENT_SECRET")

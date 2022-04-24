@@ -1,22 +1,22 @@
 <div class="grid place-items-center min-h-screen bg-pattern-dark text-zinc-200">
   <div class="flex flex-col gap-4 w-full max-w-sm p-6 md:p-8 rounded-3xl bg-slate-800">
     <h1 class="sr-only">Register</h1>
-    
+
     <.form class="contents" let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)}>
       <%= if @changeset.action do %>
         <div class="alert alert-danger">
           <p>Oops, something went wrong! Please check the errors below.</p>
         </div>
       <% end %>
-      
+
       <%= link to: Routes.user_oauth_path(@conn, :request, "github"), class: "p-3 rounded-xl border-2 border-zinc-200 hover:border-zinc-400 transition-colors text-center" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" fill="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute">
           <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
         </svg>
-        
+
         Continue with GitHub
       <% end %>
-      
+
       <%= link to: Routes.user_oauth_path(@conn, :request, "google"), class: "p-3 rounded-xl border-2 border-zinc-200 hover:border-zinc-400 transition-colors text-center" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" class="absolute">
           <path d="M1.24182 6.67897C1.98432 5.13169 3.03341 3.82393 4.35554 2.73652C6.14713 1.2563 8.20219 0.365299 10.5063 0.0922493C13.2129 -0.228704 15.7566 0.283863 18.1086 1.69222C18.693 2.04192 19.2391 2.43952 19.7613 2.87065C19.8906 2.97604 19.8763 3.03831 19.7661 3.1437C18.6978 4.20715 17.6296 5.27061 16.5709 6.34365C16.4464 6.4682 16.3793 6.45862 16.2452 6.35802C13.141 3.96764 8.61416 4.61433 6.30042 7.77596C5.89324 8.33164 5.56271 8.93043 5.33277 9.58192C5.31361 9.6394 5.27529 9.6921 5.24655 9.74958C4.62859 9.28013 4.00585 8.81067 3.39269 8.33643C2.67413 7.78554 1.95558 7.23465 1.24182 6.67897Z" fill="#E94335"></path>
@@ -24,39 +24,48 @@
           <path d="M19.8044 21.0021C18.5685 20.044 17.3278 19.086 16.0919 18.1279C16.0632 18.1039 16.0344 18.0704 16.0105 18.0417C16.4368 17.7111 16.8727 17.3902 17.2224 16.9686C17.8069 16.2692 18.1949 15.4788 18.3961 14.5926C18.42 14.4824 18.4009 14.4441 18.2907 14.4489C18.2332 14.4537 18.1805 14.4489 18.123 14.4489C16.1686 14.4489 14.2093 14.4441 12.2548 14.4537C12.0393 14.4537 11.9914 14.3962 11.9962 14.1902C12.0057 12.801 12.0057 11.4118 11.9962 10.0226C11.9962 9.84539 12.0441 9.79749 12.2213 9.79749C15.8045 9.80228 19.3877 9.80228 22.9756 9.79749C23.1289 9.79749 23.1912 9.83581 23.2295 9.99868C23.5217 11.316 23.5026 12.6382 23.3253 13.9699C23.1816 15.0333 22.9229 16.0633 22.5253 17.0596C21.9361 18.5303 21.0691 19.8141 19.929 20.9159C19.8859 20.9494 19.8427 20.9734 19.8044 21.0021Z" fill="#4285F3"></path>
           <path d="M5.24651 14.2429C4.42257 14.8705 3.59863 15.4932 2.77469 16.1208C2.26213 16.5088 1.74956 16.9016 1.23699 17.2944C0.839395 16.5567 0.580717 15.7758 0.369942 14.9711C-0.0324468 13.4142 -0.0947213 11.8334 0.125634 10.2478C0.298087 9.0023 0.657362 7.80472 1.23699 6.68378C1.95555 7.23467 2.66931 7.79035 3.38786 8.34124C4.00581 8.81548 4.62377 9.28493 5.24172 9.75439C5.13633 10.267 4.98783 10.7699 4.93993 11.2969C4.8537 12.2549 4.94472 13.1891 5.21777 14.1088C5.23693 14.1471 5.24172 14.195 5.24651 14.2429Z" fill="#FABB06"></path>
         </svg>
-        
+
         Continue with Google
       <% end %>
 
+      <%= link to: Routes.user_oauth_path(@conn, :request, "discord"), class: "p-3 rounded-xl border-2 border-zinc-200 hover:border-zinc-400 transition-colors text-center" do %>
+        <svg width="24" height="24" class="absolute" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="512" cy="512" r="512" style="fill:#5865f2"/>
+          <path d="M689.43 349a422.21 422.21 0 0 0-104.22-32.32 1.58 1.58 0 0 0-1.68.79 294.11 294.11 0 0 0-13 26.66 389.78 389.78 0 0 0-117.05 0 269.75 269.75 0 0 0-13.18-26.66 1.64 1.64 0 0 0-1.68-.79A421 421 0 0 0 334.44 349a1.49 1.49 0 0 0-.69.59c-66.37 99.17-84.55 195.9-75.63 291.41a1.76 1.76 0 0 0 .67 1.2 424.58 424.58 0 0 0 127.85 64.63 1.66 1.66 0 0 0 1.8-.59 303.45 303.45 0 0 0 26.15-42.54 1.62 1.62 0 0 0-.89-2.25 279.6 279.6 0 0 1-39.94-19 1.64 1.64 0 0 1-.16-2.72c2.68-2 5.37-4.1 7.93-6.22a1.58 1.58 0 0 1 1.65-.22c83.79 38.26 174.51 38.26 257.31 0a1.58 1.58 0 0 1 1.68.2c2.56 2.11 5.25 4.23 8 6.24a1.64 1.64 0 0 1-.14 2.72 262.37 262.37 0 0 1-40 19 1.63 1.63 0 0 0-.87 2.28 340.72 340.72 0 0 0 26.13 42.52 1.62 1.62 0 0 0 1.8.61 423.17 423.17 0 0 0 128-64.63 1.64 1.64 0 0 0 .67-1.18c10.68-110.44-17.88-206.38-75.7-291.42a1.3 1.3 0 0 0-.63-.63zM427.09 582.85c-25.23 0-46-23.16-46-51.6s20.38-51.6 46-51.6c25.83 0 46.42 23.36 46 51.6.02 28.44-20.37 51.6-46 51.6zm170.13 0c-25.23 0-46-23.16-46-51.6s20.38-51.6 46-51.6c25.83 0 46.42 23.36 46 51.6.01 28.44-20.17 51.6-46 51.6z" style="fill:#fff"/>
+        </svg>
+
+        Continue with Discord
+      <% end %>
+
       <div class="m-auto my-2 p-1.5 bg-current rounded-full"></div>
-      
+
       <div class="flex flex-col gap-1.5">
         <%= label f, :username %>
         <%= text_input f, :username, required: true, placeholder: "John_Doe_99", class: "p-3 rounded-xl bg-transparent border-2 border-zinc-200 hover:border-zinc-400 transition-colors" %>
         <%= error_tag f, :username %>
       </div>
-      
+
       <div class="flex flex-col gap-1.5">
         <%= label f, :email, "E-mail" %>
         <%= email_input f, :email, required: true, placeholder: "john.doe@example.com", class: "p-3 rounded-xl bg-transparent border-2 border-zinc-200 hover:border-zinc-400 transition-colors" %>
         <%= error_tag f, :email %>
       </div>
-      
+
       <div class="flex flex-col gap-1.5">
         <%= label f, :password %>
         <%= password_input f, :password, required: true, placeholder: "Password", class: "p-3 rounded-xl bg-transparent border-2 border-zinc-200 hover:border-zinc-400 transition-colors" %>
         <%= error_tag f, :password %>
       </div>
-      
+
       <div class="flex flex-col gap-1.5">
         <%= label f, :repeat_password %>
         <%= password_input f, :repeat_password, required: true, placeholder: "Repeat password", class: "p-3 rounded-xl bg-transparent border-2 border-zinc-200 hover:border-zinc-400 transition-colors" %>
         <%= error_tag f, :repeat_password %>
       </div>
-      
+
       <%= submit "Register", class: "block p-3 mt-2 rounded-xl text-slate-800 bg-zinc-200 hover:bg-zinc-400 transition-colors" %>
     </.form>
-    
+
     <p class="text-center text-zinc-400 mt-4">
       <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "underline hover:text-zinc-200 transition-colors" %> |
       <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new), class: "underline hover:text-zinc-200 transition-colors" %>

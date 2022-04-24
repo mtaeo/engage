@@ -54,7 +54,8 @@ defmodule Engage.MixProject do
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:ueberauth, "~> 0.7"},
       {:ueberauth_github, "~> 0.7"},
-      {:ueberauth_google, "~> 0.10"}
+      {:ueberauth_google, "~> 0.10"},
+      {:ueberauth_discord, "~> 0.7"}
     ]
   end
 
