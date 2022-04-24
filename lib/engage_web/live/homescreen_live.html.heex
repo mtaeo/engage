@@ -1,14 +1,14 @@
-<main class="flex flex-col">
+<main class="flex flex-col bg-gray-900 text-neutral-50">
   <%= live_component TopNavigationComponent, id: 1 %>
   <div class="flex">
     <%= live_component SidebarNavigationComponent, id: 2 %>
-    <div class="min-h-screen sm:basis-9/12 xl:basis-10/12 mx-auto lg:mr-4 xl:mr-8 rounded-t-3xl bg-slate-600">
+    <div class="min-h-screen sm:basis-9/12 xl:basis-10/12 mx-auto lg:mr-4 xl:mr-8 rounded-t-3xl bg-gray-800">
       <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 xl:gap-8 m-4 md:m-6 xl:m-8 rounded-3xl">
         <%= for game_card <- [%{title: "Tic-Tac-Toe", image_path: "/images/tic_tac_toe.jpeg", shadow_color: "shadow-red-600"},
          %{title: "Memory", image_path: "/images/memory.jpeg", shadow_color: "shadow-cyan-500"}] do %>
-          <div class={ "shadow-xl #{game_card.shadow_color} rounded-lg overflow-hidden text-center bg-black-900" }>
+          <div class={ "shadow-xl #{game_card.shadow_color} rounded-lg overflow-hidden text-center bg-gray-700" }>
             <img src={ game_card.image_path } class="object-cover">
-            <p class="p-4 text-xl text-slate-300"><%= game_card.title %></p>
+            <p class="p-4 text-xl"><%= game_card.title %></p>
           </div>
         <% end %>
       </section>
