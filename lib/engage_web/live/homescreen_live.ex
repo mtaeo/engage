@@ -2,7 +2,11 @@ defmodule EngageWeb.HomescreenLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
 
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, assign(socket, shouldShowModal: false)}
+  end
+
+  def handle_event("tic-tac-toe", _, socket) do
+    {:noreply, push_redirect(socket, to: "/games/tic-tac-toe")}
   end
 
   defp game_list do
