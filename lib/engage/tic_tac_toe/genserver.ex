@@ -59,11 +59,25 @@ defmodule Engage.TicTacToe.GenServer do
 
   def handle_call({:make_move, player, coordinate}, _from, state) do
     state =
-      if is_players_turn?(state, player) and is_field_not_occupied?(state, coordinate) do
+      if not is_game_over?(state) and
+           have_all_players_joined?(state) and
+           is_players_turn?(state, player) and
+           is_field_not_occupied?(state, coordinate) do
         state = put_in(state.board.state[coordinate], player.value)
         state = put_in(state.board.turn_number, state.board.turn_number + 1)
 
-        IO.inspect("accept")
+        if is_game_over?(state) do
+          case check_for_winner(state) do
+            :draw ->
+              IO.inspect("draw")
+
+            :x ->
+              IO.inspect("first player win - :x")
+
+            :o ->
+              IO.inspect("second player win - :o")
+          end
+        end
 
         Phoenix.PubSub.broadcast(
           Engage.PubSub,
@@ -92,6 +106,10 @@ defmodule Engage.TicTacToe.GenServer do
     {:ok, state}
   end
 
+  defp have_all_players_joined?(state) do
+    state.players.first !== nil and state.players.second !== nil
+  end
+
   defp is_players_turn?(state, player) do
     player === get_player(state, state.board.turn_number)
   end
@@ -104,9 +122,112 @@ defmodule Engage.TicTacToe.GenServer do
     end
   end
 
+  defp is_game_over?(state) do
+    check_for_winner(state) !== nil
+  end
+
+  defp is_board_full?(state) do
+    Enum.all?(state.board.state, fn {_, v} -> v !== nil end)
+  end
+
+  defp check_for_winner(state) do
+    cond do
+      not is_nil(check_for_winner(:rows, state)) ->
+        check_for_winner(:rows, state)
+
+      not is_nil(check_for_winner(:cols, state)) ->
+        check_for_winner(:cols, state)
+
+      not is_nil(check_for_winner(:primary_diagonal, state)) ->
+        check_for_winner(:primary_diagonal, state)
+
+      not is_nil(check_for_winner(:secondary_diagonal, state)) ->
+        check_for_winner(:secondary_diagonal, state)
+
+      is_board_full?(state) ->
+        :draw
+
+      true ->
+        nil
+    end
+  end
+
+  defp check_for_winner(:rows, state) do
+    results =
+      for i <- 0..2 do
+        sum =
+          for j <- 0..2, reduce: 0 do
+            acc -> acc + get_value(state.board.state[%Coordinate{x: i, y: j}])
+          end
+
+        decide_winner(sum)
+      end
+
+    Enum.find(results, fn e -> e !== nil end)
+  end
+
+  defp check_for_winner(:cols, state) do
+    results =
+      for i <- 0..2 do
+        sum =
+          for j <- 0..2, reduce: 0 do
+            acc -> acc + get_value(state.board.state[%Coordinate{x: j, y: i}])
+          end
+
+        decide_winner(sum)
+      end
+
+    Enum.find(results, fn e -> e !== nil end)
+  end
+
+  defp check_for_winner(:primary_diagonal, state) do
+    sum =
+      for i <- 0..2, reduce: 0 do
+        acc -> acc + get_value(state.board.state[%Coordinate{x: i, y: i}])
+      end
+
+    decide_winner(sum)
+  end
+
+  # TODO: Refactor
+  defp check_for_winner(:secondary_diagonal, state) do
+    sum = 0
+    sum = sum + get_value(state.board.state[%Coordinate{x: 0, y: 2}])
+    sum = sum + get_value(state.board.state[%Coordinate{x: 1, y: 1}])
+    sum = sum + get_value(state.board.state[%Coordinate{x: 2, y: 0}])
+
+    decide_winner(sum)
+  end
+
+  defp decide_winner(sum) do
+    x_sum_winner = 3
+    o_sum_winner = -3
+
+    case sum do
+      ^x_sum_winner ->
+        :x
+
+      ^o_sum_winner ->
+        :o
+
+      _ ->
+        nil
+    end
+  end
+
+  defp get_value(nil) do
+    0
+  end
+
+  defp get_value(:x) do
+    1
+  end
+
+  defp get_value(:o) do
+    -1
+  end
+
   defp is_field_not_occupied?(state, coordinate) do
-    IO.inspect("check:")
-    IO.inspect(state.board.state[coordinate] === nil)
     state.board.state[coordinate] === nil
   end
 end
