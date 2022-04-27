@@ -6,12 +6,21 @@ defmodule EngageWeb.TicTacToeLobbyLive do
   end
 
   def handle_event("join-game", %{"game_id" => game_id}, socket) do
-    route = "/games/tic-tac-toe/#{game_id}"
-    {:noreply, push_redirect(socket, to: route)}
+    genserver_name = String.to_atom(game_id)
+
+    if Process.whereis(genserver_name) do
+      route = "/games/tic-tac-toe/#{game_id}"
+      {:noreply, push_redirect(socket, to: route)}
+    else
+      # TODO: Let user know that an active game doesn't exist
+      {:noreply, socket}
+    end
   end
 
   def handle_event("create-game", _, socket) do
-    route = "/games/tic-tac-toe/1234"
+    # TODO: Generate random 4 character long letter + number combination
+    game_id = "12wq"
+    route = "/games/tic-tac-toe/#{game_id}"
     {:noreply, push_redirect(socket, to: route)}
   end
 end

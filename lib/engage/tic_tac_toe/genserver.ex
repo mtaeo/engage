@@ -4,12 +4,15 @@ defmodule Engage.TicTacToe.GenServer do
   alias Engage.TicTacToe.Coordinate
   alias Engage.TicTacToe.GameBoard
 
-  def start_link(state \\ %{players: %{first: nil, second: nil}, board: %GameBoard{}}) do
+  def start_link(
+        genserver_name,
+        state \\ %{players: %{first: nil, second: nil}, board: %GameBoard{}}
+      )
+      when is_atom(genserver_name) do
     GenServer.start_link(
       __MODULE__,
-      state,
-      name: :test
-      # name: Module.concat(__MODULE__, "test")
+      Map.put(state, :genserver_name, genserver_name),
+      name: genserver_name
     )
   end
 
@@ -17,12 +20,17 @@ defmodule Engage.TicTacToe.GenServer do
     GenServer.call(genserver_name, {:add_player, player_name})
   end
 
+  @spec get_player_by_name(atom | pid | {atom, any} | {:via, atom, any}, any) :: any
   def get_player_by_name(genserver_name, player_name) do
     GenServer.call(genserver_name, {:get_player_by_name, player_name})
   end
 
   def view(genserver_name) do
     GenServer.call(genserver_name, :view)
+  end
+
+  def is_alive?(genserver_name) do
+    GenServer.call(genserver_name, :is_alive)
   end
 
   def make_move(genserver_name, {%Player{} = player, %Coordinate{} = coordinate}) do
@@ -46,13 +54,13 @@ defmodule Engage.TicTacToe.GenServer do
           state
       end
 
-    # Phoenix.PubSub.broadcast(Engage.PubSub, "test", state)
+    # Phoenix.PubSub.broadcast(Engage.PubSub, Atom.to_string(state.genserver_name), state)
     {:reply, state, state}
   end
 
   def handle_call({:make_move, player, coordinate}, _from, state) do
     state = put_in(state.board.state[coordinate], player.value)
-    Phoenix.PubSub.broadcast(Engage.PubSub, "test", state.board)
+    Phoenix.PubSub.broadcast(Engage.PubSub, Atom.to_string(state.genserver_name), state.board)
     {:reply, state, state}
   end
 
@@ -63,6 +71,10 @@ defmodule Engage.TicTacToe.GenServer do
 
   def handle_call(:view, _from, state) do
     {:reply, state.board, state}
+  end
+
+  def handle_call(:is_alive, _from, state) do
+    {:reply, true, state}
   end
 
   def init(state) do
