@@ -12,6 +12,9 @@ module.exports = {
 				'pattern-dark': "url('/images/background-dark.svg')",
 				'pattern-light': "url('/images/background-light.svg')"
 			},
+			boxShadow: {
+				'equal': '0 0 12px -3px hsl(0 0% 0% / 0.5)'
+			},
 			colors: {
 				accent: {
 					100: '#f9e6ff',
