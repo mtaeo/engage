@@ -1,11 +1,126 @@
-<main>
-  <p class="alert alert-info" role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="info"><%= live_flash(@flash, :info) %>
-  </p>
-  <p class="alert alert-danger" role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="error"><%= live_flash(@flash, :error) %>
-  </p>
-  <%= @inner_content %>
-</main>
+<div class="min-h-screen flex flex-col text-neutral-50 bg-gray-900">
+  <p class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+  <p class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="error"><%= live_flash(@flash, :error) %></p>
+  
+  <header class="flex items-center gap-2 p-2">
+    <div class="flex items-center gap-2 mr-auto">
+      <button class="p-2 rounded-md hover:bg-gray-700 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      
+        <img src={ Routes.static_path(@socket, "/images/logo-white.svg") } alt="logo" class="h-10">
+    </div>
+      
+    <button class="block p-2 rounded-md hover:bg-gray-700 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="h-8 w-8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" class="hover:text-white" />
+      </svg>
+    </button>
+    
+    <div class="relative js-dropdown">
+		  <button class="block p-2 rounded-md hover:bg-gray-700 transition-colors js-dropdown-button">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="h-8 w-8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+		  </button>
+      
+	    <div class="hidden flex flex-col w-56 bg-gray-800 border border-gray-700 rounded-lg shadow-equal absolute top-full left-1/2 -translate-x-1/2 translate-y-1 js-dropdown-content">
+        <div class="px-4 py-2 text-center font-display">Notifications</div>
+        <div class="px-4 py-2 hover:bg-gray-700 transition-colors">Notification 1</div>
+        <div class="px-4 py-2 hover:bg-gray-700 transition-colors">Notification 2</div>
+        <div class="px-4 py-2 hover:bg-gray-700 transition-colors">Notification 3</div>
+	    </div>
+    </div>
+    
+    <div class="relative js-dropdown">
+      <button class="flex gap-2 p-2 rounded-md hover:bg-gray-700 transition-colors js-dropdown-button">
+        <div class="hidden sm:flex flex-col w-32 p-1 text-sm">
+          <div class="flex leading-none">
+            <div class="mr-auto">Level 42</div>
+            <div>123¢</div>
+          </div>
+          
+          <div class="mt-auto rounded-full bg-gray-800">
+            <div class="h-1 rounded-full bg-accent-500" style={"width: #{60}%;"}></div>
+          </div>
+        </div>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="h-8 w-8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </button>
+      
+      <div class="hidden flex flex-col bg-gray-800 border border-gray-700 rounded-lg shadow-equal absolute top-full right-0 translate-y-1 js-dropdown-content">
+        <a href="#" class="px-4 py-2 hover:bg-gray-700 transition-colors">Settings</a>
+        <a href="#" class="px-4 py-2 border-t border-gray-700 text-red-400 hover:bg-red-900 transition-colors">Log out</a>
+      </div>
+    </div>
+  </header>
+  
+  <div class="grow flex gap-4">
+    <nav class="shrink-0 grow max-w-xs flex flex-col gap-1 p-3 font-display">
+      <ul class="contents">
+        <li class="contents">
+          <a href="#" class="p-2 rounded-md hover:bg-gray-700 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline h-6 w-6 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            Quick Access
+          </a>
+        </li>
+        
+        <li class="contents">
+          <a href="#" class="block p-2 rounded-md hover:bg-gray-700 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline h-6 w-6 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+            </svg>
+            Games
+          </a>
+        </li>
+        
+        <li class="contents">
+          <a href="#" class="block p-2 rounded-md hover:bg-gray-700 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline h-6 w-6 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            Friends
+          </a>
+        </li>
+        
+        <li class="contents">
+          <a href="#" class="block p-2 rounded-md hover:bg-gray-700 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline h-6 w-6 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+            </svg>
+            Bonuses
+          </a>
+        </li>
+        
+        <li class="contents">
+          <a href="#" class="block p-2 rounded-md hover:bg-gray-700 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline h-6 w-6 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Store
+          </a>
+        </li>
+        
+        <li class="contents">
+          <a href="#" class="block p-2 rounded-md hover:bg-gray-700 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline h-6 w-6 mr-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+            </svg>
+            Stats
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <main class="grow grid bg-gray-800 p-8 md:rounded-tl-3xl shadow-equal">
+      <%= @inner_content %>
+    </main>
+  </div>
+</div>

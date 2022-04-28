@@ -1,5 +1,5 @@
 <div class="grid place-items-center min-h-screen bg-pattern-dark text-neutral-50">
-  <div class="flex flex-col gap-4 w-full max-w-sm p-6 md:p-8 my-5 rounded-3xl bg-gray-800">
+  <main class="flex flex-col gap-4 w-full max-w-sm p-6 md:p-8 my-5 rounded-3xl bg-gray-800">
     <h1 class="sr-only">Register</h1>
 
     <.form class="contents" let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)}>
@@ -85,5 +85,5 @@
       <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "underline hover:text-neutral-50 transition-colors" %> |
       <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new), class: "underline hover:text-neutral-50 transition-colors" %>
     </p>
-  </div>
+  </main>
 </div>
