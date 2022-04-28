@@ -13,6 +13,5 @@ defmodule Engage.TicTacToe.GameBoard do
               %Coordinate{x: 2, y: 2} => nil
             },
             turn_number: 0,
-            next_players_turn: nil,
-            winner: nil
+            outcome: nil
 end

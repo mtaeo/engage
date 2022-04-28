@@ -65,19 +65,7 @@ defmodule Engage.TicTacToe.GenServer do
            is_field_not_occupied?(state, coordinate) do
         state = put_in(state.board.state[coordinate], player.value)
         state = put_in(state.board.turn_number, state.board.turn_number + 1)
-
-        if is_game_over?(state) do
-          case check_for_winner(state) do
-            :draw ->
-              IO.inspect("draw")
-
-            :x ->
-              IO.inspect("first player win - :x")
-
-            :o ->
-              IO.inspect("second player win - :o")
-          end
-        end
+        state = put_in(state.board.outcome, check_for_winner(state))
 
         Phoenix.PubSub.broadcast(
           Engage.PubSub,

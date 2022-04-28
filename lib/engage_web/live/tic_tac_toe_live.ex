@@ -27,8 +27,8 @@ defmodule EngageWeb.TicTacToeLive do
     {:noreply, socket}
   end
 
-  def handle_info(%GameBoard{} = board, socket) do
-    {:noreply, assign(socket, game_board: board)}
+  def handle_info(%GameBoard{} = game_board, socket) do
+    {:noreply, assign(socket, game_board: game_board)}
   end
 
   defp get_coordinate(x, y) do
