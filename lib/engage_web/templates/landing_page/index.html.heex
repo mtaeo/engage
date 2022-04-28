@@ -1,17 +1,19 @@
 <div class="min-h-screen bg-white text-lg md:text-xl">
-  <nav class="bg-gray-800 p-3 text-neutral-50 sticky top-0">
+  <nav class="bg-gray-800 py-3 text-neutral-50 sticky top-0">
     <div class="w-11/12 max-w-7xl mx-auto flex items-center">
       <a href="/" class="mr-auto">
-        <img src={ Routes.static_path(@conn, "/images/logo-white.svg") } class="w-32 sm:w-40 md:w-44 lg:w-48" alt="Engage logo">
+        <img src={ Routes.static_path(@conn, "/images/logo-white.svg") } alt="Engage logo" class="w-32 md:w-44">
       </a>
-      <%= build_based_on_authentication(@conn, @current_user) %>
+      <div class="flex gap-1 md:gap-4 text-sm sm:text-lg">
+        <%= header_session_links(@conn, @current_user) %>
+      </div>
     </div>
   </nav>
   <div class="text-center">
     <div class="flex flex-col items-center gap-6 md:gap-12 w-11/12 md:w-6/12 max-w-3xl mx-auto py-16 md:py-32">
       <h1 class="text-3xl md:text-5xl">Engage in activities!</h1>
       <p>A place to engage in fun games with your friends. Earn coins to purchase extras and XP to show off your profile to your friends.</p>
-      <%= link "Join now!", to: Routes.user_registration_path(@conn, :new), class: "block px-6 py-3 rounded-xl text-white bg-accent-500 hover:bg-accent-400 transition-colors" %>
+      <%= entry_button(@conn, @current_user, "Play now!") %>
     </div>
   </div>
   <section class="bg-neutral-200">
@@ -50,7 +52,7 @@
   <section class="text-center">
     <div class="flex flex-col items-center gap-6 md:gap-12 w-11/12 mx-auto md:py-16 py-32">
       <h2 class="text-2xl md:text-4xl">Are you ready?</h2>
-      <%= link "Start playing!", to: Routes.user_registration_path(@conn, :new), class: "block px-6 py-3 rounded-xl text-white bg-accent-500 hover:bg-accent-400 transition-colors" %>
+      <%= entry_button(@conn, @current_user, "Start playing!") %>
     </div>
   </section>
 </div>
