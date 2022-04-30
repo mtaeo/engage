@@ -42,6 +42,26 @@
 	}
 }
 
+/* scrollbar styling - standard */
+* {
+	scrollbar-color: theme(colors.gray.500) theme(colors.gray.900);
+}
+
+/* scrollbar styling - webkit non-standard */
+::-webkit-scrollbar {
+	width: 17px;
+}
+
+::-webkit-scrollbar-track {
+	background-color: theme(colors.gray.900);
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: theme(colors.gray.500);
+	border: 3px solid theme(colors.gray.900);
+	border-radius: 12px;
+}
+
 /* Phoenix specific */
 /* Alerts and form errors used by phx.new */
 .alert {
