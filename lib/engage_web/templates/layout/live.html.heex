@@ -53,6 +53,7 @@
       </button>
       
       <div class="hidden flex flex-col bg-gray-800 border border-gray-700 rounded-lg shadow-equal absolute top-full right-0 translate-y-1 js-dropdown-content">
+        <%= live_redirect "Profile", to: Routes.user_profile_path(@socket, :index, :put_username_here), class: "px-4 py-2 hover:bg-gray-700 transition-colors" %>
         <a href="#" class="px-4 py-2 hover:bg-gray-700 transition-colors">Settings</a>
         <a href="#" class="px-4 py-2 border-t border-gray-700 text-red-400 hover:bg-red-900 transition-colors">Log out</a>
       </div>
