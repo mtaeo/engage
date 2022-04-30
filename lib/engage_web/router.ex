@@ -23,6 +23,7 @@ defmodule EngageWeb.Router do
     get "/", LandingPageController, :index
     
     live "/tmp/home", HomescreenLive, :index # TODO: pick a meaninful route
+    live "/user/:username", UserProfileLive, :index
   end
 
   if Mix.env() in [:dev, :test] do
