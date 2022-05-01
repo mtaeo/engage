@@ -1,0 +1,63 @@
+<div class="justify-self-center self-start w-full max-w-4xl flex flex-col gap-8">
+  <h1 class="text-2xl">Settings</h1>
+  
+  <div class="flex flex-wrap justify-between gap-8">
+    <.form let={f} for={@profile_changeset} phx-submit="submit_profile" class="flex flex-col gap-4 w-full max-w-sm">
+      <h2 class="text-lg sm:text-2xl">Profile</h2>
+      
+      <div class="flex flex-col gap-1">
+        <%= label f, :username, "Username" %>
+        <%= text_input f, :username, required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
+        <%= error_tag f, :username %>
+      </div>
+      
+      <div class="flex flex-col gap-1">
+        <%= label f, :email, "E-mail" %>
+        <%= text_input f, :email, required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
+        <%= error_tag f, :email %>
+      </div>
+      
+      <div class="flex flex-col gap-1">
+        <%= label f, :bio, "Bio" %>
+        <%= textarea f, :bio, required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors resize-y" %>
+        <%= error_tag f, :bio %>
+      </div>
+      
+      <div class="flex flex-col gap-1">
+        <%= label f, :theme, "Theme" %>
+        <%= select f, :theme, themes(), class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
+      </div>
+      
+      <button type="submit" class="block px-4 py-2 mt-2 rounded-xl text-neutral-900 bg-gray-100 hover:bg-gray-300 transition-colors">Save changes</button>
+    </.form>
+    
+    <form phx-submit="submit_avatar" class="flex flex-col gap-4">
+      <h2 class="text-lg sm:text-2xl">Avatar</h2>
+      <img src={"https://unsplash.it/seed/#{@username}/200/200"} alt="avatar" class="max-w-[256px] rounded-full border-4 border-accent-500">
+      <input type="file" name="avatar" class="w-48">
+    </form>
+  </div>
+  
+  <section class="flex flex-col gap-4 max-w-sm">
+    <form class="contents">
+      <h2 class="text-lg sm:text-2xl">Change password</h2>
+      
+      <div class="flex flex-col gap-1">
+        <label for="old_password">Password</label>
+        <input type="text" name="old_password" required class="px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors">
+      </div>
+      
+      <div class="flex flex-col gap-1">
+        <label for="new_password">New password</label>
+        <input type="text" name="new_password" required class="px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors">
+      </div>
+      
+      <div class="flex flex-col gap-1">
+        <label for="new_password_repeat">New password repeat</label>
+        <input type="text" name="new_password_repeat" required class="px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors">
+      </div>
+      
+      <button type="submit" class="block px-4 py-2 mt-2 rounded-xl text-neutral-900 bg-gray-100 hover:bg-gray-300 transition-colors">Change password</button>
+    </form>
+  </section>
+</div>

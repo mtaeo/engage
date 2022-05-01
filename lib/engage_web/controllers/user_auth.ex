@@ -31,6 +31,7 @@ defmodule EngageWeb.UserAuth do
     conn
     |> renew_session()
     |> put_session(:user_token, token)
+    |> put_session(:current_user, user)
     |> put_session(:live_socket_id, "users_sessions:#{Base.url_encode64(token)}")
     |> maybe_write_remember_me_cookie(token, params)
     |> redirect(to: user_return_to || signed_in_path(conn))
