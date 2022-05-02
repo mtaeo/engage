@@ -57,8 +57,8 @@ defmodule EngageWeb.Router do
   scope "/", EngageWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/users/settings_old", UserSettingsController, :edit # NOTE: remove before merge
-    put "/users/settings", UserSettingsController, :update # NOTE: remove before merge
+    get "/users/settings_old", UserSettingsController, :edit
+    put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
     
     live "/users/settings", UserSettingsLive, :index

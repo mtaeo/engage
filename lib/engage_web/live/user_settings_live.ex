@@ -52,7 +52,7 @@ defmodule EngageWeb.UserSettingsLive do
       socket.assigns.change_password
       |> ChangePassword.changeset(change_password_params)
       |> Map.put(:action, :validate)
-    
+
     {:noreply, assign(socket, change_password_changeset: change_password_changeset)}
   end
 
@@ -77,7 +77,7 @@ defmodule EngageWeb.UserSettingsLive do
   defp changeset_valid?(changeset) do
     changeset.errors == []
   end
-  
+
   defp themes do
     [
       Dark: :dark,
