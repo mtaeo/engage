@@ -2,30 +2,30 @@
   <h1 class="text-2xl">Settings</h1>
   
   <div class="flex flex-wrap justify-between gap-8">
-    <.form let={f} for={@profile_changeset} phx-submit="submit_profile" class="flex flex-col gap-4 w-full max-w-sm">
+    <.form let={f_profile} for={@profile_changeset} phx-submit="submit_profile" class="flex flex-col gap-4 w-full max-w-sm">
       <h2 class="text-lg sm:text-2xl">Profile</h2>
       
       <div class="flex flex-col gap-1">
-        <%= label f, :username, "Username" %>
-        <%= text_input f, :username, required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
-        <%= error_tag f, :username %>
+        <%= label f_profile, :username, "Username" %>
+        <%= text_input f_profile, :username, required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
+        <%= error_tag f_profile, :username %>
       </div>
       
       <div class="flex flex-col gap-1">
-        <%= label f, :email, "E-mail" %>
-        <%= text_input f, :email, required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
-        <%= error_tag f, :email %>
+        <%= label f_profile, :email, "E-mail" %>
+        <%= text_input f_profile, :email, required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
+        <%= error_tag f_profile, :email %>
       </div>
       
       <div class="flex flex-col gap-1">
-        <%= label f, :bio, "Bio" %>
-        <%= textarea f, :bio, required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors resize-y" %>
-        <%= error_tag f, :bio %>
+        <%= label f_profile, :bio, "Bio" %>
+        <%= textarea f_profile, :bio, required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors resize-y" %>
+        <%= error_tag f_profile, :bio %>
       </div>
       
       <div class="flex flex-col gap-1">
-        <%= label f, :theme, "Theme" %>
-        <%= select f, :theme, themes(), class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
+        <%= label f_profile, :theme, "Theme" %>
+        <%= select f_profile, :theme, themes(), class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
       </div>
       
       <button type="submit" class="block px-4 py-2 mt-2 rounded-xl text-neutral-900 bg-gray-100 hover:bg-gray-300 transition-colors">Save changes</button>
@@ -33,31 +33,34 @@
     
     <form phx-submit="submit_avatar" class="flex flex-col gap-4">
       <h2 class="text-lg sm:text-2xl">Avatar</h2>
-      <img src={"https://unsplash.it/seed/#{@username}/200/200"} alt="avatar" class="max-w-[256px] rounded-full border-4 border-accent-500">
+      <img src={"https://unsplash.it/seed/#{@username}/200/200"} alt="avatar" class="grid place-items-center max-w-[256px] aspect-square rounded-full border-4 border-accent-500">
       <input type="file" name="avatar" class="w-48">
     </form>
   </div>
   
   <section class="flex flex-col gap-4 max-w-sm">
-    <form class="contents">
+    <.form let={f_password} for={@password_changeset} phx-submit="submit_change_password" class="contents">
       <h2 class="text-lg sm:text-2xl">Change password</h2>
       
       <div class="flex flex-col gap-1">
-        <label for="old_password">Password</label>
-        <input type="text" name="old_password" required class="px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors">
+        <%= label f_password, :old_password, "Old password" %>
+        <%= password_input f_password, :old_password, required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
+        <%= error_tag f_password, :old_password %>
       </div>
       
       <div class="flex flex-col gap-1">
-        <label for="new_password">New password</label>
-        <input type="text" name="new_password" required class="px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors">
+        <%= label f_password, :new_password, "New password" %>
+        <%= password_input f_password, :new_password, required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
+        <%= error_tag f_password, :new_password %>
       </div>
       
       <div class="flex flex-col gap-1">
-        <label for="new_password_repeat">New password repeat</label>
-        <input type="text" name="new_password_repeat" required class="px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors">
+        <%= label f_password, :new_password_repeat, "Repeat new password" %>
+        <%= password_input f_password, :new_password_repeat, required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
+        <%= error_tag f_password, :new_password_repeat %>
       </div>
       
       <button type="submit" class="block px-4 py-2 mt-2 rounded-xl text-neutral-900 bg-gray-100 hover:bg-gray-300 transition-colors">Change password</button>
-    </form>
+    </.form>
   </section>
 </div>
