@@ -9,9 +9,9 @@ defmodule Engage.UserSettings.ChangePassword do
     {change_password, @types}
     |> cast(params, Map.keys(@types))
     |> validate_required([:old_password, :new_password, :new_password_repeat])
-    |> validate_length(:new_password, min: 12)
+    |> validate_length(:new_password, min: 12, message: "Needs to be at least 12 characters long")
     |> validate_change(:new_password_repeat, fn :new_password_repeat, new_password_repeat ->
-      if new_password_repeat == change_password.new_password do
+      if new_password_repeat == params["new_password"] do
         []
       else
         [new_password_repeat: "Repeated password is different"]
