@@ -12,7 +12,7 @@ defmodule EngageWeb.LandingPageView do
 
   defp header_session_links(assigns, %User{} = _current_user) do
     ~H"""
-    <%= link "Open App", to: Routes.homescreen_path(assigns, :index), class: "px-4 py-1 rounded-xl border-2 text-neutral-200 border-neutral-200 hover:text-neutral-400 hover:border-neutral-400 transition-colors" %>
+    <%= link "Open App", to: Routes.game_list_path(assigns, :index), class: "px-4 py-1 rounded-xl border-2 text-neutral-200 border-neutral-200 hover:text-neutral-400 hover:border-neutral-400 transition-colors" %>
     """
   end
   
@@ -24,7 +24,7 @@ defmodule EngageWeb.LandingPageView do
   
   defp entry_button(assigns, %User{} = _current_user, text) do
     ~H"""
-    <%= link text, to: Routes.homescreen_path(assigns, :index), class: "block px-6 py-3 rounded-xl text-white bg-accent-500 hover:bg-accent-400 transition-colors" %>
+    <%= link text, to: Routes.game_list_path(assigns, :index), class: "block px-6 py-3 rounded-xl text-white bg-accent-500 hover:bg-accent-400 transition-colors" %>
     """
   end
 end
