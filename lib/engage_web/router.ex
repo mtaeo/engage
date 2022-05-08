@@ -21,7 +21,7 @@ defmodule EngageWeb.Router do
     pipe_through :browser
 
     get "/", LandingPageController, :index
-    
+
     live "/tmp/home", HomescreenLive, :index # TODO: pick a meaninful route
     live "/user/:username", UserProfileLive, :index
   end
@@ -60,7 +60,8 @@ defmodule EngageWeb.Router do
     get "/users/settings_old", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-    
+
+    live "/proxy/user", UserProfileProxyLive, :index
     live "/users/settings", UserSettingsLive, :index
   end
 
