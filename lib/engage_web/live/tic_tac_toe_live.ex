@@ -1,9 +1,9 @@
 defmodule EngageWeb.TicTacToeLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "game.html"}
   alias EngageWeb.Router.Helpers, as: Routes
-  alias Engage.TicTacToe.GameBoard
-  alias Engage.TicTacToe.Coordinate
-  alias Engage.TicTacToe.GenServer
+  alias Engage.Games.TicTacToe.GameBoard
+  alias Engage.Games.TicTacToe.Coordinate
+  alias Engage.Games.TicTacToe.GenServer
 
   def mount(_params, session, socket) do
     {:ok, setup(socket, session)}
@@ -54,7 +54,7 @@ defmodule EngageWeb.TicTacToeLive do
     {y, ""} = Integer.parse(y)
     %Coordinate{x: x, y: y}
   end
-  
+
   defp cell_content(symbol) do
     assigns = %{}
     case symbol do

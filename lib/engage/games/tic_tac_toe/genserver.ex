@@ -1,8 +1,8 @@
-defmodule Engage.TicTacToe.GenServer do
+defmodule Engage.Games.TicTacToe.GenServer do
   use GenServer
-  alias Engage.TicTacToe.Player
-  alias Engage.TicTacToe.Coordinate
-  alias Engage.TicTacToe.GameBoard
+  alias Engage.Games.TicTacToe.Player
+  alias Engage.Games.TicTacToe.Coordinate
+  alias Engage.Games.TicTacToe.GameBoard
 
   def start(
         genserver_name,

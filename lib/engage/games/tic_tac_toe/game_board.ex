@@ -1,5 +1,5 @@
-defmodule Engage.TicTacToe.GameBoard do
-  alias Engage.TicTacToe.Coordinate
+defmodule Engage.Games.TicTacToe.GameBoard do
+  alias Engage.Games.TicTacToe.Coordinate
 
   defstruct state: %{
               %Coordinate{x: 0, y: 0} => nil,

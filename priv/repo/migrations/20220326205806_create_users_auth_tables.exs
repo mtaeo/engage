@@ -5,13 +5,15 @@ defmodule Engage.Repo.Migrations.CreateUsersAuthTables do
     execute "CREATE EXTENSION IF NOT EXISTS citext", ""
 
     create table(:users) do
-      add :username, :string, null: false
+      add :username, :citext, null: false
       add :email, :citext, null: false
+      add :total_xp, :int, null: false, default: 0
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
       timestamps()
     end
 
+    create constraint("users", :total_xp_must_be_positive, check: "total_xp >= 0")
     create unique_index(:users, [:username])
 
     create table(:users_tokens) do
@@ -24,5 +26,6 @@ defmodule Engage.Repo.Migrations.CreateUsersAuthTables do
 
     create index(:users_tokens, [:user_id])
     create unique_index(:users_tokens, [:context, :token])
+
   end
 end
