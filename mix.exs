@@ -20,7 +20,7 @@ defmodule Engage.MixProject do
   def application do
     [
       mod: {Engage.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ueberauth_facebook]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 

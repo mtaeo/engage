@@ -1,0 +1,13 @@
+<p><%= if @game_board.outcome, do: @game_board.outcome %></p>
+  <p>Joined players:
+    <%= for {_, player} <- @players do %>
+      <%= if player, do: player.name %>
+    <% end %>
+  </p>
+  <section class="w-1/2 grid grid-cols-3 gap-4 md:gap-6 xl:gap-8 m-4 md:m-6 xl:m-8">
+    <%= for {coordinate, value} <- @game_board.state do %>
+      <div phx-click="make-move" phx-value-coordinate-x={coordinate.x} phx-value-coordinate-y={coordinate.y} class="border bg-slate-500 h-12">
+        <p><%= value %></p>
+      </div>
+    <% end %>
+  </section>

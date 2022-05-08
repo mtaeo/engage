@@ -43,12 +43,12 @@ defmodule EngageWeb.Router do
 
     get "/users/register", UserRegistrationController, :new
     post "/users/register", UserRegistrationController, :create
-    get "/users/log_in", UserSessionController, :new
-    post "/users/log_in", UserSessionController, :create
-    get "/users/reset_password", UserResetPasswordController, :new
-    post "/users/reset_password", UserResetPasswordController, :create
-    get "/users/reset_password/:token", UserResetPasswordController, :edit
-    put "/users/reset_password/:token", UserResetPasswordController, :update
+    get "/users/log-in", UserSessionController, :new
+    post "/users/log-in", UserSessionController, :create
+    get "/users/reset-password", UserResetPasswordController, :new
+    post "/users/reset-password", UserResetPasswordController, :create
+    get "/users/reset-password/:token", UserResetPasswordController, :edit
+    put "/users/reset-password/:token", UserResetPasswordController, :update
 
     get "/auth/:provider", UserOauthController, :request
     get "/auth/:provider/callback", UserOauthController, :callback
@@ -63,12 +63,14 @@ defmodule EngageWeb.Router do
 
     live "/proxy/user", UserProfileProxyLive, :index
     live "/users/settings", UserSettingsLive, :index
+    live "/games/tic-tac-toe/", TicTacToeLobbyLive, :index
+    live "/games/tic-tac-toe/:id", TicTacToeLive, :inde
   end
 
   scope "/", EngageWeb do
     pipe_through [:browser]
 
-    delete "/users/log_out", UserSessionController, :delete
+    delete "/users/log-out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :edit
