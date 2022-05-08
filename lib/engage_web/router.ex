@@ -21,9 +21,6 @@ defmodule EngageWeb.Router do
     pipe_through :browser
 
     get "/", LandingPageController, :index
-
-    live "/tmp/home", HomescreenLive, :index # TODO: pick a meaninful route
-    live "/user/:username", UserProfileLive, :index
   end
 
   if Mix.env() in [:dev, :test] do
@@ -57,14 +54,17 @@ defmodule EngageWeb.Router do
   scope "/", EngageWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/users/settings_old", UserSettingsController, :edit
-    put "/users/settings", UserSettingsController, :update
-    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-
-    live "/proxy/user", UserProfileProxyLive, :index
-    live "/users/settings", UserSettingsLive, :index
+    get "/users/settings-old", UserSettingsController, :edit
+    put "/users/settings-old", UserSettingsController, :update
+    get "/users/settings/confirm-email/:token", UserSettingsController, :confirm_email
+    
+    live "/games", GameListLive, :index
     live "/games/tic-tac-toe/", TicTacToeLobbyLive, :index
     live "/games/tic-tac-toe/:id", TicTacToeLive, :inde
+
+    live "/proxy/user", UserProfileProxyLive, :index
+    live "/user/:username", UserProfileLive, :index
+    live "/users/settings", UserSettingsLive, :index
   end
 
   scope "/", EngageWeb do

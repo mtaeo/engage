@@ -1,4 +1,4 @@
-defmodule EngageWeb.HomescreenLive do
+defmodule EngageWeb.GameListLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
 
   def mount(_params, _session, socket) do

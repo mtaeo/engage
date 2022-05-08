@@ -10,7 +10,9 @@
         </svg>
       </button>
 
+      <%= live_redirect to: Routes.game_list_path(@socket, :index) do %>
         <img src={ Routes.static_path(@socket, "/images/logo-white.svg") } alt="logo" class="h-10">
+      <% end %>
     </div>
 
     <button class="block p-2 rounded-md hover:bg-gray-700 transition-colors">
@@ -19,14 +21,14 @@
       </svg>
     </button>
 
-    <div class="relative js-dropdown">
-		  <button class="block p-2 rounded-md hover:bg-gray-700 transition-colors js-dropdown-button">
+    <div class="relative">
+		  <button class="block p-2 rounded-md hover:bg-gray-700 transition-colors" onclick="window.util.toggleLocalDropdown(this);">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="h-8 w-8">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
         </svg>
 		  </button>
 
-	    <div class="hidden flex flex-col w-56 bg-gray-800 border border-gray-700 rounded-lg shadow-equal absolute top-full left-1/2 -translate-x-1/2 translate-y-1 js-dropdown-content">
+	    <div class="hidden flex flex-col w-56 bg-gray-800 border border-gray-700 rounded-lg shadow-equal absolute top-full left-1/2 -translate-x-1/2 translate-y-1 clip-border overflow-clip js-local-dropdown">
         <div class="px-4 py-2 text-center font-display">Notifications</div>
         <div class="px-4 py-2 hover:bg-gray-700 transition-colors">Notification 1</div>
         <div class="px-4 py-2 hover:bg-gray-700 transition-colors">Notification 2</div>
@@ -35,7 +37,7 @@
     </div>
 
     <div class="relative js-dropdown">
-      <button class="flex gap-2 p-2 rounded-md hover:bg-gray-700 transition-colors js-dropdown-button">
+      <button class="flex gap-2 p-2 rounded-md hover:bg-gray-700 transition-colors" onclick="window.util.toggleLocalDropdown(this);">
         <div class="hidden sm:flex flex-col w-32 p-1 text-sm">
           <div class="flex leading-none">
             <div class="mr-auto">Level 42</div>
@@ -52,7 +54,7 @@
         </svg>
       </button>
 
-      <div class="hidden flex flex-col bg-gray-800 border border-gray-700 rounded-lg shadow-equal absolute top-full right-0 translate-y-1 js-dropdown-content">
+      <div class="hidden flex flex-col bg-gray-800 border border-gray-700 rounded-lg shadow-equal absolute top-full right-0 translate-y-1 clip-border overflow-clip js-local-dropdown">
         <%= live_redirect "Profile", to: Routes.user_profile_proxy_path(@socket, :index), class: "px-4 py-2 hover:bg-gray-700 transition-colors" %>
         <%= live_redirect "Settings", to: Routes.user_settings_path(@socket, :index), class: "px-4 py-2 hover:bg-gray-700 transition-colors" %>
         <%= link "Logout", to: Routes.user_session_path(@socket, :delete), method: :delete, class: "px-4 py-2 border-t border-gray-700 text-red-400 hover:bg-red-900 transition-colors" %>
@@ -61,7 +63,7 @@
   </header>
 
   <div class="grow flex gap-4 overflow-x-clip relative">
-    <nav id="sidebar" class="absolute inset-0 -translate-x-full sidebar-toggled:transform-none transition-transform duration-300 bg-gray-800 md:static md:transform-none md:sidebar-toggled:hidden md:bg-transparent shrink-0 grow max-w-xs flex flex-col gap-1 p-3 rounded-r-xl font-display before:bg-gradient-to-r before:absolute before:from-[#00000080] before:to-transparent before:inset-0 before:left-full before:right-0 sidebar-toggled:before:-right-full before:transition-[right] before:duration-300 md:before:content-none">
+    <nav id="sidebar" class="absolute inset-0 -translate-x-full sidebar-toggled:transform-none transition-transform duration-300 bg-gray-800 md:static md:transform-none md:sidebar-toggled:hidden md:bg-transparent shrink-0 basis-60 flex flex-col gap-1 p-3 rounded-r-xl font-display before:bg-gradient-to-r before:absolute before:from-[#00000080] before:to-transparent before:inset-0 before:left-full before:right-0 sidebar-toggled:before:-right-full before:transition-[right] before:duration-300 md:before:content-none">
       <ul class="contents">
         <li class="contents">
           <a href="#" class="p-2 rounded-md hover:bg-gray-700 transition-colors">
@@ -73,12 +75,12 @@
         </li>
 
         <li class="contents">
-          <a href="#" class="block p-2 rounded-md hover:bg-gray-700 transition-colors">
+          <%= live_redirect to: Routes.game_list_path(@socket, :index), class: "block p-2 rounded-md hover:bg-gray-700 transition-colors" do %>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline h-6 w-6 mr-2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
             </svg>
             Games
-          </a>
+          <% end %>
         </li>
 
         <li class="contents">
