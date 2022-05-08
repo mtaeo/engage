@@ -10,6 +10,10 @@ defmodule Engage.Users do
 
   ## Database getters
 
+  def get_user_by_username(username) when is_binary(username) do
+    Repo.get_by(User, username: username)
+  end
+
   @doc """
   Gets a user by email.
 

@@ -12,7 +12,11 @@ defmodule EngageWeb.UserOauthController do
   end
 
   def callback(%{assigns: %{ueberauth_auth: %{info: user_info}}} = conn, %{"provider" => _}) do
-    user_params = %{email: user_info.email, password: random_password()}
+    user_params = %{
+      username: Engage.Helpers.CodeGenerator.generate(:username),
+      email: user_info.email,
+      password: random_password()
+    }
 
     case Users.fetch_or_create_user(user_params) do
       {:ok, user} ->

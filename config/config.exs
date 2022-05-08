@@ -67,7 +67,7 @@ config :tailwind,
 config :ueberauth, Ueberauth,
   providers: [
     github: {Ueberauth.Strategy.Github, [default_scope: "user,user:email"]},
-    google: {Ueberauth.Strategy.Google, []},
+    google: {Ueberauth.Strategy.Google, [default_scope: "email profile"]},
     discord: {Ueberauth.Strategy.Discord, [default_scope: "identify email connections guilds"]},
     facebook: {Ueberauth.Strategy.Facebook, [default_scope: "email,public_profile"]},
     twitter: {Ueberauth.Strategy.Twitter, []}
