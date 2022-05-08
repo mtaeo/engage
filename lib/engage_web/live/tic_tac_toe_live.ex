@@ -1,5 +1,6 @@
 defmodule EngageWeb.TicTacToeLive do
-  use EngageWeb, :live_view
+  use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "game.html"}
+  alias EngageWeb.Router.Helpers, as: Routes
   alias Engage.TicTacToe.GameBoard
   alias Engage.TicTacToe.Coordinate
   alias Engage.TicTacToe.GenServer
@@ -52,5 +53,28 @@ defmodule EngageWeb.TicTacToeLive do
     {x, ""} = Integer.parse(x)
     {y, ""} = Integer.parse(y)
     %Coordinate{x: x, y: y}
+  end
+  
+  defp cell_content(symbol) do
+    assigns = %{}
+    case symbol do
+      :x ->
+        ~H"""
+        <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg">
+        	<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="0.4" d="">
+        		<animate attributeName="d" values="M1 1 l0 0;M1 1 l2 2;M1 1 l2 2 M1 3 l0 0;M1 1 l2 2 M1 3 l2-2" fill="freeze" dur="0.5s" calcMode="spline" keySplines="0 0 0.58 1;0 0 0 0;0 0 0.58 1" keyTimes="0;0.5;0.5;1" repeatCount="1" />
+        	</path>
+        </svg>
+        """
+      :o ->
+        ~H"""
+        <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg">
+        	<circle cx="2" cy="2" r="1.125" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="0.4" stroke-dasharray="7.065" stroke-dashoffset="7.065" transform="rotate(-90 2 2)">
+        		<animate attributeName="stroke-dashoffset" values="7.065;0" fill="freeze" dur="0.75s" calcMode="spline" keySplines="0 0 0.58 1" repeatCount="1" />
+        	</circle>
+        </svg>
+        """
+      _ -> ""
+    end
   end
 end

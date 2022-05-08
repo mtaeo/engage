@@ -46,6 +46,10 @@
 	.clip-border {
 		clip-path: border-box;
 	}
+	
+	.area-full {
+		grid-area: 1 / -1;
+	}
 }
 
 /* scrollbar styling - standard */

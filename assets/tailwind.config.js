@@ -49,6 +49,10 @@ module.exports = {
 			gridTemplateColumns: {
 				'presentation': '3fr 2fr',
 				'presentation-reverse': '2fr 3fr'
+			},
+			spacing: {
+				'120': '30rem',
+				'144': '36rem'
 			}
 		}
 	},
