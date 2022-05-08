@@ -18,8 +18,7 @@ defmodule EngageWeb.TicTacToeLobbyLive do
   end
 
   def handle_event("create-game", _, socket) do
-    # TODO: Generate random 4 character long letter + number combination
-    game_id = "12wq"
+    game_id = Engage.Helpers.CodeGenerator.generate(:four_alphanumeric_characters)
     route = "/games/tic-tac-toe/#{game_id}"
     {:noreply, push_redirect(socket, to: route)}
   end

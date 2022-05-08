@@ -4,12 +4,12 @@ defmodule Engage.TicTacToe.GenServer do
   alias Engage.TicTacToe.Coordinate
   alias Engage.TicTacToe.GameBoard
 
-  def start_link(
+  def start(
         genserver_name,
         state \\ %{players: %{first: nil, second: nil}, board: %GameBoard{}}
       )
       when is_atom(genserver_name) do
-    GenServer.start_link(
+    GenServer.start(
       __MODULE__,
       Map.put(state, :genserver_name, genserver_name),
       name: genserver_name
@@ -22,10 +22,6 @@ defmodule Engage.TicTacToe.GenServer do
 
   def get_player_by_name(genserver_name, player_name) do
     GenServer.call(genserver_name, {:get_player_by_name, player_name})
-  end
-
-  def is_alive?(genserver_name) do
-    GenServer.call(genserver_name, :is_alive)
   end
 
   def view(genserver_name) do
@@ -41,28 +37,32 @@ defmodule Engage.TicTacToe.GenServer do
   def handle_call({:add_player, player_name}, _from, state) do
     state =
       cond do
-        state.players.first == nil ->
+        state.players.first === nil ->
           player = %Player{name: player_name, value: :x}
           put_in(state.players.first, player)
 
-        state.players.second == nil ->
+        state.players.second === nil and state.players.first.name !== player_name ->
           player = %Player{name: player_name, value: :o}
-          put_in(state.players.second, player)
+          state = put_in(state.players.second, player)
+
+          Phoenix.PubSub.broadcast(
+            Engage.PubSub,
+            Atom.to_string(state.genserver_name),
+            state.players
+          )
+
+          state
 
         true ->
           state
       end
 
-    # Phoenix.PubSub.broadcast(Engage.PubSub, Atom.to_string(state.genserver_name), state)
-    {:reply, state.board, state}
+    {:reply, state.players, state}
   end
 
   def handle_call({:make_move, player, coordinate}, _from, state) do
     state =
-      if not is_game_over?(state) and
-           have_all_players_joined?(state) and
-           is_players_turn?(state, player) and
-           is_field_not_occupied?(state, coordinate) do
+      if is_valid_turn?(state, player, coordinate) do
         state = put_in(state.board.state[coordinate], player.value)
         state = put_in(state.board.turn_number, state.board.turn_number + 1)
         state = put_in(state.board.outcome, check_for_winner(state))
@@ -92,6 +92,13 @@ defmodule Engage.TicTacToe.GenServer do
 
   def init(state) do
     {:ok, state}
+  end
+
+  defp is_valid_turn?(state, player, coordinate) do
+    not is_game_over?(state) and
+      have_all_players_joined?(state) and
+      is_players_turn?(state, player) and
+      is_field_not_occupied?(state, coordinate)
   end
 
   defp have_all_players_joined?(state) do
