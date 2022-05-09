@@ -15,12 +15,12 @@ defmodule EngageWeb.TicTacToeLive do
     Phoenix.PubSub.subscribe(Engage.PubSub, game_id)
 
     players = GenServer.add_player(genserver_name, socket.assigns.player_name)
-    player = GenServer.get_player_by_name(genserver_name, socket.assigns.player_name)
+    nth = GenServer.get_player_nth_by_name(genserver_name, socket.assigns.player_name)
     game_board = GenServer.view(genserver_name)
 
     {:noreply,
      assign(socket,
-       player: player,
+       nth: nth,
        players: players,
        game_board: game_board,
        genserver_name: genserver_name
@@ -29,7 +29,7 @@ defmodule EngageWeb.TicTacToeLive do
 
   def handle_event("make-move", %{"coordinate-x" => x, "coordinate-y" => y}, socket) do
     coordinate = get_coordinate(x, y)
-    GenServer.make_move(socket.assigns.genserver_name, {socket.assigns.player, coordinate})
+    GenServer.make_move(socket.assigns.genserver_name, {socket.assigns.players[socket.assigns.nth], coordinate})
     {:noreply, socket}
   end
 

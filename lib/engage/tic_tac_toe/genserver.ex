@@ -20,8 +20,8 @@ defmodule Engage.TicTacToe.GenServer do
     GenServer.call(genserver_name, {:add_player, player_name})
   end
 
-  def get_player_by_name(genserver_name, player_name) do
-    GenServer.call(genserver_name, {:get_player_by_name, player_name})
+  def get_player_nth_by_name(genserver_name, player_name) do
+    GenServer.call(genserver_name, {:get_player_nth_by_name, player_name})
   end
 
   def view(genserver_name) do
@@ -65,7 +65,8 @@ defmodule Engage.TicTacToe.GenServer do
       if is_valid_turn?(state, player, coordinate) do
         state = put_in(state.board.state[coordinate], player.value)
         state = put_in(state.board.turn_number, state.board.turn_number + 1)
-        state = put_in(state.board.outcome, check_for_winner(state))
+
+        state = update_outcome_and_scores(state)
 
         Phoenix.PubSub.broadcast(
           Engage.PubSub,
@@ -81,9 +82,9 @@ defmodule Engage.TicTacToe.GenServer do
     {:reply, state.board, state}
   end
 
-  def handle_call({:get_player_by_name, player_name}, _from, state) do
-    {_, player} = Enum.find(state.players, fn {_, v} -> v.name === player_name end)
-    {:reply, player, state}
+  def handle_call({:get_player_nth_by_name, player_name}, _from, state) do
+    {nth, _player} = Enum.find(state.players, fn {_, v} -> v.name === player_name end)
+    {:reply, nth, state}
   end
 
   def handle_call(:view, _from, state) do
@@ -92,6 +93,41 @@ defmodule Engage.TicTacToe.GenServer do
 
   def init(state) do
     {:ok, state}
+  end
+
+  def handle_info(:replay, state) do
+    state = put_in(state.board, %GameBoard{})
+
+    Phoenix.PubSub.broadcast(
+      Engage.PubSub,
+      Atom.to_string(state.genserver_name),
+      state.board
+    )
+
+    {:noreply, state}
+  end
+
+  defp update_outcome_and_scores(state) do
+    outcome = check_for_winner(state)
+    state = put_in(state.board.outcome, outcome)
+
+    state = case outcome do
+      :x -> update_in(state.players.first.score, &(&1 + 1))
+      :o -> update_in(state.players.second.score, &(&1 + 1))
+      _ -> state
+    end
+
+    if outcome !== nil do
+      Phoenix.PubSub.broadcast(
+        Engage.PubSub,
+        Atom.to_string(state.genserver_name),
+        state.players
+      )
+
+      :timer.send_after(1000, :replay)
+    end
+
+    state
   end
 
   defp is_valid_turn?(state, player, coordinate) do
