@@ -6,38 +6,40 @@
 
 /* open-sans-regular - latin */
 @font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local(''),
-       url('/fonts/open-sans-v28-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('/fonts/open-sans-v28-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+	font-family: "Open Sans";
+	font-style: normal;
+	font-weight: 400;
+	src: local(""),
+		url("/fonts/open-sans-v28-latin-regular.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
+		url("/fonts/open-sans-v28-latin-regular.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 /* open-sans-600 - latin */
 @font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 600;
-  src: local(''),
-       url('../fonts/open-sans-v28-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/open-sans-v28-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+	font-family: "Open Sans";
+	font-style: normal;
+	font-weight: 600;
+	src: local(""),
+		url("../fonts/open-sans-v28-latin-600.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
+		url("../fonts/open-sans-v28-latin-600.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 /* poppins-600 - latin */
 @font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  src: local(''),
-       url('/fonts/poppins-v19-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('/fonts/poppins-v19-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+	font-family: "Poppins";
+	font-style: normal;
+	font-weight: 600;
+	src: local(""),
+		url("/fonts/poppins-v19-latin-600.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
+		url("/fonts/poppins-v19-latin-600.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
 /* custom */
-@layer base {	
-	h1, h2, h3 {
-		font-family: 'Poppins';
+@layer base {
+	h1,
+	h2,
+	h3 {
+		font-family: "Poppins";
 		font-weight: 600;
 	}
 }
@@ -46,7 +48,7 @@
 	.clip-border {
 		clip-path: border-box;
 	}
-	
+
 	.area-full {
 		grid-area: 1 / -1;
 	}
@@ -54,7 +56,7 @@
 
 /* scrollbar styling - standard */
 * {
-	scrollbar-color: theme(colors.gray.500) theme(colors.gray.900);
+	scrollbar-color: theme("colors.gray.500") theme("colors.gray.900");
 }
 
 /* scrollbar styling - webkit non-standard */
@@ -63,130 +65,127 @@
 }
 
 ::-webkit-scrollbar-track {
-	background-color: theme(colors.gray.900);
+	background-color: theme("colors.gray.900");
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: theme(colors.gray.500);
-	border: 3px solid theme(colors.gray.900);
+	background-color: theme("colors.gray.500");
+	border: 3px solid theme("colors.gray.900");
 	border-radius: 12px;
 }
 
 /* Phoenix specific */
-/* Alerts and form errors used by phx.new */
-.alert {
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-}
-.alert-info {
-  color: #31708f;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-}
-.alert-warning {
-  color: #8a6d3b;
-  background-color: #fcf8e3;
-  border-color: #faebcc;
-}
-.alert-danger {
-  color: #a94442;
-  background-color: #f2dede;
-  border-color: #ebccd1;
-}
-.alert p {
-  margin-bottom: 0;
-}
-.alert:empty {
-  display: none;
-}
+
 .invalid-feedback {
-  color: theme("colors.red.400");
-  display: block;
+	color: theme("colors.red.400");
+	display: block;
 }
 
 /* LiveView specific classes for your customization */
 .phx-no-feedback.invalid-feedback,
 .phx-no-feedback .invalid-feedback {
-  display: none;
+	display: none;
 }
 
 .phx-click-loading {
-  opacity: 0.5;
-  transition: opacity 1s ease-out;
+	opacity: 0.5;
+	transition: opacity 1s ease-out;
 }
 
-.phx-loading{
-  cursor: wait;
+.phx-loading {
+	cursor: wait;
 }
 
 .phx-modal {
-  opacity: 1!important;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4);
+	opacity: 1 !important;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.4);
 }
 
 .phx-modal-content {
-  background-color: #fefefe;
-  margin: 15vh auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
+	background-color: #fefefe;
+	margin: 15vh auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
 }
 
 .phx-modal-close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
 }
 
 .phx-modal-close:hover,
 .phx-modal-close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
 }
 
 .fade-in-scale {
-  animation: 0.2s ease-in 0s normal forwards 1 fade-in-scale-keys;
+	animation: 0.2s ease-in 0s normal forwards 1 fade-in-scale-keys;
 }
 
 .fade-out-scale {
-  animation: 0.2s ease-out 0s normal forwards 1 fade-out-scale-keys;
+	animation: 0.2s ease-out 0s normal forwards 1 fade-out-scale-keys;
 }
 
 .fade-in {
-  animation: 0.2s ease-out 0s normal forwards 1 fade-in-keys;
+	animation: 0.2s ease-out 0s normal forwards 1 fade-in-keys;
 }
+
 .fade-out {
-  animation: 0.2s ease-out 0s normal forwards 1 fade-out-keys;
+	animation: 0.2s ease-out 0s normal forwards 1 fade-out-keys;
 }
 
-@keyframes fade-in-scale-keys{
-  0% { scale: 0.95; opacity: 0; }
-  100% { scale: 1.0; opacity: 1; }
+@keyframes fade-in-scale-keys {
+	0% {
+		scale: 0.95;
+		opacity: 0;
+	}
+
+	100% {
+		scale: 1;
+		opacity: 1;
+	}
 }
 
-@keyframes fade-out-scale-keys{
-  0% { scale: 1.0; opacity: 1; }
-  100% { scale: 0.95; opacity: 0; }
+@keyframes fade-out-scale-keys {
+	0% {
+		scale: 1;
+		opacity: 1;
+	}
+
+	100% {
+		scale: 0.95;
+		opacity: 0;
+	}
 }
 
-@keyframes fade-in-keys{
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+@keyframes fade-in-keys {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
 }
 
-@keyframes fade-out-keys{
-  0% { opacity: 1; }
-  100% { opacity: 0; }
-}
+@keyframes fade-out-keys {
+	0% {
+		opacity: 1;
+	}
 
+	100% {
+		opacity: 0;
+	}
+}
