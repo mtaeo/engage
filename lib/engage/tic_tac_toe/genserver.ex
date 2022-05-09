@@ -124,7 +124,7 @@ defmodule Engage.TicTacToe.GenServer do
         state.players
       )
 
-      :timer.send_after(1000, :replay)
+      :timer.send_after(2000, :replay)
     end
 
     state
