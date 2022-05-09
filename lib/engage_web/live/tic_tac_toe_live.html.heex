@@ -32,7 +32,7 @@
           </svg>
         
           <span>
-            <%= case @game_board.outcome do :x -> "1 : 0"; :o -> "0 : 1"; _ -> "0 : 0" end %>
+            <%= if @players.first, do: @players.first.score, else: 0 %> : <%= if @players.second, do: @players.second.score, else: 0 %>
           </span>
           
           <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg" class="h-[1.5em] hidden sm:block">
