@@ -1,18 +1,14 @@
 defmodule EngageWeb.GameInfoLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
   alias EngageWeb.Router.Helpers, as: Routes
+  alias Engage.Games
 
   def mount(_params, _session, socket) do
     {:ok, socket}
   end
 
   def handle_params(%{"game" => game_name}, _url, socket) do
-    game =
-      game_list()
-      |> Enum.filter(&(&1.name === game_name))
-      |> List.first()
-
-    {:noreply, assign(socket, game: game)}
+    {:noreply, assign(socket, game: Games.get_game_by_name(game_name))}
   end
 
   def handle_event("create-game", _, socket) do

@@ -1,8 +1,8 @@
 <div class="self-start grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 xl:gap-8 rounded-3xl">
-  <%= for game_card <- game_list() do %>
-    <section phx-click="tic-tac-toe" class={ "shadow-xl #{game_card.shadow_color} rounded-lg overflow-hidden text-center bg-gray-700 cursor-pointer" }>
-      <img src={ game_card.image_path } class="object-cover">
-      <h2 class="p-4 font-sans font-normal leading-none text-xl"><%= game_card.title %></h2>
+  <%= for game <- Games.get_all_games do %>
+    <section phx-click={ game.name } class={ "shadow-xl #{game.shadow_color} rounded-lg overflow-hidden text-center bg-gray-700 cursor-pointer" }>
+      <img src={ game.image_path } class="object-cover">
+      <h2 class="p-4 font-sans font-normal leading-none text-xl"><%= game.display_name %></h2>
     </section>
   <% end %>
 </div>
