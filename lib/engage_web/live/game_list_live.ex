@@ -6,7 +6,7 @@ defmodule EngageWeb.GameListLive do
   end
 
   def handle_event("tic-tac-toe", _, socket) do
-    {:noreply, push_redirect(socket, to: "/games/tic-tac-toe")}
+    {:noreply, push_redirect(socket, to: "/game-info/tic-tac-toe")}
   end
 
   defp game_list do
