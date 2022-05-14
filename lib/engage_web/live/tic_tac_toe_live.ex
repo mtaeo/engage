@@ -1,35 +1,62 @@
 defmodule EngageWeb.TicTacToeLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "game.html"}
   alias EngageWeb.Router.Helpers, as: Routes
-  alias Engage.Games.TicTacToe.GameBoard
-  alias Engage.Games.TicTacToe.Coordinate
-  alias Engage.Games.TicTacToe.GenServer
+  alias Engage.Games.TicTacToe
+  alias Engage.Games.TicTacToe.{GameBoard, Coordinate}
+  alias Engage.Games.Chat
+  alias Engage.Games.Chat.Message
 
   def mount(_params, session, socket) do
     {:ok, setup(socket, session)}
   end
 
   def handle_params(%{"id" => game_id}, _uri, socket) do
-    genserver_name = String.to_atom(game_id)
-    GenServer.start(genserver_name)
+    game_genserver_name = String.to_atom(game_id)
+    chat_genserver_name = String.to_atom("chat_" <> game_id)
+    TicTacToe.GenServer.start(game_genserver_name)
+    Chat.GenServer.start(chat_genserver_name)
     Phoenix.PubSub.subscribe(Engage.PubSub, game_id)
+    Phoenix.PubSub.subscribe(Engage.PubSub, "chat_" <> game_id)
 
-    players = GenServer.add_player(genserver_name, socket.assigns.player_id, socket.assigns.player_name)
-    nth = GenServer.get_player_nth_by_name(genserver_name, socket.assigns.player_name)
-    game_board = GenServer.view(genserver_name)
+    players = TicTacToe.GenServer.add_player(game_genserver_name, socket.assigns.player_id, socket.assigns.player_name)
+    nth = TicTacToe.GenServer.get_player_nth_by_name(game_genserver_name, socket.assigns.player_name)
+    game_board = TicTacToe.GenServer.view(game_genserver_name)
+    messages = Chat.GenServer.view(chat_genserver_name)
 
     {:noreply,
      assign(socket,
        nth: nth,
        players: players,
        game_board: game_board,
-       genserver_name: genserver_name
+       messages: messages,
+       game_genserver_name: game_genserver_name,
+       chat_genserver_name: chat_genserver_name
      )}
   end
 
   def handle_event("make-move", %{"coordinate-x" => x, "coordinate-y" => y}, socket) do
     coordinate = get_coordinate(x, y)
-    GenServer.make_move(socket.assigns.genserver_name, {socket.assigns.players[socket.assigns.nth], coordinate})
+
+    TicTacToe.GenServer.make_move(
+      socket.assigns.game_genserver_name,
+      {socket.assigns.players[socket.assigns.nth], coordinate}
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("send-message", %{"message-text" => text}, socket) do
+    message = %Message{
+      sender: socket.assigns.player_name,
+      text: text,
+      sent_at: NaiveDateTime.local_now()
+    }
+
+    Chat.GenServer.send_message(
+      socket.assigns.chat_genserver_name,
+      message
+    )
+
     {:noreply, socket}
   end
 
@@ -41,12 +68,17 @@ defmodule EngageWeb.TicTacToeLive do
     {:noreply, assign(socket, players: players)}
   end
 
+  def handle_info(messages, socket) when is_list(messages) do
+    {:noreply, assign(socket, messages: messages)}
+  end
+
   defp setup(socket, session) do
     assign(socket,
       player_id: session["current_user"].id,
       player_name: session["current_user"].username,
       game_board: %GameBoard{},
-      players: %{first: nil, second: nil}
+      players: %{first: nil, second: nil},
+      messages: []
     )
   end
 
@@ -58,6 +90,7 @@ defmodule EngageWeb.TicTacToeLive do
 
   defp cell_content(symbol) do
     assigns = %{}
+
     case symbol do
       :x ->
         ~H"""
@@ -67,6 +100,7 @@ defmodule EngageWeb.TicTacToeLive do
         	</path>
         </svg>
         """
+
       :o ->
         ~H"""
         <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +109,9 @@ defmodule EngageWeb.TicTacToeLive do
         	</circle>
         </svg>
         """
-      _ -> ""
+
+      _ ->
+        ""
     end
   end
 end
