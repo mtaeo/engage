@@ -3,7 +3,11 @@ defmodule Engage.Games.Game do
 
   schema "games" do
     field :name, :string
+    field :display_name, :string
+    field :description, :string
     field :type, Ecto.Enum, values: [:singleplayer, :multiplayer]
     field :xp_multiplier, :decimal, default: 1
+    field :image_path, :string
+    field :shdadow_color, :string
   end
 end

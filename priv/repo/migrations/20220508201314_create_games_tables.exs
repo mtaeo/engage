@@ -7,9 +7,13 @@ defmodule Engage.Repo.Migrations.CreateGamesTables do
     execute(create_game_type_query, drop_game_type_query)
 
     create table(:games) do
-      add :name, :string, null: false
+      add :name, :citext, null: false
+      add :display_name, :string, null: false
+      add :description, :text, null: false
       add :type, :game_type, null: false
       add :xp_multiplier, :decimal, null: false
+      add :image_path, :string, null: false
+      add :shadow_color, :citext
     end
 
     create constraint("games", :name_must_not_be_empty, check: "name <> ''")
@@ -56,10 +60,15 @@ defmodule Engage.Repo.Migrations.CreateGamesTables do
       END;
       $$ LANGUAGE plpgsql;
     """
-    drop_game_event_inserted_trigger_func = "DROP FUNCTION IF EXISTS game_event_inserted_trigger_func"
+
+    drop_game_event_inserted_trigger_func =
+      "DROP FUNCTION IF EXISTS game_event_inserted_trigger_func"
+
     execute(create_game_event_inserted_trigger_func, drop_game_event_inserted_trigger_func)
 
-    create_game_event_inserted_trigger = "CREATE TRIGGER game_event_inserted AFTER INSERT ON game_events FOR EACH ROW EXECUTE PROCEDURE game_event_inserted_trigger_func()"
+    create_game_event_inserted_trigger =
+      "CREATE TRIGGER game_event_inserted AFTER INSERT ON game_events FOR EACH ROW EXECUTE PROCEDURE game_event_inserted_trigger_func()"
+
     drop_game_event_inserted_trigger = "DROP TRIGGER IF EXISTS game_event_inserted ON game_events"
     execute(create_game_event_inserted_trigger, drop_game_event_inserted_trigger)
   end
