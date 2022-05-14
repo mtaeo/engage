@@ -5,6 +5,8 @@ defmodule Engage.Users.User do
   schema "users" do
     field :username, :string
     field :email, :string
+    field :total_xp, :integer, default: 0
+    field :coins, :integer, default: 0
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime

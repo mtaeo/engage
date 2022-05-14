@@ -1,8 +1,9 @@
-defmodule Engage.TicTacToe.GenServer do
+defmodule Engage.Games.TicTacToe.GenServer do
   use GenServer
-  alias Engage.TicTacToe.Player
-  alias Engage.TicTacToe.Coordinate
-  alias Engage.TicTacToe.GameBoard
+  alias Engage.Games.GameEvent
+  alias Engage.Games.TicTacToe.{Player, Coordinate, GameBoard}
+
+  @game_name "Tic-Tac-Toe"
 
   def start(
         genserver_name,
@@ -11,13 +12,16 @@ defmodule Engage.TicTacToe.GenServer do
       when is_atom(genserver_name) do
     GenServer.start(
       __MODULE__,
-      Map.put(state, :genserver_name, genserver_name),
+      Map.merge(state, %{
+        genserver_name: genserver_name,
+        game_id: Engage.Games.get_game_by_name(@game_name).id
+      }),
       name: genserver_name
     )
   end
 
-  def add_player(genserver_name, player_name) do
-    GenServer.call(genserver_name, {:add_player, player_name})
+  def add_player(genserver_name, player_id, player_name) do
+    GenServer.call(genserver_name, {:add_player, player_id, player_name})
   end
 
   def get_player_nth_by_name(genserver_name, player_name) do
@@ -34,15 +38,15 @@ defmodule Engage.TicTacToe.GenServer do
 
   # Server API
 
-  def handle_call({:add_player, player_name}, _from, state) do
+  def handle_call({:add_player, player_id, player_name}, _from, state) do
     state =
       cond do
         state.players.first === nil ->
-          player = %Player{name: player_name, value: :x}
+          player = %Player{id: player_id, name: player_name, value: :x}
           put_in(state.players.first, player)
 
-        state.players.second === nil and state.players.first.name !== player_name ->
-          player = %Player{name: player_name, value: :o}
+        state.players.second === nil and state.players.first.id !== player_id ->
+          player = %Player{id: player_id, name: player_name, value: :o}
           state = put_in(state.players.second, player)
 
           Phoenix.PubSub.broadcast(
@@ -111,11 +115,34 @@ defmodule Engage.TicTacToe.GenServer do
     outcome = check_for_winner(state)
     state = put_in(state.board.outcome, outcome)
 
-    state = case outcome do
-      :x -> update_in(state.players.first.score, &(&1 + 1))
-      :o -> update_in(state.players.second.score, &(&1 + 1))
-      _ -> state
-    end
+    state =
+      case outcome do
+        :x ->
+          winner_id = state.players.first.id
+          loser_id = state.players.second.id
+
+          insert_game_event_into_db(state.game_id, winner_id, loser_id)
+          update_in(state.players.first.score, &(&1 + 1))
+
+        :o ->
+          winner_id = state.players.second.id
+          loser_id = state.players.first.id
+
+          insert_game_event_into_db(state.game_id, winner_id, loser_id)
+          update_in(state.players.second.score, &(&1 + 1))
+
+        :draw ->
+          insert_draw_game_event_into_db(
+            state.game_id,
+            state.players.first.id,
+            state.players.second.id
+          )
+
+          state
+
+        _ ->
+          state
+      end
 
     if outcome !== nil do
       Phoenix.PubSub.broadcast(
@@ -260,5 +287,37 @@ defmodule Engage.TicTacToe.GenServer do
 
   defp is_field_not_occupied?(state, coordinate) do
     state.board.state[coordinate] === nil
+  end
+
+  defp insert_game_event_into_db(game_id, winner_id, loser_id) do
+    Engage.GameEvents.insert_game_event(%GameEvent{
+      outcome: :won,
+      game_id: game_id,
+      user_id: winner_id,
+      opponent_user_id: loser_id
+    })
+
+    Engage.GameEvents.insert_game_event(%GameEvent{
+      outcome: :lost,
+      game_id: game_id,
+      user_id: loser_id,
+      opponent_user_id: winner_id
+    })
+  end
+
+  defp insert_draw_game_event_into_db(game_id, first_player_id, second_player_id) do
+    Engage.GameEvents.insert_game_event(%GameEvent{
+      outcome: :draw,
+      game_id: game_id,
+      user_id: first_player_id,
+      opponent_user_id: second_player_id
+    })
+
+    Engage.GameEvents.insert_game_event(%GameEvent{
+      outcome: :draw,
+      game_id: game_id,
+      user_id: second_player_id,
+      opponent_user_id: first_player_id
+    })
   end
 end
