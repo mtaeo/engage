@@ -59,8 +59,9 @@ defmodule EngageWeb.Router do
     get "/users/settings/confirm-email/:token", UserSettingsController, :confirm_email
     
     live "/games", GameListLive, :index
+    live "/game-info/:game", GameInfoLive, :index
     live "/games/tic-tac-toe/", TicTacToeLobbyLive, :index
-    live "/games/tic-tac-toe/:id", TicTacToeLive, :inde
+    live "/games/tic-tac-toe/:id", TicTacToeLive, :index
 
     live "/proxy/user", UserProfileProxyLive, :index
     live "/user/:username", UserProfileLive, :index
