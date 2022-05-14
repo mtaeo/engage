@@ -7,6 +7,7 @@ defmodule Engage.Users.User do
     field :email, :string
     field :total_xp, :integer, default: 0
     field :coins, :integer, default: 0
+    field :role, Ecto.Enum, values: [:user, :moderator, :admin], default: :user
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
@@ -42,7 +43,11 @@ defmodule Engage.Users.User do
   defp validate_username(changeset) do
     changeset
     |> validate_required([:username], message: "username already taken")
-    |> validate_length(:username, min: 3, max: 25, message: "username must be bigger than 3 and smaller than 25 characters long (inclusively)")
+    |> validate_length(:username,
+      min: 3,
+      max: 25,
+      message: "username must be bigger than 3 and smaller than 25 characters long (inclusively)"
+    )
     |> unique_constraint(:username)
   end
 
