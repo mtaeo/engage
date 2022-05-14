@@ -4,11 +4,16 @@ defmodule Engage.Repo.Migrations.CreateUsersAuthTables do
   def change do
     execute "CREATE EXTENSION IF NOT EXISTS citext", ""
 
+    create_user_role_query = "CREATE TYPE user_role AS ENUM ('user', 'moderator', 'admin')"
+    drop_user_role_query = "DROP TYPE user_role"
+    execute(create_user_role_query, drop_user_role_query)
+
     create table(:users) do
       add :username, :citext, null: false
       add :email, :citext, null: false
       add :total_xp, :int, null: false, default: 0
-      add :coins, :int, null: false, defualt: 0
+      add :coins, :int, null: false, default: 0
+      add :role, :user_role, null: false
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
       timestamps()

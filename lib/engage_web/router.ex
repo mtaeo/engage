@@ -1,7 +1,8 @@
 defmodule EngageWeb.Router do
   use EngageWeb, :router
-
+  import Phoenix.LiveDashboard.Router
   import EngageWeb.UserAuth
+  alias EngageWeb.Plugs.EnsureAuthorized
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -23,14 +24,12 @@ defmodule EngageWeb.Router do
     get "/", LandingPageController, :index
   end
 
-  if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
+  ## Authorization routes
 
-    scope "/" do
-      pipe_through :browser
+  scope "/admin" do
+    pipe_through [:browser, EnsureAuthorized]
 
-      live_dashboard "/dashboard", metrics: EngageWeb.Telemetry
-    end
+    live_dashboard "/dashboard", metrics: EngageWeb.Telemetry
   end
 
   ## Authentication routes
@@ -57,7 +56,7 @@ defmodule EngageWeb.Router do
     get "/users/settings-old", UserSettingsController, :edit
     put "/users/settings-old", UserSettingsController, :update
     get "/users/settings/confirm-email/:token", UserSettingsController, :confirm_email
-    
+
     live "/games", GameListLive, :index
     live "/game-info/:game", GameInfoLive, :index
     live "/join", JoinGameLive, :index
