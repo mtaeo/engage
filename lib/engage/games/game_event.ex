@@ -8,7 +8,8 @@ defmodule Engage.Games.GameEvent do
     field :outcome, Ecto.Enum, values: [:won, :lost, :draw]
     timestamps(updated_at: false)
     belongs_to :game, Game
-    belongs_to :user, User
+    belongs_to :user, User, foreign_key: :user_id
+    belongs_to :opponent_user, User, foreign_key: :opponent_user_id
   end
 
   def changeset(game_event, _attrs, _opts \\ []) do

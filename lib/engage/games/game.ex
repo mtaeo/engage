@@ -4,6 +4,6 @@ defmodule Engage.Games.Game do
   schema "games" do
     field :name, :string
     field :type, Ecto.Enum, values: [:singleplayer, :multiplayer]
-    field :xp_multiplier, :integer, default: 1
+    field :xp_multiplier, :decimal, default: 1
   end
 end

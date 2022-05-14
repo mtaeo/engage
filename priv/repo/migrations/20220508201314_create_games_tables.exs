@@ -9,7 +9,7 @@ defmodule Engage.Repo.Migrations.CreateGamesTables do
     create table(:games) do
       add :name, :string, null: false
       add :type, :game_type, null: false
-      add :xp_multiplier, :integer, null: false
+      add :xp_multiplier, :decimal, null: false
     end
 
     create constraint("games", :name_must_not_be_empty, check: "name <> ''")
@@ -22,6 +22,7 @@ defmodule Engage.Repo.Migrations.CreateGamesTables do
     create table(:game_events) do
       add :game_id, references(:games), null: false
       add :user_id, references(:users), null: false
+      add :opponent_user_id, references(:users)
       add :outcome, :game_outcome, null: false
       timestamps(updated_at: false)
     end
@@ -45,19 +46,20 @@ defmodule Engage.Repo.Migrations.CreateGamesTables do
           xp := 0;
         END CASE;
 
-        SELECT xp_multiplier FROM games WHERE id = NEW.game_id INTO xp_multiplier;
+        SELECT g.xp_multiplier FROM games g WHERE id = NEW.game_id INTO xp_multiplier;
 
         UPDATE users
-        SET total_xp = total_xp + (xp * xp_mulitplier)
+        SET total_xp = total_xp + (xp * xp_multiplier)
         WHERE id = NEW.user_id;
+
         RETURN NEW;
-      END
+      END;
       $$ LANGUAGE plpgsql;
     """
-    drop_game_event_inserted_trigger_func = "DROP PROCEDURE IF EXISTS game_event_inserted_trigger_func"
+    drop_game_event_inserted_trigger_func = "DROP FUNCTION IF EXISTS game_event_inserted_trigger_func"
     execute(create_game_event_inserted_trigger_func, drop_game_event_inserted_trigger_func)
 
-    create_game_event_inserted_trigger = "CREATE TRIGGER game_event_inserted AFTER INSERT ON game_events EXECUTE PROCEDURE game_event_inserted_trigger_func()"
+    create_game_event_inserted_trigger = "CREATE TRIGGER game_event_inserted AFTER INSERT ON game_events FOR EACH ROW EXECUTE PROCEDURE game_event_inserted_trigger_func()"
     drop_game_event_inserted_trigger = "DROP TRIGGER IF EXISTS game_event_inserted ON game_events"
     execute(create_game_event_inserted_trigger, drop_game_event_inserted_trigger)
   end

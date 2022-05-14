@@ -21,4 +21,8 @@ defmodule Engage.Games do
     Repo.all(from g in Game, where: g.type == ^type)
   end
 
+  def get_game_by_name(name) when is_binary(name) do
+    Repo.get_by(Game, name: name)
+  end
+
 end
