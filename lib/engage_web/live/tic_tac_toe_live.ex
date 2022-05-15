@@ -5,9 +5,15 @@ defmodule EngageWeb.TicTacToeLive do
   alias Engage.Games.TicTacToe.{GameBoard, Coordinate}
   alias Engage.Games.Chat
   alias Engage.Games.Chat.Message
+  import EngageWeb.LiveHelpers
 
   def mount(_params, session, socket) do
-    {:ok, setup(socket, session)}
+    socket =
+      live_auth_check(socket, session, fn socket, _user ->
+        setup(socket, session)
+      end)
+      
+    {:ok, socket}
   end
 
   def handle_params(%{"id" => game_id}, _uri, socket) do

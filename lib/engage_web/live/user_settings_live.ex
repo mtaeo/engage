@@ -4,29 +4,35 @@ defmodule EngageWeb.UserSettingsLive do
   alias Ecto.Changeset
   alias Engage.UserSettings.Profile
   alias Engage.UserSettings.ChangePassword
+  alias Engage.Helpers.Gravatar
   import EngageWeb.ErrorHelpers
+  import EngageWeb.LiveHelpers
 
   def mount(_params, session, socket) do
-    user = session["current_user"]
-
-    profile = %Profile{
-      username: "username here",
-      email: user.email,
-      bio: "bio here",
-      theme: "dark"
-    }
-
-    socket = assign(socket, profile: profile, profile_changeset: Profile.changeset(profile))
-
-    change_password = %ChangePassword{}
-
     socket =
-      assign(socket,
-        change_password: change_password,
-        change_password_changeset: ChangePassword.changeset(%ChangePassword{})
-      )
+      live_auth_check(socket, session, fn socket, user ->
+        socket = live_template_assigns(socket, user)
 
-    socket = assign(socket, avatar_uri: "https://unsplash.it/seed/#{profile.username}/200/200")
+        profile = %Profile{
+          username: user.username,
+          email: user.email,
+          bio: "bio here",
+          theme: "dark"
+        }
+
+        change_password = %ChangePassword{}
+
+        socket
+        |> assign(
+          profile: profile,
+          profile_changeset: Profile.changeset(profile)
+        )
+        |> assign(
+          change_password: change_password,
+          change_password_changeset: ChangePassword.changeset(%ChangePassword{})
+        )
+        |> assign(avatar_uri: Gravatar.get_image_src_by_email(user.email))
+      end)
 
     {:ok, socket}
   end

@@ -1,9 +1,15 @@
 defmodule EngageWeb.UserProfileProxyLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
   alias EngageWeb.Router.Helpers, as: Routes
+  import EngageWeb.LiveHelpers
 
   def mount(_params, session, socket) do
-    {:ok, assign(socket, username: session["current_user"].username)}
+    socket =
+      live_auth_check(socket, session, fn socket, user ->
+        assign(socket, username: user.username)
+      end)
+    
+    {:ok, socket}
   end
 
   def handle_params(_params, _url, socket) do

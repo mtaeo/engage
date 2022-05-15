@@ -5,8 +5,13 @@ defmodule EngageWeb.UserProfileLive do
   alias Engage.Users
   alias Engage.Users.User
   alias Engage.XpToLevels
+  import EngageWeb.LiveHelpers
 
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
+    socket = live_auth_check(socket, session, fn socket, user ->
+      live_template_assigns(socket, user)
+    end)
+    
     {:ok, socket}
   end
 

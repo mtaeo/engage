@@ -7,8 +7,9 @@ defmodule EngageWeb.LiveHelpers do
   @type session :: map()
   @type user :: map()
 
+  @spec live_auth_check(Socket.t(), session) :: Socket.t()
   @spec live_auth_check(Socket.t(), session, (Socket.t(), user -> Socket.t())) :: Socket.t()
-  def live_auth_check(socket, session, success) do
+  def live_auth_check(socket, session, success \\ fn s, _ -> s end) do
     case session do
       %{"current_user" => user} ->
         success.(socket, user)
