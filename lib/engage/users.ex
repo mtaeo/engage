@@ -361,9 +361,7 @@ defmodule Engage.Users do
         {:ok, user}
 
       _ ->
-        %User{}
-        |> User.registration_changeset(attrs)
-        |> Repo.insert()
+        register_user(attrs)
     end
   end
 end
