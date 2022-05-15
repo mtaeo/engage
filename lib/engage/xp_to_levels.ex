@@ -13,4 +13,18 @@ defmodule Engage.XpToLevels do
     query
     |> Repo.one()
   end
+
+  def calculate_upper_xp_for_level(level) do
+    query = from x in XpToLevel, where: ^(level + 1) == x.level, select: x.min_xp
+
+    query
+    |> Repo.one()
+  end
+
+  def calculate_lower_xp_for_level(level) do
+    query = from x in XpToLevel, where: ^level == x.level, select: x.min_xp
+
+    query
+    |> Repo.one()
+  end
 end
