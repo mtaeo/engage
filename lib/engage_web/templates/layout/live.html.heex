@@ -54,15 +54,15 @@
     </div>
 
     <div class="relative js-dropdown">
-      <button class="flex gap-2 p-2 rounded-md hover:bg-gray-700 transition-colors" onclick="window.util.toggleLocalDropdown(this);">
-        <div class="hidden sm:flex flex-col w-32 p-1 text-sm">
+      <button class="flex gap-2 items-stretch p-2 rounded-md hover:bg-gray-700 transition-colors" onclick="window.util.toggleLocalDropdown(this);">
+        <div class="hidden sm:flex flex-col justify-between w-32 p-0.5 text-base font-display">
           <div class="flex leading-none">
-            <div class="mr-auto">Level 42</div>
-            <div>123¢</div>
+            <div class="mr-auto">Level <%= @level %></div>
+            <div class="text-yellow-400"><%= @coins %>¢</div>
           </div>
 
-          <div class="mt-auto rounded-full bg-gray-800">
-            <div class="h-1 rounded-full bg-accent-500" style={"width: #{60}%;"}></div>
+          <div class="rounded-full bg-gray-800">
+            <div class="h-1 rounded-full bg-gradient-to-r from-accent-600 to-accent-400" style={"width: #{@level_progress}%;"}></div>
           </div>
         </div>
 
@@ -148,14 +148,14 @@
         </li>
       </ul>
 
-      <div class="flex sm:hidden flex-col gap-2 mt-auto p-2 text-lg">
+      <div class="flex sm:hidden flex-col gap-2 items-stretch justify-between mt-auto p-2 text-lg">
         <div class="flex leading-none">
-          <div class="mr-auto">Level 42</div>
-          <div>123¢</div>
+          <div class="mr-auto">Level <%= @level %></div>
+          <div class="text-yellow-400"><%= @coins %>¢</div>
         </div>
 
-        <div class="mt-auto rounded-full bg-gray-900">
-          <div class="h-1 rounded-full bg-accent-500" style={"width: #{60}%;"}></div>
+        <div class="rounded-full bg-gray-900">
+          <div class="h-1 rounded-full bg-gradient-to-r from-accent-600 to-accent-400" style={"width: #{@level_progress}%;"}></div>
         </div>
       </div>
     </nav>
