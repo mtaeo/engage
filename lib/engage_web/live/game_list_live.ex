@@ -12,7 +12,13 @@ defmodule EngageWeb.GameListLive do
     {:ok, socket}
   end
 
+  # TODO: Improve scalability by refactoring to use index of game card pressed
+
   def handle_event("tic-tac-toe", _, socket) do
     {:noreply, push_redirect(socket, to: "/game-info/tic-tac-toe")}
+  end
+
+  def handle_event("memory", _, socket) do
+    {:noreply, push_redirect(socket, to: "/game-info/memory")}
   end
 end

@@ -1,8 +1,9 @@
 defmodule EngageWeb.TicTacToeLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "game.html"}
   alias EngageWeb.Router.Helpers, as: Routes
+  alias Engage.Games.Generic.Coordinate
   alias Engage.Games.TicTacToe
-  alias Engage.Games.TicTacToe.{GameBoard, Coordinate}
+  alias Engage.Games.TicTacToe.GameBoard
   alias Engage.Games.Chat
   alias Engage.Games.Chat.Message
   import EngageWeb.LiveHelpers
