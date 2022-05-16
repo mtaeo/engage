@@ -110,13 +110,20 @@ defmodule Engage.Games.Memory.GenServer do
     {:noreply, state}
   end
 
-  def handle_info(:replay, state) do
+  def handle_info({:replay, state}, _state) do
     state =
       state
       |> put_in([:board], %GameBoard{})
       |> shuffle_cards
-      |> put_in([:players, :first, :matched_pairs_current_game], 0)
-      |> put_in([:players, :second, :matched_pairs_current_game], 0)
+
+    state = put_in(state.players.first.matched_pairs_current_game, 0)
+    state = put_in(state.players.second.matched_pairs_current_game, 0)
+
+    Phoenix.PubSub.broadcast(
+      Engage.PubSub,
+      Atom.to_string(state.genserver_name),
+      state.players
+    )
 
     :timer.send_after(0, {:send_board, state})
     {:noreply, state}
@@ -135,7 +142,7 @@ defmodule Engage.Games.Memory.GenServer do
         state = update_in(state.players[nth].matched_pairs_current_game, &(&1 + 1))
         state = match_face_up_cards(state, player)
         :timer.send_after(@show_card_delay, {:send_board, state})
-        state
+        check_for_winner_and_update_scores(state)
       else
         state = set_next_players_turn(state)
         state = hide_all_unmatched_cards(state)
@@ -217,6 +224,45 @@ defmodule Engage.Games.Memory.GenServer do
     cards = Enum.take_random(Map.values(state.board.state), count)
 
     put_in(state.board.state, Enum.zip(keys, cards) |> Enum.into(%{}))
+  end
+
+  defp check_for_winner_and_update_scores(state) do
+    case decide_winner(state) do
+      :first ->
+        state = update_in(state.players.first.score, &(&1 + 1))
+        :timer.send_after(@show_card_delay, {:replay, state})
+        state
+
+      :second ->
+        state = update_in(state.players.second.score, &(&1 + 1))
+        :timer.send_after(@show_card_delay, {:replay, state})
+        state
+
+      nil ->
+        state
+    end
+  end
+
+  defp decide_winner(state) do
+    first_player_score = state.players.first.matched_pairs_current_game
+    second_player_score = state.players.second.matched_pairs_current_game
+
+    cond do
+      first_player_score > second_player_score and
+          first_player_score >= num_of_card_pairs(state) ->
+        :first
+
+      second_player_score > first_player_score and
+          second_player_score >= num_of_card_pairs(state) ->
+        :second
+
+      true ->
+        nil
+    end
+  end
+
+  defp num_of_card_pairs(state) do
+    div(Enum.count(state.board.state), 2)
   end
 
   defp get_player_nth_by_name_helper(state, player_name) do
