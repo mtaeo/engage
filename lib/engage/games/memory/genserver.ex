@@ -1,5 +1,6 @@
 defmodule Engage.Games.Memory.GenServer do
   use GenServer
+  alias Engage.Games.GameEvent
   alias Engage.Games.Memory.{GameBoard, Player}
 
   @game_name "memory"
@@ -230,11 +231,13 @@ defmodule Engage.Games.Memory.GenServer do
     case decide_winner(state) do
       :first ->
         state = update_in(state.players.first.score, &(&1 + 1))
+        insert_game_event_into_db(state.game_id, state.players.first.id, state.players.second.id)
         :timer.send_after(@show_card_delay, {:replay, state})
         state
 
       :second ->
         state = update_in(state.players.second.score, &(&1 + 1))
+        insert_game_event_into_db(state.game_id, state.players.second.id, state.players.first.id)
         :timer.send_after(@show_card_delay, {:replay, state})
         state
 
@@ -267,5 +270,21 @@ defmodule Engage.Games.Memory.GenServer do
 
   defp get_player_nth_by_name_helper(state, player_name) do
     Enum.find(state.players, fn {_, v} -> v.name === player_name end)
+  end
+
+  defp insert_game_event_into_db(game_id, winner_id, loser_id) do
+    Engage.GameEvents.insert_game_event(%GameEvent{
+      outcome: :won,
+      game_id: game_id,
+      user_id: winner_id,
+      opponent_user_id: loser_id
+    })
+
+    Engage.GameEvents.insert_game_event(%GameEvent{
+      outcome: :lost,
+      game_id: game_id,
+      user_id: loser_id,
+      opponent_user_id: winner_id
+    })
   end
 end
