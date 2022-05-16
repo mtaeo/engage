@@ -91,10 +91,10 @@ defmodule EngageWeb.MemoryLive do
     assigns = %{face_up?: card.face_up?, symbol: card.symbol}
 
     ~H"""
-      <div class="w-36 text-7xl { if @matched_by_user_id !== nil, do: 'bg-red-900' }">
-        <h2>
+      <div class={if (not @face_up?), do: "cursor-pointer"}>
+        <h1>
           <%= if @face_up?, do: @symbol, else: "?" %>
-        </h2>
+        </h1>
       </div>
     """
   end

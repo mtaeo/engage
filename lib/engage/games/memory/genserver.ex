@@ -5,7 +5,7 @@ defmodule Engage.Games.Memory.GenServer do
   @game_name "memory"
   @show_card_delay 2000
 
-  # TODO: Refactor to be more reusable between all game genservers
+  # TODO: Refactor to be more reusable between all game GenServers
 
   def start(
         genserver_name,
@@ -73,10 +73,12 @@ defmodule Engage.Games.Memory.GenServer do
   end
 
   def handle_call({:make_move, player, index}, _from, state) do
-    {nth, _player} = helper(state, player.name)
+    {nth, _player} = get_player_nth_by_name_helper(state, player.name)
 
     state =
-      if nth == state.nth_player_turn and not two_cards_face_up?(state) do
+      if nth == state.nth_player_turn and
+           all_players_joined?(state) and
+           not two_cards_face_up?(state) do
         reveal_card(state, player, index)
       else
         state
@@ -86,7 +88,7 @@ defmodule Engage.Games.Memory.GenServer do
   end
 
   def handle_call({:get_player_nth_by_name, player_name}, _from, state) do
-    {nth, _player} = helper(state, player_name)
+    {nth, _player} = get_player_nth_by_name_helper(state, player_name)
     {:reply, nth, state}
   end
 
@@ -129,7 +131,7 @@ defmodule Engage.Games.Memory.GenServer do
   defp check_for_matching_cards(state, player) do
     if two_cards_face_up?(state) do
       if face_up_cards_match?(state) do
-        {nth, _player} = helper(state, player.name)
+        {nth, _player} = get_player_nth_by_name_helper(state, player.name)
         state = update_in(state.players[nth].matched_pairs_current_game, &(&1 + 1))
         state = match_face_up_cards(state, player)
         :timer.send_after(@show_card_delay, {:send_board, state})
@@ -147,6 +149,10 @@ defmodule Engage.Games.Memory.GenServer do
 
   defp two_cards_face_up?(state) do
     Enum.count(get_unmatched_face_up_cards(state)) === 2
+  end
+
+  defp all_players_joined?(state) do
+    state.players.first !== nil and state.players.second !== nil
   end
 
   defp face_up_cards_match?(state) do
@@ -213,7 +219,7 @@ defmodule Engage.Games.Memory.GenServer do
     put_in(state.board.state, Enum.zip(keys, cards) |> Enum.into(%{}))
   end
 
-  defp helper(state, player_name) do
+  defp get_player_nth_by_name_helper(state, player_name) do
     Enum.find(state.players, fn {_, v} -> v.name === player_name end)
   end
 end
