@@ -1,6 +1,5 @@
 defmodule Engage.Games.Memory.GenServer do
   use GenServer
-  alias Engage.Games.Generic.Coordinate
   alias Engage.Games.Memory.{GameBoard, Player}
 
   @game_name "memory"
@@ -17,6 +16,8 @@ defmodule Engage.Games.Memory.GenServer do
         }
       )
       when is_atom(genserver_name) do
+    state = shuffle_cards(state)
+
     GenServer.start(
       __MODULE__,
       Map.merge(state, %{
@@ -39,8 +40,8 @@ defmodule Engage.Games.Memory.GenServer do
     GenServer.call(genserver_name, :view)
   end
 
-  def make_move(genserver_name, {%Player{} = player, %Coordinate{} = coordinate}) do
-    GenServer.call(genserver_name, {:make_move, player, coordinate})
+  def make_move(genserver_name, {%Player{} = player, index}) when is_number(index) do
+    GenServer.call(genserver_name, {:make_move, player, index})
   end
 
   # Server API
@@ -71,12 +72,12 @@ defmodule Engage.Games.Memory.GenServer do
     {:reply, state.players, state}
   end
 
-  def handle_call({:make_move, player, coordinate}, _from, state) do
+  def handle_call({:make_move, player, index}, _from, state) do
     {nth, _player} = helper(state, player.name)
 
     state =
       if nth == state.nth_player_turn and not two_cards_face_up?(state) do
-        reveal_card(state, player, coordinate)
+        reveal_card(state, player, index)
       else
         state
       end
@@ -108,16 +109,19 @@ defmodule Engage.Games.Memory.GenServer do
   end
 
   def handle_info(:replay, state) do
-    state = put_in(state.board, %GameBoard{})
-    state = put_in(state.players, [:first, :matched_pairs_current_game], 0)
-    state = put_in(state.players, [:second, :matched_pairs_current_game], 0)
+    state =
+      state
+      |> put_in([:board], %GameBoard{})
+      |> shuffle_cards
+      |> put_in([:players, :first, :matched_pairs_current_game], 0)
+      |> put_in([:players, :second, :matched_pairs_current_game], 0)
 
     :timer.send_after(0, {:send_board, state})
     {:noreply, state}
   end
 
-  defp reveal_card(state, player, coordinate) do
-    state = put_in(state.board.state[coordinate].face_up?, true)
+  defp reveal_card(state, player, index) do
+    state = put_in(state.board.state[index].face_up?, true)
     :timer.send_after(0, {:send_board, state})
     check_for_matching_cards(state, player)
   end
@@ -199,6 +203,14 @@ defmodule Engage.Games.Memory.GenServer do
       end
 
     put_in(state.nth_player_turn, next_nth_player_turn)
+  end
+
+  defp shuffle_cards(state) do
+    count = Enum.count(state.board.state)
+    keys = Enum.take_random(Map.keys(state.board.state), count)
+    cards = Enum.take_random(Map.values(state.board.state), count)
+
+    put_in(state.board.state, Enum.zip(keys, cards) |> Enum.into(%{}))
   end
 
   defp helper(state, player_name) do

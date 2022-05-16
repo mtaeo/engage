@@ -41,12 +41,10 @@ defmodule EngageWeb.MemoryLive do
      )}
   end
 
-  def handle_event("make-move", %{"coordinate-x" => x, "coordinate-y" => y}, socket) do
-    coordinate = get_coordinate(x, y)
-
+  def handle_event("make-move", %{"index" => index}, socket) do
     Memory.GenServer.make_move(
       socket.assigns.game_genserver_name,
-      {socket.assigns.players[socket.assigns.nth], coordinate}
+      {socket.assigns.players[socket.assigns.nth], String.to_integer(index)}
     )
 
     {:noreply, socket}
@@ -87,12 +85,6 @@ defmodule EngageWeb.MemoryLive do
       players: %{first: nil, second: nil},
       messages: []
     )
-  end
-
-  defp get_coordinate(x, y) do
-    {x, ""} = Integer.parse(x)
-    {y, ""} = Integer.parse(y)
-    %Coordinate{x: x, y: y}
   end
 
   defp cell_content(%EmojiCard{} = card) do

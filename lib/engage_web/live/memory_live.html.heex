@@ -79,8 +79,8 @@
 
     <main class="basis-full flex justify-center items-center p-6">
         <div class="area-full grid grid-cols-4 grid-rows-4 max-h-full max-w-full aspect-square text-neutral-300">
-            <%= for {coordinate, card} <- @game_board.state do %>
-                <div phx-click="make-move" phx-value-coordinate-x={coordinate.x} phx-value-coordinate-y={coordinate.y} class={ if nil == nil, do: "cursor-pointer", else: ""}>
+            <%= for {index, card} <- @game_board.state do %>
+                <div phx-click="make-move" phx-value-index={index} class={ if nil == nil, do: "cursor-pointer", else: ""}>
                     <%= cell_content(card) %>
                 </div>
             <% end %>
