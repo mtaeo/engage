@@ -1,13 +1,17 @@
 defmodule Engage.Games.TicTacToe.GenServer do
   use GenServer
   alias Engage.Games.GameEvent
-  alias Engage.Games.TicTacToe.{Player, Coordinate, GameBoard}
+  alias Engage.Games.Generic.Coordinate
+  alias Engage.Games.TicTacToe.{Player, GameBoard}
 
-  @game_name "Tic-Tac-Toe"
+  @game_name "tic-tac-toe"
 
   def start(
         genserver_name,
-        state \\ %{players: %{first: nil, second: nil}, board: %GameBoard{}}
+        state \\ %{
+          players: %{first: nil, second: nil},
+          board: %GameBoard{}
+        }
       )
       when is_atom(genserver_name) do
     GenServer.start(

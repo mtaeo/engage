@@ -61,6 +61,7 @@ defmodule EngageWeb.Router do
     live "/game-info/:game", GameInfoLive, :index
     live "/join", JoinGameLive, :index
     live "/games/tic-tac-toe/:id", TicTacToeLive, :index
+    live "/games/memory/:id", MemoryLive, :index
 
     live "/proxy/user", UserProfileProxyLive, :index
     live "/user/:username", UserProfileLive, :index
