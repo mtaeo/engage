@@ -4,7 +4,7 @@ defmodule Engage.Games.TicTacToe.GenServer do
   alias Engage.Games.Generic.Coordinate
   alias Engage.Games.TicTacToe.{Player, GameBoard}
 
-  @game_name "Tic-Tac-Toe"
+  @game_name "tic-tac-toe"
 
   def start(
         genserver_name,
