@@ -52,6 +52,26 @@
 	.area-full {
 		grid-area: 1 / -1;
 	}
+	
+	.perspective {
+		perspective: 50rem;
+	}
+	
+	.preserve-3d {
+		transform-style: preserve-3d;
+	}
+	
+	.rotate-y-0 {
+		transform: rotateY(0);
+	}
+	
+	.rotate-y-180 {
+		transform: rotateY(180deg);
+	}
+	
+	.no-backface {
+		backface-visibility: hidden;
+	}
 }
 
 /* scrollbar styling - standard */

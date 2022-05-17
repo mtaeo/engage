@@ -12,6 +12,7 @@ defmodule EngageWeb.MemoryLive do
       live_auth_check(socket, session, fn socket, _user ->
         setup(socket, session)
       end)
+
     {:ok, socket}
   end
 
@@ -89,17 +90,5 @@ defmodule EngageWeb.MemoryLive do
       players: %{first: nil, second: nil},
       messages: []
     )
-  end
-
-  defp cell_content(%EmojiCard{} = card) do
-    assigns = %{face_up?: card.face_up?, symbol: card.symbol}
-
-    ~H"""
-      <div class={if (not @face_up?), do: "cursor-pointer"}>
-        <h1>
-          <%= if @face_up?, do: @symbol, else: "?" %>
-        </h1>
-      </div>
-    """
   end
 end
