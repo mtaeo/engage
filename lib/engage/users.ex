@@ -364,4 +364,11 @@ defmodule Engage.Users do
         register_user(attrs)
     end
   end
+
+  def update_user_avatar(user, attrs) do
+    user
+    |> User.avatar_changeset(attrs)
+    |> Repo.update
+  end
+
 end

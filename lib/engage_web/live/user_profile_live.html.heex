@@ -24,7 +24,7 @@
   <section class="flex flex-col gap-2">
     <h2 class="text-lg sm:text-2xl">Bio</h2>
     <div class="max-w-prose p-4 border rounded-2xl border-gray-600">
-      Short biography of this person.
+      <%= if @bio, do: @bio, else: "We don't know much about them, but we're sure #{@username} is great." %>
     </div>
   </section>
 </div>

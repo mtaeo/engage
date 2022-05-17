@@ -8,12 +8,18 @@ defmodule Engage.Repo.Migrations.CreateUsersAuthTables do
     drop_user_role_query = "DROP TYPE user_role"
     execute(create_user_role_query, drop_user_role_query)
 
+    create_gravatar_style_query = "CREATE TYPE gravatar_style AS ENUM ('mp', 'identicon', 'monsterid', 'wavatar', 'retro', 'robohash')"
+    drop_gravatar_style_query = "DROP TYPE gravatar_style"
+    execute(create_gravatar_style_query, drop_gravatar_style_query)
+
     create table(:users) do
       add :username, :citext, null: false
       add :email, :citext, null: false
+      add :bio, :text
       add :total_xp, :int, null: false, default: 0
       add :coins, :int, null: false, default: 0
       add :role, :user_role, null: false
+      add :gravatar_style, :gravatar_style, null: false
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
       timestamps()
