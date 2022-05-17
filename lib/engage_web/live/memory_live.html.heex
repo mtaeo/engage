@@ -77,14 +77,20 @@
       </section>
     </aside>
 
-    <main class="basis-full flex justify-center items-center p-6">
-        <div class="area-full grid grid-cols-4 grid-rows-4 max-h-full max-w-full aspect-square text-neutral-300">
-            <%= for {index, card} <- @game_board.state do %>
-                <div phx-click="make-move" phx-value-index={index} class="w-36 text-7xl text-center select-none">
-                    <%= cell_content(card) %>
-                </div>
-            <% end %>
-        </div>
+    <main class="basis-full grid place-items-center p-6">
+      <div class="flex flex-wrap justify-center max-w-3xl gap-8 perspective">
+        <%= for {index, card} <- @game_board.state do %>
+          <div phx-click="make-move" phx-value-index={index} class={ "basis-24 aspect-square grid font-display select-none preserve-3d transition-transform duration-300" <> if card.face_up?, do: " rotate-y-180", else: " cursor-pointer"}>
+            <div class="area-full grid place-items-center bg-gray-700 border-4 border-gray-800 rounded-2xl text-6xl shadow-equal no-backface rotate-y-0">
+              ?
+            </div>
+            
+            <div class="area-full grid place-items-center bg-gray-600 border-4 border-gray-700 rounded-2xl text-5xl shadow-equal no-backface rotate-y-180">
+              <%= card.symbol %>
+            </div>
+          </div>
+        <% end %>
+      </div>
     </main>
   </div>
 </div>
