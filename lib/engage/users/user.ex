@@ -5,9 +5,11 @@ defmodule Engage.Users.User do
   schema "users" do
     field :username, :string
     field :email, :string
+    field :bio, :string
     field :total_xp, :integer, default: 0
     field :coins, :integer, default: 0
     field :role, Ecto.Enum, values: [:user, :moderator, :admin], default: :user
+    field :gravatar_style, Ecto.Enum, values: [:mp, :identicon, :monsterid, :wavatar, :retro, :robohash], default: :retro
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
@@ -125,6 +127,11 @@ defmodule Engage.Users.User do
   def confirm_changeset(user) do
     now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     change(user, confirmed_at: now)
+  end
+
+  def avatar_changeset(user, attrs \\ %{}, _opts \\ []) do
+    user
+    |> cast(attrs, [:gravatar_style])
   end
 
   @doc """

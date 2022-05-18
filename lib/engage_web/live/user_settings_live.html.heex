@@ -1,65 +1,71 @@
 <div class="justify-self-center self-start w-full max-w-4xl flex flex-col gap-8">
   <h1 class="text-2xl">Settings</h1>
-  
+
   <div class="flex flex-wrap justify-between gap-8">
     <.form let={f_profile} for={@profile_changeset} phx-change="validate_profile" phx-submit="submit_profile" class="flex flex-col gap-4 w-full max-w-sm">
       <h2 class="text-lg sm:text-2xl">Profile</h2>
-      
+
       <div class="flex flex-col gap-1">
         <%= label f_profile, :username, "Username" %>
         <%= text_input f_profile, :username, required: true, "phx-debounce": "100", class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
         <%= error_tag f_profile, :username, class: "text-red-400" %>
       </div>
-      
+
       <div class="flex flex-col gap-1">
         <%= label f_profile, :email, "E-mail" %>
         <%= text_input f_profile, :email, required: true, "phx-debounce": "100", class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
         <%= error_tag f_profile, :email, class: "text-red-400" %>
       </div>
-      
+
       <div class="flex flex-col gap-1">
         <%= label f_profile, :bio, "Bio" %>
         <%= textarea f_profile, :bio, "phx-debounce": "100", class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors resize-y" %>
         <%= error_tag f_profile, :bio %>
       </div>
-      
+
       <div class="flex flex-col gap-1">
         <%= label f_profile, :theme, "Theme" %>
         <%= select f_profile, :theme, themes(), "phx-debounce": "100", class: "px-4 py-2 rounded-xl bg-gray-800 border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
       </div>
-      
+
       <button type="submit" disabled={!changeset_valid?(@profile_changeset)} class="block px-4 py-2 mt-2 rounded-xl text-neutral-900 bg-gray-100 hover:bg-gray-300 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors">Save changes</button>
     </.form>
-    
-    <form phx-submit="submit_avatar" class="flex flex-col gap-4">
+
+    <%= f = form_for @avatar_changeset, "#",
+        class: "flex flex-col gap-4",
+        phx_change: "submit_avatar"
+     %>
       <h2 class="text-lg sm:text-2xl">Avatar</h2>
       <img src={@avatar_uri} alt="avatar" class="grid place-items-center max-w-[256px] aspect-square rounded-full border-4 border-accent-500">
-      <input type="file" name="avatar" class="w-48">
-    </form>
+      <div class="flex justify-center">
+        <div class="mb-3 xl:w-96">
+          <%= select f, :gravatar_style, gravatar_styles(), class: "form-select appearance-none block w-full px-3 py-1.5 text-gray-700 rounded" %>
+        </div>
+      </div>
   </div>
-  
+
   <section class="flex flex-col gap-4 max-w-sm">
     <.form let={f_password} for={@change_password_changeset} phx-change="validate_change_password" phx-submit="submit_change_password" class="contents">
       <h2 class="text-lg sm:text-2xl">Change password</h2>
-      
+
       <div class="flex flex-col gap-1">
         <%= label f_password, :old_password, "Old password" %>
         <%= password_input f_password, :old_password, value: Changeset.get_change(@change_password_changeset, :old_password, ""), "phx-debounce": "100", required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
         <%= error_tag f_password, :old_password %>
       </div>
-      
+
       <div class="flex flex-col gap-1">
         <%= label f_password, :new_password, "New password" %>
         <%= password_input f_password, :new_password, value: Changeset.get_change(@change_password_changeset, :new_password, ""), "phx-debounce": "100", required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
         <%= error_tag f_password, :new_password %>
       </div>
-      
+
       <div class="flex flex-col gap-1">
         <%= label f_password, :new_password_repeat, "Repeat new password" %>
         <%= password_input f_password, :new_password_repeat, value: Changeset.get_change(@change_password_changeset, :new_password_repeat, ""), "phx-debounce": "100", required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
         <%= error_tag f_password, :new_password_repeat %>
       </div>
-      
+
       <button type="submit" disabled={!changeset_valid?(@change_password_changeset)} class="block px-4 py-2 mt-2 rounded-xl text-neutral-900 bg-gray-100 hover:bg-gray-300 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors">Change password</button>
     </.form>
   </section>

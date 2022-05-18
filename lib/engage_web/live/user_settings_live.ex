@@ -5,6 +5,8 @@ defmodule EngageWeb.UserSettingsLive do
   alias Engage.UserSettings.Profile
   alias Engage.UserSettings.ChangePassword
   alias Engage.Helpers.Gravatar
+  alias Engage.Users
+  alias Engage.Users.User
   import EngageWeb.ErrorHelpers
   import EngageWeb.LiveHelpers
 
@@ -16,13 +18,15 @@ defmodule EngageWeb.UserSettingsLive do
         profile = %Profile{
           username: user.username,
           email: user.email,
-          bio: "bio here",
+          bio: user.bio,
           theme: "dark"
         }
 
         change_password = %ChangePassword{}
+        avatar_changeset = User.avatar_changeset(user)
 
         socket
+        |> assign(user: user)
         |> assign(
           profile: profile,
           profile_changeset: Profile.changeset(profile)
@@ -31,7 +35,8 @@ defmodule EngageWeb.UserSettingsLive do
           change_password: change_password,
           change_password_changeset: ChangePassword.changeset(%ChangePassword{})
         )
-        |> assign(avatar_uri: Gravatar.get_image_src_by_email(user.email))
+        |> assign(avatar_uri: Gravatar.get_image_src_by_email(user.email, user.gravatar_style))
+        |> assign(avatar_changeset: avatar_changeset)
       end)
 
     {:ok, socket}
@@ -68,10 +73,14 @@ defmodule EngageWeb.UserSettingsLive do
     {:noreply, socket}
   end
 
-  def handle_event("submit_avatar", _params, socket) do
-    # TODO: logic for updating avatar
+  def handle_event("submit_avatar", %{"user" => avatar_style}, socket) do
+    {:ok, user} = Users.update_user_avatar(socket.assigns.user, avatar_style)
 
-    {:noreply, socket}
+    {:noreply,
+     assign(socket,
+       avatar_changeset: User.avatar_changeset(user),
+       avatar_uri: Gravatar.get_image_src_by_email(user.email, user.gravatar_style)
+     )}
   end
 
   def handle_event("submit_change_password", _params, socket) do
@@ -89,6 +98,17 @@ defmodule EngageWeb.UserSettingsLive do
       Dark: :dark,
       Light: :light,
       Automatic: :auto
+    ]
+  end
+
+  defp gravatar_styles do
+    [
+      "Mystery Person": :mp,
+      Identicon: :identicon,
+      Monsterid: :monsterid,
+      Wavatar: :wavatar,
+      Retro: :retro,
+      Robohash: :robohash
     ]
   end
 end

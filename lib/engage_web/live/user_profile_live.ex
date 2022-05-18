@@ -11,7 +11,7 @@ defmodule EngageWeb.UserProfileLive do
     socket = live_auth_check(socket, session, fn socket, user ->
       live_template_assigns(socket, user)
     end)
-    
+
     {:ok, socket}
   end
 
@@ -35,7 +35,8 @@ defmodule EngageWeb.UserProfileLive do
       assign(socket,
         username: fetched_user.username,
         coins: fetched_user.coins,
-        profile_image_src: Gravatar.get_image_src_by_email(fetched_user.email),
+        bio: fetched_user.bio,
+        profile_image_src: Gravatar.get_image_src_by_email(fetched_user.email, fetched_user.gravatar_style),
         level: level,
         user_xp: fetched_user.total_xp,
         upper_xp: upper_xp,
