@@ -77,7 +77,7 @@
       </section>
     </aside>
 
-    <main class="basis-full grid place-items-center p-6">
+    <main class="basis-full grid place-items-center p-2 xxs:p-6">
       <div class="w-full grid grid-cols-4 xs:grid-cols-5 md:grid-cols-4 lg:grid-cols-6 max-w-2xl xs:max-w-xl md:max-w-lg lg:max-w-3xl gap-2 xxs:gap-4 xs:gap-6 lg:gap-8 text-3xl xxs:text-4xl sm:text-5xl md:text-4xl lg:text-5xl place-items-center perspective">
         <%= for {index, card} <- @game_board.state do %>
           <div phx-click="make-move" phx-value-index={index} class={ "aspect-square w-full max-w-[4rem] xxs:max-w-[4.5rem] xs:max-w-[6rem] grid font-display select-none preserve-3d transition-transform duration-300" <> if card.face_up?, do: " rotate-y-180", else: " cursor-pointer"}>
