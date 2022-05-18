@@ -2,7 +2,7 @@ defmodule EngageWeb.MemoryLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "game.html"}
   alias EngageWeb.Router.Helpers, as: Routes
   alias Engage.Games.Memory
-  alias Engage.Games.Memory.{GameBoard, EmojiCard}
+  alias Engage.Games.Memory.GameBoard
   alias Engage.Games.Chat
   alias Engage.Games.Chat.Message
   import EngageWeb.LiveHelpers
