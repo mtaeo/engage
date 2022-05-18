@@ -1,6 +1,7 @@
 // See the Tailwind configuration guide for advanced usage
 // https://tailwindcss.com/docs/configuration
 const plugin = require('tailwindcss/plugin');
+const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
 	content: [
@@ -9,6 +10,11 @@ module.exports = {
 		'../lib/*_web/**/*.*ex'
 	],
 	theme: {
+		screens: {
+			'xxs': '400px',
+			'xs': '480px',
+			...defaultTheme.screens
+		},
 		extend: {
 			animation: {
 				'alert-enter-down': 'alert-enter-down 0.3s ease-out',

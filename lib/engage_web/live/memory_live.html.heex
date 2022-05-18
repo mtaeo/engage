@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <section class="basis-120 md:basis-144 my-auto flex flex-col bg-gray-800 border border-gray-700 rounded-lg">
+      <section class="basis-120 md:basis-144 my-auto flex flex-col bg-gray-800 border border-gray-700 rounded-lg shadow-equal">
         <ul class="basis-full flex flex-col justify-end gap-2 p-2 text-base">
           <%= for message <- Enum.reverse(@messages) do %>
             <li>
@@ -78,14 +78,14 @@
     </aside>
 
     <main class="basis-full grid place-items-center p-6">
-      <div class="flex flex-wrap justify-center max-w-3xl gap-8 perspective">
+      <div class="w-full grid grid-cols-4 xs:grid-cols-5 md:grid-cols-4 lg:grid-cols-6 max-w-2xl xs:max-w-xl md:max-w-lg lg:max-w-3xl gap-2 xxs:gap-4 xs:gap-6 lg:gap-8 text-3xl xxs:text-4xl sm:text-5xl md:text-4xl lg:text-5xl place-items-center perspective">
         <%= for {index, card} <- @game_board.state do %>
-          <div phx-click="make-move" phx-value-index={index} class={ "basis-24 aspect-square grid font-display select-none preserve-3d transition-transform duration-300" <> if card.face_up?, do: " rotate-y-180", else: " cursor-pointer"}>
-            <div class="area-full grid place-items-center bg-gray-700 border-4 border-gray-800 rounded-2xl text-6xl shadow-equal no-backface rotate-y-0">
+          <div phx-click="make-move" phx-value-index={index} class={ "aspect-square w-full max-w-[4rem] xxs:max-w-[4.5rem] xs:max-w-[6rem] grid font-display select-none preserve-3d transition-transform duration-300" <> if card.face_up?, do: " rotate-y-180", else: " cursor-pointer"}>
+            <div class="area-full grid place-items-center bg-gray-700 border-4 border-gray-800 rounded-2xl text-[1.2em] shadow-equal no-backface rotate-y-0">
               ?
             </div>
             
-            <div class="area-full grid place-items-center bg-gray-600 border-4 border-gray-700 rounded-2xl text-5xl shadow-equal no-backface rotate-y-180">
+            <div class="area-full grid place-items-center bg-gray-600 border-4 border-gray-700 rounded-2xl shadow-equal no-backface rotate-y-180">
               <%= card.symbol %>
             </div>
           </div>
