@@ -1,0 +1,6 @@
+<main class="flex flex-col justify-center align-middle h-screen text-center mx-5">
+    <h2 class="text-8xl text-gray-100">Error 404</h2>
+    <p class="text-gray-100">We have no idea how you ended up here, but you definitely shouldn't have.</p>
+    <% route = if @conn.assigns.current_user, do: Routes.game_list_path(@conn, :index), else: Routes.landing_page_path(@conn, :index) %>
+    <%= link "Go back in time", to: route, class: "mt-5 text-purple-600 text-xl" %>
+</main>
