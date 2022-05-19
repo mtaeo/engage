@@ -112,6 +112,16 @@ defmodule Engage.Games.Memory.GenServer do
     {:noreply, state}
   end
 
+  def handle_info({:send_players, state}, _state) do
+    Phoenix.PubSub.broadcast(
+      Engage.PubSub,
+      Atom.to_string(state.genserver_name),
+      state.players
+    )
+
+    {:noreply, state}
+  end
+
   def handle_info({:replay, state}, _state) do
     state =
       state
@@ -121,13 +131,8 @@ defmodule Engage.Games.Memory.GenServer do
     state = put_in(state.players.first.matched_pairs_current_game, 0)
     state = put_in(state.players.second.matched_pairs_current_game, 0)
 
-    Phoenix.PubSub.broadcast(
-      Engage.PubSub,
-      Atom.to_string(state.genserver_name),
-      state.players
-    )
-
     :timer.send_after(0, {:send_board, state})
+    :timer.send_after(0, {:send_players, state})
     {:noreply, state}
   end
 
@@ -144,6 +149,7 @@ defmodule Engage.Games.Memory.GenServer do
         state = update_in(state.players[nth].matched_pairs_current_game, &(&1 + 1))
         state = match_face_up_cards(state, player)
         :timer.send_after(0, {:send_board, state})
+        :timer.send_after(0, {:send_players, state})
         check_for_winner_and_update_scores(state)
       else
         state = set_next_players_turn(state)
