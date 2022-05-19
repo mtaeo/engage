@@ -2,7 +2,6 @@ defmodule EngageWeb.UserSettingsLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
   use Phoenix.HTML
   alias Ecto.Changeset
-  alias Engage.UserSettings.Profile
   alias Engage.UserSettings.ChangePassword
   alias Engage.Helpers.Gravatar
   alias Engage.Users
@@ -15,22 +14,13 @@ defmodule EngageWeb.UserSettingsLive do
       live_auth_check(socket, session, fn socket, user ->
         socket = live_template_assigns(socket, user)
 
-        profile = %Profile{
-          username: user.username,
-          email: user.email,
-          bio: user.bio,
-          theme: "dark"
-        }
-
+        profile_changeset = User.profile_changeset(user)
         change_password = %ChangePassword{}
         avatar_changeset = User.avatar_changeset(user)
 
         socket
         |> assign(user: user)
-        |> assign(
-          profile: profile,
-          profile_changeset: Profile.changeset(profile)
-        )
+        |> assign(profile_changeset: profile_changeset)
         |> assign(
           change_password: change_password,
           change_password_changeset: ChangePassword.changeset(%ChangePassword{})
@@ -42,10 +32,10 @@ defmodule EngageWeb.UserSettingsLive do
     {:ok, socket}
   end
 
-  def handle_event("validate_profile", %{"profile" => profile_params}, socket) do
+  def handle_event("validate_profile", %{"user" => profile_attrs}, socket) do
     profile_changeset =
-      socket.assigns.profile
-      |> Profile.changeset(profile_params)
+      socket.assigns.user
+      |> User.profile_changeset(profile_attrs)
       |> Map.put(:action, :validate)
 
     {:noreply,
@@ -67,20 +57,38 @@ defmodule EngageWeb.UserSettingsLive do
     {:noreply, assign(socket, change_password_changeset: change_password_changeset)}
   end
 
-  def handle_event("submit_profile", _params, socket) do
-    # TODO: logic for updating profile in DB
+  def handle_event("submit_profile", %{"user" => profile_attrs}, socket) do
+    socket =
+      case Users.update_user_profile(socket.assigns.user, profile_attrs) do
+        {:ok, user} ->
+          socket
+          |> put_flash(:info, "Successfuly updated account information!")
+          |> assign(profile_changeset: User.profile_changeset(user))
+
+        {:error, changeset} ->
+          socket
+          |> assign(profile_changeset: changeset)
+      end
 
     {:noreply, socket}
   end
 
   def handle_event("submit_avatar", %{"user" => avatar_style}, socket) do
-    {:ok, user} = Users.update_user_avatar(socket.assigns.user, avatar_style)
+    socket = case Users.update_user_avatar(socket.assigns.user, avatar_style) do
+      {:ok, user} ->
+        socket
+        |> assign(
+          avatar_changeset: User.avatar_changeset(user),
+          avatar_uri: Gravatar.get_image_src_by_email(user.email, user.gravatar_style)
+        )
 
-    {:noreply,
-     assign(socket,
-       avatar_changeset: User.avatar_changeset(user),
-       avatar_uri: Gravatar.get_image_src_by_email(user.email, user.gravatar_style)
-     )}
+      {:error, changeset} ->
+        socket
+        |> put_flash(:error, "Error updating user profile avatar.")
+        |> assign(avatar_changeset: changeset)
+    end
+
+    {:noreply, socket}
   end
 
   def handle_event("submit_change_password", _params, socket) do
@@ -97,7 +105,7 @@ defmodule EngageWeb.UserSettingsLive do
     [
       Dark: :dark,
       Light: :light,
-      Automatic: :auto
+      Automatic: :automatic
     ]
   end
 

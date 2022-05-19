@@ -8,6 +8,7 @@ defmodule Engage.Users.User do
     field :bio, :string
     field :total_xp, :integer, default: 0
     field :coins, :integer, default: 0
+    field :theme, Ecto.Enum, values: [:dark, :light, :automatic], default: :automatic
     field :role, Ecto.Enum, values: [:user, :moderator, :admin], default: :user
     field :gravatar_style, Ecto.Enum, values: [:mp, :identicon, :monsterid, :wavatar, :retro, :robohash], default: :retro
     field :password, :string, virtual: true, redact: true
@@ -44,13 +45,13 @@ defmodule Engage.Users.User do
 
   defp validate_username(changeset) do
     changeset
-    |> validate_required([:username], message: "username already taken")
+    |> validate_required([:username], message: "Username must not be empty")
     |> validate_length(:username,
       min: 3,
       max: 25,
-      message: "username must be bigger than 3 and smaller than 25 characters long (inclusively)"
+      message: "Username must be bigger than 3 and smaller than 25 characters long"
     )
-    |> unique_constraint(:username)
+    |> unique_constraint(:username, message: "Username has already been taken")
   end
 
   defp validate_email(changeset) do
@@ -127,6 +128,17 @@ defmodule Engage.Users.User do
   def confirm_changeset(user) do
     now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     change(user, confirmed_at: now)
+  end
+
+  def profile_changeset(user, attrs \\ %{}, _opts \\ []) do
+    user
+    |> cast(attrs, [:username, :bio, :theme])
+    |> validate_username()
+    |> validate_required([:theme], message: "Can't be empty")
+    |> validate_length(:bio,
+      max: 256,
+      message: "Bio must be shorter than 256 characters."
+    )
   end
 
   def avatar_changeset(user, attrs \\ %{}, _opts \\ []) do

@@ -371,4 +371,10 @@ defmodule Engage.Users do
     |> Repo.update
   end
 
+  def update_user_profile(user, attrs) do
+    user
+    |> User.profile_changeset(attrs)
+    |> Repo.update
+  end
+
 end
