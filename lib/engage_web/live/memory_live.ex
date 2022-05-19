@@ -16,13 +16,13 @@ defmodule EngageWeb.MemoryLive do
     {:ok, socket}
   end
 
-  def handle_params(%{"id" => game_id}, _uri, socket) do
-    game_genserver_name = String.to_atom(game_id)
-    chat_genserver_name = String.to_atom("chat_" <> game_id)
+  def handle_params(%{"id" => game_code}, _uri, socket) do
+    game_genserver_name = String.to_atom(game_code)
+    chat_genserver_name = String.to_atom("chat_" <> game_code)
     Memory.GenServer.start(game_genserver_name)
     Chat.GenServer.start(chat_genserver_name)
-    Phoenix.PubSub.subscribe(Engage.PubSub, game_id)
-    Phoenix.PubSub.subscribe(Engage.PubSub, "chat_" <> game_id)
+    Phoenix.PubSub.subscribe(Engage.PubSub, game_code)
+    Phoenix.PubSub.subscribe(Engage.PubSub, "chat_" <> game_code)
 
     players =
       Memory.GenServer.add_player(
@@ -38,6 +38,7 @@ defmodule EngageWeb.MemoryLive do
     {:noreply,
      assign(socket,
        nth: nth,
+       game_code: game_code,
        players: players,
        game_board: game_board,
        messages: messages,
