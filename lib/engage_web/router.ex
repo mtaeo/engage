@@ -77,4 +77,11 @@ defmodule EngageWeb.Router do
     get "/users/confirm/:token", UserConfirmationController, :edit
     post "/users/confirm/:token", UserConfirmationController, :update
   end
+
+  # Wildcard route
+  scope "/", EngageWeb do
+    pipe_through [:browser]
+
+    get "/*path", WildcardController, :index
+  end
 end
