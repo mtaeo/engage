@@ -8,6 +8,5 @@ defmodule Engage.Games.Game do
     field :type, Ecto.Enum, values: [:singleplayer, :multiplayer]
     field :xp_multiplier, :decimal, default: 1
     field :image_path, :string
-    field :shadow_color, :string
   end
 end
