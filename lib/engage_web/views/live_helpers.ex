@@ -3,6 +3,7 @@ defmodule EngageWeb.LiveHelpers do
   alias Phoenix.LiveView.Socket, as: Socket
   alias Engage.XpToLevels
   alias EngageWeb.Router.Helpers, as: Routes
+  alias Engage.Users
 
   @type session :: map()
   @type user :: map()
@@ -10,9 +11,12 @@ defmodule EngageWeb.LiveHelpers do
   @spec live_auth_check(Socket.t(), session) :: Socket.t()
   @spec live_auth_check(Socket.t(), session, (Socket.t(), user -> Socket.t())) :: Socket.t()
   def live_auth_check(socket, session, success \\ fn s, _ -> s end) do
+    # Current implementation replaces the current_user stored in the session
+    # with a freshly fetched User from the database
     case session do
       %{"current_user" => user} ->
-        success.(socket, user)
+        fetched_user = Users.get_user!(user.id)
+        success.(socket, fetched_user)
 
       _ ->
         LiveView.redirect(socket,

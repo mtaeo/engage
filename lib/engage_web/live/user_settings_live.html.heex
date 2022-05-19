@@ -13,7 +13,7 @@
 
       <div class="flex flex-col gap-1">
         <%= label f_profile, :email, "E-mail" %>
-        <%= text_input f_profile, :email, required: true, "phx-debounce": "100", class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
+        <%= text_input f_profile, :email, disabled: true, required: true, "phx-debounce": "100", class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 disabled:bg-slate-800 hover:border-gray-300 transition-colors" %>
         <%= error_tag f_profile, :email, class: "text-red-400" %>
       </div>
 
