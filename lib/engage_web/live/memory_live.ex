@@ -71,6 +71,13 @@ defmodule EngageWeb.MemoryLive do
     {:noreply, socket}
   end
 
+  def handle_event("clipboard-insert", _, socket) do
+    :timer.send_after(2500, :clear_flash)
+    {:noreply,
+     socket
+     |> put_flash(:info, "Copied game code \"#{socket.assigns.game_code}\" to clipboard.")}
+  end
+
   def handle_info(%GameBoard{} = game_board, socket) do
     {:noreply, assign(socket, game_board: game_board)}
   end
@@ -81,6 +88,10 @@ defmodule EngageWeb.MemoryLive do
 
   def handle_info(messages, socket) when is_list(messages) do
     {:noreply, assign(socket, messages: messages)}
+  end
+
+  def handle_info(:clear_flash, socket) do
+    {:noreply, clear_flash(socket)}
   end
 
   defp setup(socket, session) do
