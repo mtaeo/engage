@@ -4,7 +4,7 @@ defmodule Engage.Games.Memory.GenServer do
   alias Engage.Games.Memory.{GameBoard, Player}
 
   @game_name "memory"
-  @show_card_delay 2000
+  @card_delay 2000
 
   # TODO: Refactor to be more reusable between all game GenServers
 
@@ -23,7 +23,8 @@ defmodule Engage.Games.Memory.GenServer do
       __MODULE__,
       Map.merge(state, %{
         genserver_name: genserver_name,
-        game_id: Engage.Games.get_game_by_name(@game_name).id
+        game_id: Engage.Games.get_game_by_name(@game_name).id,
+        game_name: @game_name
       }),
       name: genserver_name
     )
@@ -142,12 +143,12 @@ defmodule Engage.Games.Memory.GenServer do
         {nth, _player} = get_player_nth_by_name_helper(state, player.name)
         state = update_in(state.players[nth].matched_pairs_current_game, &(&1 + 1))
         state = match_face_up_cards(state, player)
-        :timer.send_after(@show_card_delay, {:send_board, state})
+        :timer.send_after(0, {:send_board, state})
         check_for_winner_and_update_scores(state)
       else
         state = set_next_players_turn(state)
         state = hide_all_unmatched_cards(state)
-        :timer.send_after(@show_card_delay, {:send_board, state})
+        :timer.send_after(@card_delay, {:send_board, state})
         state
       end
     else
@@ -232,13 +233,13 @@ defmodule Engage.Games.Memory.GenServer do
       :first ->
         state = update_in(state.players.first.score, &(&1 + 1))
         insert_game_event_into_db(state.game_id, state.players.first.id, state.players.second.id)
-        :timer.send_after(@show_card_delay, {:replay, state})
+        :timer.send_after(@card_delay, {:replay, state})
         state
 
       :second ->
         state = update_in(state.players.second.score, &(&1 + 1))
         insert_game_event_into_db(state.game_id, state.players.second.id, state.players.first.id)
-        :timer.send_after(@show_card_delay, {:replay, state})
+        :timer.send_after(@card_delay, {:replay, state})
         state
 
       nil ->
@@ -252,11 +253,11 @@ defmodule Engage.Games.Memory.GenServer do
 
     cond do
       first_player_score > second_player_score and
-          first_player_score >= num_of_card_pairs(state) ->
+          first_player_score + second_player_score == num_of_card_pairs(state) ->
         :first
 
       second_player_score > first_player_score and
-          second_player_score >= num_of_card_pairs(state) ->
+          second_player_score + first_player_score == num_of_card_pairs(state) ->
         :second
 
       true ->
