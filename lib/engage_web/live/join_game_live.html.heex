@@ -2,7 +2,7 @@
   <label for="code">4-character code:</label>
 
   <div class="flex flex-row gap-4 items-stretch">
-    <input type="text" name="code" enterkeyhint="enter" maxlength="4" class="basis-0 min-w-0 grow px-4 py-1 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 focus:border-gray-300 focus:ring-0 transition-colors">
+    <input type="text" name="code" enterkeyhint="enter" maxlength="4" autocomplete="off" class="basis-0 min-w-0 grow px-4 py-1 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 focus:border-gray-300 focus:ring-0 transition-colors">
 
     <button type="submit" disabled={ byte_size(@code) !== 4 } class="shrink-0 px-4 py-2 rounded-xl text-neutral-900 bg-gray-100 hover:bg-gray-300 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors">
       Join

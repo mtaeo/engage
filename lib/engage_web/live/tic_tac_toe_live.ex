@@ -13,26 +13,35 @@ defmodule EngageWeb.TicTacToeLive do
       live_auth_check(socket, session, fn socket, _user ->
         setup(socket, session)
       end)
-      
+
     {:ok, socket}
   end
 
-  def handle_params(%{"id" => game_id}, _uri, socket) do
-    game_genserver_name = String.to_atom(game_id)
-    chat_genserver_name = String.to_atom("chat_" <> game_id)
+  def handle_params(%{"id" => game_code}, _uri, socket) do
+    game_genserver_name = String.to_atom(game_code)
+    chat_genserver_name = String.to_atom("chat_" <> game_code)
     TicTacToe.GenServer.start(game_genserver_name)
     Chat.GenServer.start(chat_genserver_name)
-    Phoenix.PubSub.subscribe(Engage.PubSub, game_id)
-    Phoenix.PubSub.subscribe(Engage.PubSub, "chat_" <> game_id)
+    Phoenix.PubSub.subscribe(Engage.PubSub, game_code)
+    Phoenix.PubSub.subscribe(Engage.PubSub, "chat_" <> game_code)
 
-    players = TicTacToe.GenServer.add_player(game_genserver_name, socket.assigns.player_id, socket.assigns.player_name)
-    nth = TicTacToe.GenServer.get_player_nth_by_name(game_genserver_name, socket.assigns.player_name)
+    players =
+      TicTacToe.GenServer.add_player(
+        game_genserver_name,
+        socket.assigns.player_id,
+        socket.assigns.player_name
+      )
+
+    nth =
+      TicTacToe.GenServer.get_player_nth_by_name(game_genserver_name, socket.assigns.player_name)
+
     game_board = TicTacToe.GenServer.view(game_genserver_name)
     messages = Chat.GenServer.view(chat_genserver_name)
 
     {:noreply,
      assign(socket,
        nth: nth,
+       game_code: game_code,
        players: players,
        game_board: game_board,
        messages: messages,
@@ -67,6 +76,13 @@ defmodule EngageWeb.TicTacToeLive do
     {:noreply, socket}
   end
 
+  def handle_event("clipboard-insert", _, socket) do
+    :timer.send_after(2500, :clear_flash)
+    {:noreply,
+     socket
+     |> put_flash(:info, "Copied game code \"#{socket.assigns.game_code}\" to clipboard.")}
+  end
+
   def handle_info(%GameBoard{} = game_board, socket) do
     {:noreply, assign(socket, game_board: game_board)}
   end
@@ -77,6 +93,10 @@ defmodule EngageWeb.TicTacToeLive do
 
   def handle_info(messages, socket) when is_list(messages) do
     {:noreply, assign(socket, messages: messages)}
+  end
+
+  def handle_info(:clear_flash, socket) do
+    {:noreply, clear_flash(socket)}
   end
 
   defp setup(socket, session) do
