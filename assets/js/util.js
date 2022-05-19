@@ -15,5 +15,9 @@ window.util = {
 			console.log("Error: no local dropdown element found! Sender:");
 			console.log(sender);
 		}
+	},
+	
+	clipboardInsert: (content) => {
+		navigator.clipboard.writeText(content);
 	}
 };

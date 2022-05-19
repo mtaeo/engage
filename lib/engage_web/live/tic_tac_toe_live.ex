@@ -25,8 +25,16 @@ defmodule EngageWeb.TicTacToeLive do
     Phoenix.PubSub.subscribe(Engage.PubSub, game_code)
     Phoenix.PubSub.subscribe(Engage.PubSub, "chat_" <> game_code)
 
-    players = TicTacToe.GenServer.add_player(game_genserver_name, socket.assigns.player_id, socket.assigns.player_name)
-    nth = TicTacToe.GenServer.get_player_nth_by_name(game_genserver_name, socket.assigns.player_name)
+    players =
+      TicTacToe.GenServer.add_player(
+        game_genserver_name,
+        socket.assigns.player_id,
+        socket.assigns.player_name
+      )
+
+    nth =
+      TicTacToe.GenServer.get_player_nth_by_name(game_genserver_name, socket.assigns.player_name)
+
     game_board = TicTacToe.GenServer.view(game_genserver_name)
     messages = Chat.GenServer.view(chat_genserver_name)
 
