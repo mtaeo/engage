@@ -13,7 +13,6 @@ defmodule Engage.Repo.Migrations.CreateGamesTables do
       add :type, :game_type, null: false
       add :xp_multiplier, :decimal, null: false
       add :image_path, :string, null: false
-      add :shadow_color, :string
     end
 
     create constraint("games", :name_must_not_be_empty, check: "name <> ''")

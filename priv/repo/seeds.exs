@@ -5,21 +5,22 @@ alias Engage.Users.User
 Repo.insert!(%Game{
   name: "tic-tac-toe",
   display_name: "Tic-Tac-Toe",
-  description: "The classic pen-and-paper game for 2 players.",
+  description: "The classic pen-and-paper game for 2 players.
+                The player who succeeds in placing three of their marks in a horizontal,
+                vertical, or diagonal row is the winner.",
   xp_multiplier: 1,
   type: :multiplayer,
-  image_path: "/images/tic_tac_toe.jpeg",
-  shadow_color: "shadow-red-600"
+  image_path: "/images/tic_tac_toe.jpeg"
 })
 
 Repo.insert!(%Game{
   display_name: "Memory",
   name: "memory",
-  description: "Unknown description as of right now.",
+  description: "Each person turns over two cards at a time,
+                with the goal of turning over a matching pair, by using their memory.",
   xp_multiplier: 3,
   type: :multiplayer,
-  image_path: "/images/memory.jpeg",
-  shadow_color: "shadow-cyan-500"
+  image_path: "/images/memory.jpeg"
 })
 
 Repo.insert!(%XpToLevel{id: 1, level: 1, min_xp: 0})

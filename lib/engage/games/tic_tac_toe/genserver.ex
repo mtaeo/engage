@@ -18,7 +18,8 @@ defmodule Engage.Games.TicTacToe.GenServer do
       __MODULE__,
       Map.merge(state, %{
         genserver_name: genserver_name,
-        game_id: Engage.Games.get_game_by_name(@game_name).id
+        game_id: Engage.Games.get_game_by_name(@game_name).id,
+        game_name: @game_name
       }),
       name: genserver_name
     )
