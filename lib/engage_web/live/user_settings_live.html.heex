@@ -7,19 +7,19 @@
 
       <div class="flex flex-col gap-1">
         <%= label f_profile, :username, "Username" %>
-        <%= text_input f_profile, :username, required: true, "phx-debounce": "100", class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
+        <%= text_input f_profile, :username, required: true, autocomplete: "off", "phx-debounce": "100", class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors" %>
         <%= error_tag f_profile, :username, class: "text-red-400" %>
       </div>
 
       <div class="flex flex-col gap-1">
         <%= label f_profile, :email, "E-mail" %>
-        <%= text_input f_profile, :email, disabled: true, required: true, "phx-debounce": "100", class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 disabled:text-neutral-400 disabled:bg-gray-700 disabled:border-gray-600 hover:border-gray-300 disabled:cursor-not-allowed transition-colors" %>
+        <%= text_input f_profile, :email, disabled: true, required: true, autocomplete: "off", "phx-debounce": "100", class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 disabled:text-neutral-400 disabled:bg-gray-700 disabled:border-gray-600 hover:border-gray-300 disabled:cursor-not-allowed transition-colors" %>
         <%= error_tag f_profile, :email, class: "text-red-400" %>
       </div>
 
       <div class="flex flex-col gap-1">
         <%= label f_profile, :bio, "Bio" %>
-        <%= textarea f_profile, :bio, "phx-debounce": "100", class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors resize-y" %>
+        <%= textarea f_profile, :bio, "phx-debounce": "100", autocomplete: "off", class: "px-4 py-2 rounded-xl bg-transparent border-2 border-gray-500 hover:border-gray-300 transition-colors resize-y" %>
         <%= error_tag f_profile, :bio %>
       </div>
 
