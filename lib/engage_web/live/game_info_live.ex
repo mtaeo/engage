@@ -15,7 +15,16 @@ defmodule EngageWeb.GameInfoLive do
   end
 
   def handle_params(%{"game" => game_name}, _url, socket) do
-    {:noreply, assign(socket, game: Games.get_game_by_name(game_name))}
+    socket =
+      case Games.get_game_by_name(game_name) do
+        nil ->
+          push_redirect(socket, to: Routes.game_list_path(socket, :index))
+
+        game ->
+          assign(socket, game: game)
+      end
+
+    {:noreply, socket}
   end
 
   def handle_event("create-game", _, socket) do

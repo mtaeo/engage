@@ -10,9 +10,22 @@
       <h2 class="text-3xl"><%= @game.display_name %></h2>
       <p><%= @game.description %></p>
     </div>
+
+    <p>Joined players: </p>
+    <div>
+      <%= for {k, player} when not is_nil(player) <- @players do %>
+        <p><%= player.name %></p>
+        <%= if @is_lobby_owner and k !== :first do %>
+          <button phx-click="kick-player" phx-value-kicked-player-id={player.id}>X</button>
+        <% end %>
+      <% end %>
+    </div>
+
   </div>
 
-  <div class="flex flex-col gap-4 sm:flex-row justify-evenly text-center">
-    <button phx-click="start-game">Start game</button>
-  </div>
+  <%= if @is_lobby_owner do %>
+    <div class="flex flex-col gap-4 sm:flex-row justify-evenly text-center">
+       <button phx-click="start-game">Start game</button>
+    </div>
+  <% end %>
 </div>
