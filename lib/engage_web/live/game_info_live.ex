@@ -2,6 +2,7 @@ defmodule EngageWeb.GameInfoLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
   alias EngageWeb.Router.Helpers, as: Routes
   alias Engage.Games
+  alias Engage.Helpers.CodeGenerator
   import EngageWeb.LiveHelpers
 
   def mount(_params, session, socket) do
@@ -9,7 +10,7 @@ defmodule EngageWeb.GameInfoLive do
       live_auth_check(socket, session, fn socket, user ->
         live_template_assigns(socket, user)
       end)
-    
+
     {:ok, socket}
   end
 
@@ -18,7 +19,7 @@ defmodule EngageWeb.GameInfoLive do
   end
 
   def handle_event("create-game", _, socket) do
-    game_id = Engage.Helpers.CodeGenerator.generate(:four_alphanumeric_characters)
+    game_id = CodeGenerator.generate(:four_alphanumeric_characters)
     route = "/games/#{socket.assigns.game.name}/#{game_id}"
     {:noreply, push_redirect(socket, to: route)}
   end

@@ -2,7 +2,7 @@
   <h1 class="sr-only">Game info</h1>
 
   <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-stretch">
-    <div class="sm:basis-64 lg:basis-72 2xl:basis-80 max-w-[16rem] sm:max-w-[50%]">
+    <div class="sm:basis-64 2xl:basis-80 max-w-[16rem] sm:max-w-[50%]">
       <img src={ @game.image_path } alt="game thumbnail" class="max-w-full rounded-2xl">
     </div>
 
@@ -13,14 +13,6 @@
   </div>
 
   <div class="flex flex-col gap-4 sm:flex-row justify-evenly text-center">
-    <%= live_redirect "Join with a game code",
-      to: Routes.join_game_path(@socket, :index),
-      class: "block px-4 py-2 rounded-lg border-2 border-theme-7 hover:border-theme-5 transition-colors"
-    %>
-
-    <%= live_redirect "Start New Game",
-      to: Routes.game_lobby_path(@socket, :index, @game.name, CodeGenerator.generate(:four_alphanumeric_characters)),
-      class: "grid place-items-center px-4 py-2 rounded-lg text-theme-neutral-1 bg-theme-8 hover:bg-theme-6 transition-colors"
-    %>
+    <button phx-click="start-game">Start game</button>
   </div>
 </div>
