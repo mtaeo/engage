@@ -1,0 +1,58 @@
+<div class="min-h-screen bg-white text-lg md:text-xl">
+  <nav class="bg-gray-800 py-3 text-neutral-50 sticky top-0">
+    <div class="w-11/12 max-w-7xl mx-auto flex items-center">
+      <a href="/" class="mr-auto">
+        <img src={ Routes.static_path(@conn, "/images/logo-white.svg") } alt="Engage logo" class="w-32 md:w-44">
+      </a>
+      <div class="flex gap-1 md:gap-4 text-sm sm:text-lg">
+        <%= header_session_links(@conn, @current_user) %>
+      </div>
+    </div>
+  </nav>
+  <div class="text-center">
+    <div class="flex flex-col items-center gap-6 md:gap-12 w-11/12 md:w-6/12 max-w-3xl mx-auto py-16 md:py-32">
+      <h1 class="text-3xl md:text-5xl">Engage in activities!</h1>
+      <p>A place to engage in fun games with your friends. Earn coins to purchase extras and XP to show off your profile to your friends.</p>
+      <%= entry_button(@conn, @current_user, "Play now!") %>
+    </div>
+  </div>
+  <section class="bg-neutral-200">
+    <div class="grid md:grid-cols-presentation items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
+      <div>
+        <img src={ Routes.static_path(@conn, "/images/people_playing.jpeg") } alt="Fun experience" class="w-full">
+      </div>
+      <div class="flex flex-col gap-4">
+        <h2 class="text-2xl md:text-4xl">Show them what you are capable of.</h2>
+        <p>Play with and against your friends a broad variety of games, achieve victory and unlock exciting rewards while growing your skills and user profile.</p>
+      </div>
+    </div>
+  </section>
+  <section class="">
+    <div class="grid md:grid-cols-presentation-reverse items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
+      <div class="flex flex-col gap-4 order-2 md:order-1">
+        <h2 class="text-2xl md:text-4xl">Tic-Tac-Toe</h2>
+        <p>Have you mastered one of the oldest games in existence yet? Prove it by beating your friends and never losing a single game.</p>
+      </div>
+      <div class="order-1 md:order-2">
+        <img src={ Routes.static_path(@conn, "/images/tic_tac_toe_game_example.jpeg") } alt="Tic-Tac-Toe" class="w-full">
+      </div>
+    </div>
+  </section>
+  <section class="bg-neutral-200">
+    <div class="grid md:grid-cols-presentation items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
+      <div>
+        <img src={ Routes.static_path(@conn, "/images/memory_game_example.jpeg") } alt="Memory" class="w-full">
+      </div>
+      <div class="flex flex-col gap-4 order-2">
+        <h2 class="text-2xl md:text-4xl">Memory</h2>
+        <p>Are you as smart as you think? Memory is here to test how successful your memorization strategies are.</p>
+      </div>
+    </div>
+  </section>
+  <section class="text-center">
+    <div class="flex flex-col items-center gap-6 md:gap-12 w-11/12 mx-auto md:py-16 py-32">
+      <h2 class="text-2xl md:text-4xl">Are you ready?</h2>
+      <%= entry_button(@conn, @current_user, "Start playing!") %>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,30 @@
+<div class="justify-self-center self-start w-full max-w-4xl flex flex-col gap-8">
+  <h1 class="text-lg sm:text-2xl"><%= @username %></h1>
+
+  <div class="flex flex-col md:flex-row gap-4 lg:gap-8 font-display">
+    <div class="self-center max-w-[256px] basis-full shrink-[2] relative">
+      <img src={@profile_image_src} alt="avatar" class="w-full rounded-full border-4 border-accent-500">
+      <div class="absolute bottom-[5%] right-[5%] px-4 py-2 rounded-full bg-gray-700 text-lg lg:text-2xl leading-none">
+        <%= @level %>
+      </div>
+    </div>
+
+    <div class="basis-full shrink flex flex-col justify-center gap-2">
+      <div class="rounded-full bg-gray-900">
+        <div class="h-3 rounded-full bg-gradient-to-r from-accent-600 to-accent-400" style={"width: #{ @level_up_percentage }%;"}></div>
+      </div>
+
+      <div class="flex justify-between text-base sm:text-lg">
+        <div><%= @user_xp %> / <%= @upper_xp %> XP</div>
+        <div><%= @coins %>¢</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="flex flex-col gap-2">
+    <h2 class="text-lg sm:text-2xl">Bio</h2>
+    <div class="max-w-prose p-4 border rounded-2xl border-gray-600">
+      <%= if @bio, do: @bio, else: "We don't know much about them, but we're sure #{@username} is great." %>
+    </div>
+  </section>
+</div>

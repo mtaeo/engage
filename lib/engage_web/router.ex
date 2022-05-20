@@ -1,5 +1,8 @@
 defmodule EngageWeb.Router do
   use EngageWeb, :router
+  import Phoenix.LiveDashboard.Router
+  import EngageWeb.UserAuth
+  alias EngageWeb.Plugs.EnsureAuthorized
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -8,6 +11,7 @@ defmodule EngageWeb.Router do
     plug :put_root_layout, {EngageWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_current_user
   end
 
   pipeline :api do
@@ -17,40 +21,67 @@ defmodule EngageWeb.Router do
   scope "/", EngageWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", LandingPageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", EngageWeb do
-  #   pipe_through :api
-  # end
+  ## Authorization routes
 
-  # Enables LiveDashboard only for development
-  #
-  # If you want to use the LiveDashboard in production, you should put
-  # it behind authentication and allow only admins to access it.
-  # If your application does not have an admins-only section yet,
-  # you can use Plug.BasicAuth to set up some basic authentication
-  # as long as you are also using SSL (which you should anyway).
-  if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
+  scope "/admin" do
+    pipe_through [:browser, EnsureAuthorized]
 
-    scope "/" do
-      pipe_through :browser
-
-      live_dashboard "/dashboard", metrics: EngageWeb.Telemetry
-    end
+    live_dashboard "/dashboard", metrics: EngageWeb.Telemetry
   end
 
-  # Enables the Swoosh mailbox preview in development.
-  #
-  # Note that preview only shows emails that were sent by the same
-  # node running the Phoenix server.
-  if Mix.env() == :dev do
-    scope "/dev" do
-      pipe_through :browser
+  ## Authentication routes
 
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
-    end
+  scope "/", EngageWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    get "/users/register", UserRegistrationController, :new
+    post "/users/register", UserRegistrationController, :create
+    get "/users/log-in", UserSessionController, :new
+    post "/users/log-in", UserSessionController, :create
+    get "/users/reset-password", UserResetPasswordController, :new
+    post "/users/reset-password", UserResetPasswordController, :create
+    get "/users/reset-password/:token", UserResetPasswordController, :edit
+    put "/users/reset-password/:token", UserResetPasswordController, :update
+
+    get "/auth/:provider", UserOauthController, :request
+    get "/auth/:provider/callback", UserOauthController, :callback
+  end
+
+  scope "/", EngageWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    get "/users/settings-old", UserSettingsController, :edit
+    put "/users/settings-old", UserSettingsController, :update
+    get "/users/settings/confirm-email/:token", UserSettingsController, :confirm_email
+
+    live "/games", GameListLive, :index
+    live "/game-info/:game", GameInfoLive, :index
+    live "/join", JoinGameLive, :index
+    live "/games/tic-tac-toe/:id", TicTacToeLive, :index
+    live "/games/memory/:id", MemoryLive, :index
+
+    live "/proxy/user", UserProfileProxyLive, :index
+    live "/user/:username", UserProfileLive, :index
+    live "/users/settings", UserSettingsLive, :index
+  end
+
+  scope "/", EngageWeb do
+    pipe_through [:browser]
+
+    delete "/users/log-out", UserSessionController, :delete
+    get "/users/confirm", UserConfirmationController, :new
+    post "/users/confirm", UserConfirmationController, :create
+    get "/users/confirm/:token", UserConfirmationController, :edit
+    post "/users/confirm/:token", UserConfirmationController, :update
+  end
+
+  # Wildcard route
+  scope "/", EngageWeb do
+    pipe_through [:browser]
+
+    get "/*path", WildcardController, :index
   end
 end

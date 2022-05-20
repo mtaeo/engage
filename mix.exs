@@ -33,6 +33,7 @@ defmodule Engage.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bcrypt_elixir, "~> 2.0"},
       {:phoenix, "~> 1.6.6"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
@@ -50,7 +51,13 @@ defmodule Engage.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
+      {:ueberauth, "~> 0.7"},
+      {:ueberauth_github, "~> 0.7"},
+      {:ueberauth_google, "~> 0.10"},
+      {:ueberauth_discord, "~> 0.7"},
+      {:ueberauth_facebook, "~> 0.9"},
+      {:ueberauth_twitter, "~> 0.4"}
     ]
   end
 
