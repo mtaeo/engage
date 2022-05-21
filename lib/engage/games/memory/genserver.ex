@@ -24,7 +24,8 @@ defmodule Engage.Games.Memory.GenServer do
       Map.merge(state, %{
         genserver_name: genserver_name,
         game_id: Engage.Games.get_game_by_name(@game_name).id,
-        game_name: @game_name
+        game_name: @game_name,
+        game_started?: false
       }),
       name: genserver_name
     )
@@ -44,6 +45,14 @@ defmodule Engage.Games.Memory.GenServer do
 
   def make_move(genserver_name, {%Player{} = player, index}) when is_number(index) do
     GenServer.call(genserver_name, {:make_move, player, index})
+  end
+
+  def start_game(genserver_name, %Player{} = player) do
+    GenServer.call(genserver_name, {:start_game, player})
+  end
+
+  def kick_player(genserver_name, nth, kicked_player_id) do
+    GenServer.call(genserver_name, {:kick_player, nth, kicked_player_id})
   end
 
   # Server API
@@ -94,6 +103,24 @@ defmodule Engage.Games.Memory.GenServer do
     {:reply, nth, state}
   end
 
+  def handle_call({:start_game, player}, _from, state) when not is_nil(player) do
+    {state, game_started?} =
+      if player === state.players.first and all_players_joined?(state) do
+        state = put_in(state.game_started?, true)
+        :timer.send_after(0, {:game_started, state})
+        {state, true}
+      else
+        {state, false}
+      end
+
+    {:reply, game_started?, state}
+  end
+
+  def handle_call({:kick_player, _nth, _kicked_player_id}, _from, state) do
+    # TODO: Finish implementation to kick players from the lobby
+    {:reply, nil, state}
+  end
+
   def handle_call(:view, _from, state) do
     {:reply, state.board, state}
   end
@@ -117,6 +144,16 @@ defmodule Engage.Games.Memory.GenServer do
       Engage.PubSub,
       Atom.to_string(state.genserver_name),
       state.players
+    )
+
+    {:noreply, state}
+  end
+
+  def handle_info({:game_started, state}, _state) do
+    Phoenix.PubSub.broadcast(
+      Engage.PubSub,
+      Atom.to_string(state.genserver_name),
+      :game_started
     )
 
     {:noreply, state}
@@ -273,6 +310,10 @@ defmodule Engage.Games.Memory.GenServer do
 
   defp num_of_card_pairs(state) do
     div(Enum.count(state.board.state), 2)
+  end
+
+  defp all_players_joined?(state) do
+    state.players.first !== nil and state.players.second !== nil
   end
 
   defp get_player_nth_by_name_helper(state, player_name) do

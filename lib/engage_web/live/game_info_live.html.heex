@@ -18,8 +18,9 @@
       class: "block px-4 py-2 rounded-lg border-2 border-theme-7 hover:border-theme-5 transition-colors"
     %>
 
-    <button phx-click="create-game" class="grid place-items-center px-4 py-2 rounded-lg text-theme-neutral-1 bg-theme-8 hover:bg-theme-6 transition-colors">
-      Start new Game
-    </button>
+    <%= live_redirect "Start New Game",
+      to: Routes.game_lobby_path(@socket, :index, @game.name, CodeGenerator.generate(:four_alphanumeric_characters)),
+      class: "grid place-items-center px-4 py-2 rounded-lg text-theme-neutral-1 bg-theme-8 hover:bg-theme-6 transition-colors"
+    %>
   </div>
 </div>

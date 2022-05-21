@@ -19,7 +19,8 @@ defmodule Engage.Games.TicTacToe.GenServer do
       Map.merge(state, %{
         genserver_name: genserver_name,
         game_id: Engage.Games.get_game_by_name(@game_name).id,
-        game_name: @game_name
+        game_name: @game_name,
+        game_started?: false
       }),
       name: genserver_name
     )
@@ -41,29 +42,41 @@ defmodule Engage.Games.TicTacToe.GenServer do
     GenServer.call(genserver_name, {:make_move, player, coordinate})
   end
 
+  def start_game(genserver_name, %Player{} = player) do
+    GenServer.call(genserver_name, {:start_game, player})
+  end
+
+  def kick_player(genserver_name, nth, kicked_player_id) do
+    GenServer.call(genserver_name, {:kick_player, nth, kicked_player_id})
+  end
+
   # Server API
 
   def handle_call({:add_player, player_id, player_name}, _from, state) do
     state =
-      cond do
-        state.players.first === nil ->
-          player = %Player{id: player_id, name: player_name, value: :x}
-          put_in(state.players.first, player)
+      if state.game_started? do
+        state
+      else
+        cond do
+          state.players.first === nil ->
+            player = %Player{id: player_id, name: player_name, value: :x}
+            put_in(state.players.first, player)
 
-        state.players.second === nil and state.players.first.id !== player_id ->
-          player = %Player{id: player_id, name: player_name, value: :o}
-          state = put_in(state.players.second, player)
+          state.players.second === nil and state.players.first.id !== player_id ->
+            player = %Player{id: player_id, name: player_name, value: :o}
+            state = put_in(state.players.second, player)
 
-          Phoenix.PubSub.broadcast(
-            Engage.PubSub,
-            Atom.to_string(state.genserver_name),
-            state.players
-          )
+            Phoenix.PubSub.broadcast(
+              Engage.PubSub,
+              Atom.to_string(state.genserver_name),
+              state.players
+            )
 
-          state
+            state
 
-        true ->
-          state
+          true ->
+            state
+        end
       end
 
     {:reply, state.players, state}
@@ -71,7 +84,7 @@ defmodule Engage.Games.TicTacToe.GenServer do
 
   def handle_call({:make_move, player, coordinate}, _from, state) do
     state =
-      if is_valid_turn?(state, player, coordinate) do
+      if state.game_started? and is_valid_turn?(state, player, coordinate) do
         state = put_in(state.board.state[coordinate], player.value)
         state = put_in(state.board.turn_number, state.board.turn_number + 1)
 
@@ -100,8 +113,36 @@ defmodule Engage.Games.TicTacToe.GenServer do
     {:reply, state.board, state}
   end
 
+  def handle_call({:start_game, player}, _from, state) when not is_nil(player) do
+    {state, game_started?} =
+      if player === state.players.first and have_all_players_joined?(state) do
+        state = put_in(state.game_started?, true)
+        :timer.send_after(0, {:game_started, state})
+        {state, true}
+      else
+        {state, false}
+      end
+
+    {:reply, game_started?, state}
+  end
+
+  def handle_call({:kick_player, _nth, _kicked_player_id}, _from, state) do
+    # TODO: Finish implementation to kick players from the lobby
+    {:reply, nil, state}
+  end
+
   def init(state) do
     {:ok, state}
+  end
+
+  def handle_info({:game_started, state}, _state) do
+    Phoenix.PubSub.broadcast(
+      Engage.PubSub,
+      Atom.to_string(state.genserver_name),
+      :game_started
+    )
+
+    {:noreply, state}
   end
 
   def handle_info(:replay, state) do

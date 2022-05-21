@@ -1,0 +1,31 @@
+<div class="w-full max-w-2xl 2xl:max-w-4xl place-self-center flex flex-col gap-8 2xl:gap-16 items-center sm:items-stretch">
+  <h1 class="sr-only">Game info</h1>
+
+  <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-stretch">
+    <div class="sm:basis-64 2xl:basis-80 max-w-[16rem] sm:max-w-[50%]">
+      <img src={ @game.image_path } alt="game thumbnail" class="max-w-full rounded-2xl">
+    </div>
+
+    <div class="flex flex-col gap-4 text-center sm:text-left">
+      <h2 class="text-3xl"><%= @game.display_name %></h2>
+      <p><%= @game.description %></p>
+    </div>
+
+    <p>Joined players: </p>
+    <div>
+      <%= for {k, player} when not is_nil(player) <- @players do %>
+        <p><%= player.name %></p>
+        <%= if @is_lobby_owner and k !== :first do %>
+          <button phx-click="kick-player" phx-value-kicked-player-id={player.id}>X</button>
+        <% end %>
+      <% end %>
+    </div>
+
+  </div>
+
+  <%= if @is_lobby_owner do %>
+    <div class="flex flex-col gap-4 sm:flex-row justify-evenly text-center">
+       <button phx-click="start-game">Start game</button>
+    </div>
+  <% end %>
+</div>
