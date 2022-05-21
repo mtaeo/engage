@@ -70,6 +70,18 @@ module.exports = {
 					800: '#25272d',
 					900: '#17181c',
 				},
+				theme: {
+					1: 'var(--theme-1)',
+					2: 'var(--theme-2)',
+					3: 'var(--theme-3)',
+					4: 'var(--theme-4)',
+					5: 'var(--theme-5)',
+					6: 'var(--theme-6)',
+					7: 'var(--theme-7)',
+					8: 'var(--theme-8)',
+					9: 'var(--theme-9)',
+					10: 'var(--theme-10)'
+				}
 			},
 			fontFamily: {
 				'sans': ['"Open Sans"', 'sans-serif'],

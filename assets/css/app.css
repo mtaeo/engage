@@ -42,9 +42,45 @@
 		font-family: "Poppins";
 		font-weight: 600;
 	}
+	
+	:root {
+		@apply theme-light;
+	}
+	
+	@media (prefers-color-scheme: dark) {
+		:root {
+			@apply theme-dark;
+		}
+	}
 }
 
 @layer utilities {
+	.theme-light {
+		--theme-1: theme("colors.gray.50");
+		--theme-2: theme("colors.gray.100");
+		--theme-3: theme("colors.gray.200");
+		--theme-4: theme("colors.gray.300");
+		--theme-5: theme("colors.gray.400");
+		--theme-6: theme("colors.gray.500");
+		--theme-7: theme("colors.gray.600");
+		--theme-8: theme("colors.gray.700");
+		--theme-9: theme("colors.gray.800");
+		--theme-10: theme("colors.gray.900");
+	}
+	
+	.theme-dark {
+		--theme-1: theme("colors.gray.900");
+		--theme-2: theme("colors.gray.800");
+		--theme-3: theme("colors.gray.700");
+		--theme-4: theme("colors.gray.600");
+		--theme-5: theme("colors.gray.500");
+		--theme-6: theme("colors.gray.400");
+		--theme-7: theme("colors.gray.300");
+		--theme-8: theme("colors.gray.200");
+		--theme-9: theme("colors.gray.100");
+		--theme-10: theme("colors.gray.50");
+	}
+	
 	.clip-border {
 		clip-path: border-box;
 	}
