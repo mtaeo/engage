@@ -47,13 +47,24 @@ defmodule EngageWeb.GameLobbyLive do
 
   def handle_event("kick-player", %{"kicked-player-id" => kicked_player_id}, socket) do
     kicked_player_id = String.to_integer(kicked_player_id)
-    game_genserver(socket.assigns.game.name).kick_player(socket.assigns.game_genserver_name, socket.assigns.nth, kicked_player_id)
+
+    game_genserver(socket.assigns.game.name).kick_player(
+      socket.assigns.game_genserver_name,
+      socket.assigns.nth,
+      kicked_player_id
+    )
+
     {:noreply, socket}
   end
 
   def handle_event("start-game", _, socket) do
     nth = socket.assigns.nth
-    game_started? = game_genserver(socket.assigns.game.name).start_game(socket.assigns.game_genserver_name, socket.assigns.players[nth])
+
+    game_started? =
+      game_genserver(socket.assigns.game.name).start_game(
+        socket.assigns.game_genserver_name,
+        socket.assigns.players[nth]
+      )
 
     socket =
       if game_started?,
@@ -103,7 +114,6 @@ defmodule EngageWeb.GameLobbyLive do
 
       "memory" ->
         Memory.GenServer
-
     end
   end
 end
