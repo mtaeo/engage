@@ -1,5 +1,5 @@
-<div class="min-h-screen bg-white text-lg md:text-xl">
-  <nav class="bg-gray-800 py-3 text-neutral-50 sticky top-0">
+<div class="min-h-screen text-lg md:text-xl">
+  <nav class="bg-gray-800 py-3 sticky top-0">
     <div class="w-11/12 max-w-7xl mx-auto flex items-center">
       <a href="/" class="mr-auto">
         <img src={ Routes.static_path(@conn, "/images/logo-white.svg") } alt="Engage logo" class="w-32 md:w-44">
@@ -16,7 +16,7 @@
       <%= entry_button(@conn, @current_user, "Play now!") %>
     </div>
   </div>
-  <section class="bg-neutral-200">
+  <section class="bg-theme-2">
     <div class="grid md:grid-cols-presentation items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
       <div>
         <img src={ Routes.static_path(@conn, "/images/people_playing.jpeg") } alt="Fun experience" class="w-full">
@@ -38,7 +38,7 @@
       </div>
     </div>
   </section>
-  <section class="bg-neutral-200">
+  <section class="bg-theme-2">
     <div class="grid md:grid-cols-presentation items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
       <div>
         <img src={ Routes.static_path(@conn, "/images/memory_game_example.jpeg") } alt="Memory" class="w-full">

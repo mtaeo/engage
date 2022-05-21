@@ -16,7 +16,10 @@ defmodule EngageWeb.LiveHelpers do
     case session do
       %{"current_user" => user} ->
         fetched_user = Users.get_user!(user.id)
-        success.(socket, fetched_user)
+
+        socket
+        |> LiveView.assign(theme: fetched_user.theme)
+        |> success.(fetched_user)
 
       _ ->
         LiveView.redirect(socket,
