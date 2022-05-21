@@ -2,21 +2,23 @@
   <div class="shrink-0 flex gap-4 z-20">
     <div class="basis-80 shrink-0 hidden md:flex items-center gap-2 p-2">
       <div class="relative">
-        <button class="hidden md:block p-2 rounded-md hover:bg-gray-700 transition-colors" onclick="window.util.toggleLocalDropdown(this);">
+        <button class="hidden md:block p-2 rounded-md hover:bg-theme-3 transition-colors" onclick="window.util.toggleLocalDropdown(this);">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="h-8 w-8">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
 
-        <div class="hidden flex flex-col bg-gray-800 border border-gray-700 rounded-lg shadow-equal clip-border overflow-clip absolute left-0 top-full translate-y-1 js-local-dropdown">
-          <%= live_redirect "Leave", to: Routes.game_list_path(@socket, :index), class: "px-4 py-2 text-red-400 hover:bg-red-900 transition-colors" %>
+        <div class="hidden rounded-lg shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 absolute left-0 top-full translate-y-1 js-local-dropdown">
+          <div class="flex flex-col bg-theme-2 border border-theme-3 rounded-lg clip-border overflow-clip">
+            <%= live_redirect "Leave", to: Routes.game_list_path(@socket, :index), class: "px-4 py-2 text-red-600 dark-t:text-red-400 hover:bg-red-100 dark-t:hover:bg-red-900 transition-colors" %>
+          </div>
         </div>
       </div>
 
       <div class="grow hidden md:flex items-center justify-between">
         <h1 class="text-xl">Memory</h1>
 
-        <button phx-click="clipboard-insert" class="flex items-center gap-2 p-2 rounded-md hover:bg-gray-700 hover:shadow-equal font-display transition-colors" onclick={"window.util.clipboardInsert('#{@game_genserver_name}')"}>
+        <button phx-click="clipboard-insert" class="flex items-center gap-2 p-2 rounded-md hover:bg-theme-3 font-display transition-colors" onclick={"window.util.clipboardInsert('#{@game_genserver_name}')"}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline h-7 w-7">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
@@ -26,13 +28,13 @@
     </div>
 
     <header class="basis-full flex gap-1 sm:gap-2 items-center p-2 font-display text-xl">
-      <button class="md:hidden p-2 rounded-md hover:bg-gray-700 transition-colors" onclick="window.util.toggleSidebar();">
+      <button class="md:hidden p-2 rounded-md hover:bg-theme-3 transition-colors" onclick="window.util.toggleSidebar();">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
 
-      <p class="basis-144 mx-auto flex gap-4 p-2">
+      <p class="basis-144 mx-auto flex items-center gap-4 p-2">
         <span class="basis-full text-ellipsis"><%= if @players.first, do: @players.first.name, else: "waiting..." %></span>
 
         <span class="shrink-0 flex items-center gap-2">
@@ -45,21 +47,23 @@
   </div>
 
   <div class="basis-full flex relative md:static overflow-x-clip">
-    <aside id="sidebar" class="shrink-0 flex flex-col gap-2 p-2 max-w-xs basis-80 absolute inset-0 -translate-x-full sidebar-toggled:transform-none transition-transform duration-300 bg-black bg-opacity-75 shadow-equal-lg md:shadow-none md:bg-transparent md:static md:transform-none z-10 before:bg-gradient-to-r before:absolute before:from-[#00000080] before:to-transparent before:inset-0 before:left-full before:right-0 sidebar-toggled:before:-right-full before:transition-[right] before:duration-300 md:before:content-none">
+    <aside id="sidebar" class="shrink-0 flex flex-col gap-2 p-2 max-w-xs basis-80 absolute inset-0 -translate-x-full sidebar-toggled:transform-none transition-transform duration-300 bg-black md:bg-transparent bg-opacity-50 dark-t:bg-opacity-75 md:static md:transform-none z-10 before:bg-gradient-to-r before:absolute before:from-[#00000080] before:to-transparent before:inset-0 before:left-full before:right-0 sidebar-toggled:before:-right-full before:transition-[right] before:duration-300 md:before:content-none">
       <div class="flex md:hidden justify-between">
         <div class="relative">
-          <button class="p-2 rounded-md hover:bg-gray-700 transition-colors" onclick="window.util.toggleLocalDropdown(this);">
+          <button class="p-2 rounded-md hover:bg-theme-3 transition-colors" onclick="window.util.toggleLocalDropdown(this);">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="h-7 w-7">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
             </svg>
           </button>
 
-          <div class="hidden flex flex-col bg-gray-800 border border-gray-700 rounded-lg shadow-equal clip-border overflow-clip absolute top-0 left-full translate-x-1 js-local-dropdown">
-            <%= live_redirect "Leave", to: Routes.game_list_path(@socket, :index), class: "px-4 py-2 text-red-400 hover:bg-red-900 transition-colors" %>
+          <div class="hidden rounded-lg shadow-equal absolute top-0 left-full translate-x-1 js-local-dropdown">
+            <div class="flex flex-col bg-theme-2 border border-theme-3 rounded-lg clip-border overflow-clip">
+              <%= live_redirect "Leave", to: Routes.game_list_path(@socket, :index), class: "px-4 py-2 text-red-600 dark-t:text-red-400 hover:bg-red-100 dark-t:hover:bg-red-900 transition-colors" %>
+            </div>
           </div>
         </div>
 
-        <button class="flex items-center gap-2 p-2 rounded-md hover:bg-gray-700 font-display transition-colors" onclick={"window.util.clipboardInsert('#{@game_genserver_name}')"}>
+        <button class="flex items-center gap-2 p-2 rounded-md hover:bg-theme-3 font-display transition-colors" onclick={"window.util.clipboardInsert('#{@game_genserver_name}')"}>
           <%= @game_genserver_name %>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline h-7 w-7">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -67,7 +71,7 @@
         </button>
       </div>
 
-      <section class="basis-120 md:basis-144 my-auto flex flex-col bg-gray-800 border border-gray-700 rounded-lg shadow-equal">
+      <section class="basis-120 md:basis-144 my-auto flex flex-col bg-theme-1 dark-t:bg-theme-2 border border-theme-3 rounded-lg md:shadow-equal md:shadow-theme-neutral-5 dark-t:md:shadow-theme-neutral-1">
         <ul class="basis-full flex flex-col justify-end gap-2 p-2 text-base">
           <%= for message <- Enum.reverse(@messages) do %>
             <li>
@@ -77,10 +81,10 @@
           <% end %>
         </ul>
 
-        <form phx-submit="send-message" class="shrink-0 flex items-center gap-2 p-2 border-t border-gray-700">
-          <input type="text" name="message-text" autocomplete="off" class="basis-full bg-gray-700 border-gray-700 focus:border-gray-500 rounded-md focus:ring-0 transition-colors">
+        <form phx-submit="send-message" class="shrink-0 flex items-center gap-2 p-2 border-t border-theme-3">
+          <input type="text" name="message-text" autocomplete="off" class="basis-full dark-t:bg-theme-3 border-theme-3 focus:border-theme-5 rounded-md focus:ring-0 transition-colors">
 
-          <button type="submit" class="p-2 rounded-md hover:bg-gray-700 transition-colors">
+          <button type="submit" class="p-2 rounded-md hover:bg-theme-2 dark-t:hover:bg-theme-3 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="h-7 w-7">
               <defs>
                 <linearGradient id="accent" gradientTransform="rotate(45, 0.5, 0.5)">
@@ -96,11 +100,11 @@
     </aside>
 
     <main class="basis-full grid place-items-center p-2 xxs:p-6">
-      <div class="w-full grid grid-cols-4 xs:grid-cols-5 md:grid-cols-4 lg:grid-cols-6 max-w-2xl xs:max-w-xl md:max-w-lg lg:max-w-3xl gap-2 xxs:gap-4 xs:gap-6 lg:gap-8 text-3xl xxs:text-4xl sm:text-5xl md:text-4xl lg:text-5xl place-items-center text-neutral-400 perspective">
+      <div class="w-full grid grid-cols-4 xs:grid-cols-5 md:grid-cols-4 lg:grid-cols-6 max-w-2xl xs:max-w-xl md:max-w-lg lg:max-w-3xl gap-2 xxs:gap-4 xs:gap-6 lg:gap-8 text-3xl xxs:text-4xl sm:text-5xl md:text-4xl lg:text-5xl place-items-center text-theme-neutral-6 perspective">
         <%= for {index, card} <- @game_board.state do %>
           <div phx-click="make-move" phx-value-index={index} class={ "aspect-square w-full max-w-[4rem] xxs:max-w-[4.5rem] xs:max-w-[6rem] grid font-display select-none preserve-3d transition-transform duration-300" <> if card.face_up?, do: " rotate-y-180", else: " cursor-pointer"}>
-            <div class="area-full grid place-items-center bg-gray-700 border-4 border-gray-800 rounded-2xl text-[1.2em] shadow-equal no-backface rotate-y-0">
-              <svg version="1.1" viewBox="0 0 8.47 8.47" xmlns="http://www.w3.org/2000/svg" fill="#a3a3a3" font-family="Poppins">
+            <div class="area-full grid place-items-center bg-theme-3 dark-t:bg-theme-3 border-4 border-theme-4 dark-t:border-theme-2 rounded-2xl text-[1.2em] shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 no-backface rotate-y-0">
+              <svg version="1.1" viewBox="0 0 8.47 8.47" xmlns="http://www.w3.org/2000/svg" font-family="Poppins" class="fill-theme-1 dark-t:fill-theme-5">
               	<text transform="rotate(19.5)" x="2.5229928" y="3.8059983" font-size="4.6px" style="line-height:1.25">
               		<tspan x="2.5229928" y="3.8059983">?</tspan>
               	</text>
@@ -116,7 +120,7 @@
               </svg>
             </div>
 
-            <div class="area-full grid place-items-center bg-gray-600 border-4 border-gray-500 rounded-2xl shadow-equal no-backface rotate-y-180">
+            <div class="area-full grid place-items-center bg-theme-2 dark-t:bg-theme-4 border-4 border-theme-3 dark-t:border-theme-5 rounded-2xl shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 no-backface rotate-y-180">
               <%= card.symbol %>
             </div>
           </div>

@@ -39,8 +39,7 @@ module.exports = {
 				}
 			},
 			backgroundImage: {
-				'pattern-dark': "url('/images/background-dark.svg')",
-				'pattern-light': "url('/images/background-light.svg')"
+				'pattern': "var(--bg-pattern)"
 			},
 			boxShadow: {
 				'equal': '0 0 12px -3px hsl(0 0% 0% / 0.5)',
@@ -81,6 +80,18 @@ module.exports = {
 					8: 'var(--theme-8)',
 					9: 'var(--theme-9)',
 					10: 'var(--theme-10)'
+				},
+				'theme-neutral': {
+					1: 'var(--theme-neutral-1)',
+					2: 'var(--theme-neutral-2)',
+					3: 'var(--theme-neutral-3)',
+					4: 'var(--theme-neutral-4)',
+					5: 'var(--theme-neutral-5)',
+					6: 'var(--theme-neutral-6)',
+					7: 'var(--theme-neutral-7)',
+					8: 'var(--theme-neutral-8)',
+					9: 'var(--theme-neutral-9)',
+					10: 'var(--theme-neutral-10)'
 				}
 			},
 			fontFamily: {
@@ -104,6 +115,11 @@ module.exports = {
 		require('@tailwindcss/forms'),
 		plugin(({addVariant}) => {
 			addVariant('sidebar-toggled', '&.sidebar-toggled');
+			// can't override existing variants and the default is inadequate for the app's needs
+			addVariant('dark-t', [
+				'@media (prefers-color-scheme: dark) { .theme-auto & }',
+				'.theme-dark &'
+			]);
 		})
 	]
 }

@@ -33,7 +33,6 @@
 		url("/fonts/poppins-v19-latin-600.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
 		url("/fonts/poppins-v19-latin-600.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
-
 /* custom */
 @layer base {
 	h1,
@@ -42,11 +41,37 @@
 		font-family: "Poppins";
 		font-weight: 600;
 	}
-	
+
+	option {
+		/* best possible styling for this element */
+		color: theme("colors.neutral.800");
+		background-color: #e9e9ed;
+	}
+
+	/* scrollbar styling - standard */
+	* {
+		scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg);
+	}
+
+	/* scrollbar styling - webkit, non-standard */
+	::-webkit-scrollbar {
+		width: 17px;
+	}
+
+	::-webkit-scrollbar-track {
+		background-color: var(--scrollbar-bg);
+	}
+
+	::-webkit-scrollbar-thumb {
+		background-color: var(--scrollbar-thumb);
+		border: 3px solid var(--scrollbar-bg);
+		border-radius: 12px;
+	}
+
 	:root {
 		@apply theme-light;
 	}
-	
+
 	@media (prefers-color-scheme: dark) {
 		:root {
 			@apply theme-dark;
@@ -66,8 +91,24 @@
 		--theme-8: theme("colors.gray.700");
 		--theme-9: theme("colors.gray.800");
 		--theme-10: theme("colors.gray.900");
+
+		--theme-neutral-1: theme("colors.neutral.50");
+		--theme-neutral-2: theme("colors.neutral.100");
+		--theme-neutral-3: theme("colors.neutral.200");
+		--theme-neutral-4: theme("colors.neutral.300");
+		--theme-neutral-5: theme("colors.neutral.400");
+		--theme-neutral-6: theme("colors.neutral.500");
+		--theme-neutral-7: theme("colors.neutral.600");
+		--theme-neutral-8: theme("colors.neutral.700");
+		--theme-neutral-9: theme("colors.neutral.800");
+		--theme-neutral-10: theme("colors.neutral.900");
+
+		--scrollbar-bg: var(--theme-2);
+		--scrollbar-thumb: var(--theme-4);
+
+		--bg-pattern: url('/images/background-light.svg');
 	}
-	
+
 	.theme-dark {
 		--theme-1: theme("colors.gray.900");
 		--theme-2: theme("colors.gray.800");
@@ -79,8 +120,24 @@
 		--theme-8: theme("colors.gray.200");
 		--theme-9: theme("colors.gray.100");
 		--theme-10: theme("colors.gray.50");
+
+		--theme-neutral-1: theme("colors.neutral.900");
+		--theme-neutral-2: theme("colors.neutral.800");
+		--theme-neutral-3: theme("colors.neutral.700");
+		--theme-neutral-4: theme("colors.neutral.600");
+		--theme-neutral-5: theme("colors.neutral.500");
+		--theme-neutral-6: theme("colors.neutral.400");
+		--theme-neutral-7: theme("colors.neutral.300");
+		--theme-neutral-8: theme("colors.neutral.200");
+		--theme-neutral-9: theme("colors.neutral.100");
+		--theme-neutral-10: theme("colors.neutral.50");
+
+		--scrollbar-bg: var(--theme-1);
+		--scrollbar-thumb: var(--theme-4);
+
+		--bg-pattern: url('/images/background-dark.svg');
 	}
-	
+
 	.clip-border {
 		clip-path: border-box;
 	}
@@ -88,46 +145,26 @@
 	.area-full {
 		grid-area: 1 / -1;
 	}
-	
+
 	.perspective {
 		perspective: 50rem;
 	}
-	
+
 	.preserve-3d {
 		transform-style: preserve-3d;
 	}
-	
+
 	.rotate-y-0 {
 		transform: rotateY(0);
 	}
-	
+
 	.rotate-y-180 {
 		transform: rotateY(180deg);
 	}
-	
+
 	.no-backface {
 		backface-visibility: hidden;
 	}
-}
-
-/* scrollbar styling - standard */
-* {
-	scrollbar-color: theme("colors.gray.500") theme("colors.gray.900");
-}
-
-/* scrollbar styling - webkit non-standard */
-::-webkit-scrollbar {
-	width: 17px;
-}
-
-::-webkit-scrollbar-track {
-	background-color: theme("colors.gray.900");
-}
-
-::-webkit-scrollbar-thumb {
-	background-color: theme("colors.gray.500");
-	border: 3px solid theme("colors.gray.900");
-	border-radius: 12px;
 }
 
 /* Phoenix specific */
