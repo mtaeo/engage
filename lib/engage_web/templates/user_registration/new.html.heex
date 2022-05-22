@@ -2,13 +2,13 @@
   <main class="flex flex-col gap-4 w-full max-w-sm p-6 md:p-8 my-5 rounded-3xl bg-theme-1 dark-t:bg-theme-2 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
     <h1 class="sr-only">Register</h1>
 
-    <.form class="contents" let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)}>
+    <.form let={f} for={@changeset} action={Routes.user_registration_path(@conn, :create)} class="contents">
       <%= if @changeset.action do %>
         <div class="alert alert-danger">
           <p>Oops, something went wrong! Please check the errors below.</p>
         </div>
       <% end %>
-      
+
       <%= link to: Routes.user_oauth_path(@conn, :request, "github"), class: "p-3 rounded-xl border-2 border-theme-neutral-7 hover:border-theme-neutral-5 transition-colors text-center" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16" fill="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute text-theme-neutral-9">
           <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
@@ -16,7 +16,7 @@
 
         Continue with GitHub
       <% end %>
-      
+
       <%= link to: Routes.user_oauth_path(@conn, :request, "google"), class: "p-3 rounded-xl border-2 border-theme-neutral-7 hover:border-theme-neutral-5 transition-colors text-center" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" class="absolute text-theme-neutral-9">
           <path d="M1.24182 6.67897C1.98432 5.13169 3.03341 3.82393 4.35554 2.73652C6.14713 1.2563 8.20219 0.365299 10.5063 0.0922493C13.2129 -0.228704 15.7566 0.283863 18.1086 1.69222C18.693 2.04192 19.2391 2.43952 19.7613 2.87065C19.8906 2.97604 19.8763 3.03831 19.7661 3.1437C18.6978 4.20715 17.6296 5.27061 16.5709 6.34365C16.4464 6.4682 16.3793 6.45862 16.2452 6.35802C13.141 3.96764 8.61416 4.61433 6.30042 7.77596C5.89324 8.33164 5.56271 8.93043 5.33277 9.58192C5.31361 9.6394 5.27529 9.6921 5.24655 9.74958C4.62859 9.28013 4.00585 8.81067 3.39269 8.33643C2.67413 7.78554 1.95558 7.23465 1.24182 6.67897Z" fill="#E94335"></path>
@@ -27,7 +27,7 @@
 
         Continue with Google
       <% end %>
-      
+
       <%= link to: Routes.user_oauth_path(@conn, :request, "twitter"), class: "p-3 rounded-xl border-2 border-theme-neutral-7 hover:border-theme-neutral-5 transition-colors text-center" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48" class="absolute text-theme-neutral-9">
           <path fill="#03A9F4" d="M42,12.429c-1.323,0.586-2.746,0.977-4.247,1.162c1.526-0.906,2.7-2.351,3.251-4.058c-1.428,0.837-3.01,1.452-4.693,1.776C34.967,9.884,33.05,9,30.926,9c-4.08,0-7.387,3.278-7.387,7.32c0,0.572,0.067,1.129,0.193,1.67c-6.138-0.308-11.582-3.226-15.224-7.654c-0.64,1.082-1,2.349-1,3.686c0,2.541,1.301,4.778,3.285,6.096c-1.211-0.037-2.351-0.374-3.349-0.914c0,0.022,0,0.055,0,0.086c0,3.551,2.547,6.508,5.923,7.181c-0.617,0.169-1.269,0.263-1.941,0.263c-0.477,0-0.942-0.054-1.392-0.135c0.94,2.902,3.667,5.023,6.898,5.086c-2.528,1.96-5.712,3.134-9.174,3.134c-0.598,0-1.183-0.034-1.761-0.104C9.268,36.786,13.152,38,17.321,38c13.585,0,21.017-11.156,21.017-20.834c0-0.317-0.01-0.633-0.025-0.945C39.763,15.197,41.013,13.905,42,12.429"></path>
@@ -35,7 +35,7 @@
 
         Continue with Twitter
       <% end %>
-      
+
       <%= link to: Routes.user_oauth_path(@conn, :request, "facebook"), class: "p-3 rounded-xl border-2 border-theme-neutral-7 hover:border-theme-neutral-5 transition-colors text-center" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48" class="absolute text-theme-neutral-9">
           <path fill="#039be5" d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"></path><path fill="#fff" d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z"></path>
@@ -77,10 +77,10 @@
         <%= password_input f, :repeat_password, required: true, placeholder: "Repeat password", class: "p-3 rounded-xl bg-transparent border-2 border-theme-neutral-7 hover:border-theme-neutral-5 transition-colors" %>
         <%= error_tag f, :repeat_password %>
       </div>
-      
+
       <%= submit "Register", class: "block p-3 mt-2 rounded-xl text-theme-neutral-1 bg-theme-neutral-8 hover:bg-theme-neutral-6 font-display transition-colors" %>
     </.form>
-    
+
     <p class="text-center text-theme-neutral-6 mt-4 cursor-default">
       <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "underline hover:text-theme-neutral-10 transition-colors" %>
       |

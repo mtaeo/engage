@@ -1,26 +1,27 @@
-<h1>Reset password</h1>
+<div class="grid place-items-center min-h-screen bg-pattern">
+	<main class="flex flex-col gap-4 w-full max-w-sm p-6 md:p-8 my-5 rounded-3xl bg-theme-1 dark-t:bg-theme-2 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
+    <h1>Reset password</h1>
 
-<.form let={f} for={@changeset} action={Routes.user_reset_password_path(@conn, :update, @token)}>
-  <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
-    </div>
-  <% end %>
+    <.form let={f} for={@changeset} action={Routes.user_reset_password_path(@conn, :update, @token)} class="contents">
+      <div class="flex flex-col gap-1.5">
+        <%= label f, :password, "New password" %>
+        <%= password_input f, :password, required: true, placeholder: "Password", class: "p-3 rounded-xl bg-transparent border-2 border-theme-neutral-7 hover:border-theme-neutral-5 transition-colors" %>
+        <%= error_tag f, :password %>
+      </div>
 
-  <%= label f, :password, "New password" %>
-  <%= password_input f, :password, required: true %>
-  <%= error_tag f, :password %>
+      <div class="flex flex-col gap-1.5">
+        <%= label f, :password_confirmation, "Confirm new password" %>
+        <%= password_input f, :password_confirmation, required: true, placeholder: "Confirm password", class: "p-3 rounded-xl bg-transparent border-2 border-theme-neutral-7 hover:border-theme-neutral-5 transition-colors" %>
+        <%= error_tag f, :password_confirmation %>
+      </div>
 
-  <%= label f, :password_confirmation, "Confirm new password" %>
-  <%= password_input f, :password_confirmation, required: true %>
-  <%= error_tag f, :password_confirmation %>
+      <%= submit "Reset password", "block p-3 mt-2 rounded-xl text-theme-neutral-1 bg-theme-neutral-8 hover:bg-theme-neutral-6 font-display transition-colors" %>
+    </.form>
 
-  <div>
-    <%= submit "Reset password" %>
-  </div>
-</.form>
-
-<p>
-  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
-</p>
+		<p class="text-center text-theme-neutral-6 mt-4 cursor-default">
+      <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "underline hover:text-theme-neutral-10 transition-colors" %>
+      |
+      <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "underline hover:text-theme-neutral-10 transition-colors" %>
+    </p>
+  </main>
+</div>
