@@ -6,12 +6,13 @@ defmodule EngageWeb.TicTacToeLive do
   alias Engage.Games.TicTacToe.GameBoard
   alias Engage.Games.Chat
   alias Engage.Games.Chat.Message
+  alias Engage.Helpers.Gravatar
   import EngageWeb.LiveHelpers
 
   def mount(_params, session, socket) do
     socket =
-      live_auth_check(socket, session, fn socket, _user ->
-        setup(socket, session)
+      live_auth_check(socket, session, fn socket, user ->
+        setup(socket, user)
       end)
 
     {:ok, socket}
@@ -49,6 +50,7 @@ defmodule EngageWeb.TicTacToeLive do
           game_genserver_name: game_genserver_name,
           chat_genserver_name: chat_genserver_name
         )
+        |> scroll_chat()
       else
         route = "/game-lobby/tic-tac-toe/#{game_code}"
         push_redirect(socket, to: route)
@@ -72,13 +74,20 @@ defmodule EngageWeb.TicTacToeLive do
     message = %Message{
       sender: socket.assigns.player_name,
       text: String.trim(text),
-      sent_at: NaiveDateTime.local_now()
+      avatar_src: socket.assigns.player_avatar
     }
 
     Chat.GenServer.send_message(
       socket.assigns.chat_genserver_name,
       message
     )
+
+    socket =
+      if String.trim(text) !== "" do
+        clear_message_box(socket)
+      else
+        socket
+      end
 
     {:noreply, socket}
   end
@@ -100,17 +109,23 @@ defmodule EngageWeb.TicTacToeLive do
   end
 
   def handle_info(messages, socket) when is_list(messages) do
-    {:noreply, assign(socket, messages: messages)}
+    socket =
+      socket
+      |> assign(messages: messages)
+      |> scroll_chat()
+
+    {:noreply, socket}
   end
 
   def handle_info(:clear_flash, socket) do
     {:noreply, clear_flash(socket)}
   end
 
-  defp setup(socket, session) do
+  defp setup(socket, user) do
     assign(socket,
-      player_id: session["current_user"].id,
-      player_name: session["current_user"].username,
+      player_id: user.id,
+      player_name: user.username,
+      player_avatar: Gravatar.get_image_src_by_email(user.email, user.gravatar_style),
       game_board: %GameBoard{},
       players: %{first: nil, second: nil},
       messages: []
@@ -148,5 +163,13 @@ defmodule EngageWeb.TicTacToeLive do
       _ ->
         ""
     end
+  end
+
+  defp scroll_chat(socket) do
+    push_event(socket, "scroll-end", %{id: "chat"})
+  end
+
+  defp clear_message_box(socket) do
+    push_event(socket, "clear-input", %{id: "message-box"})
   end
 end

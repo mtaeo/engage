@@ -11,8 +11,8 @@ defmodule EngageWeb.GameLobbyLive do
         socket
         |> live_template_assigns(user)
         |> assign(
-          player_id: session["current_user"].id,
-          player_name: session["current_user"].username,
+          player_id: user.id,
+          player_name: user.username,
           players: %{},
           messages: [],
           is_lobby_owner: false
