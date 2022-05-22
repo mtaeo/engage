@@ -27,13 +27,20 @@ defmodule Engage.Games.Chat.GenServer do
   # Server API
 
   def handle_call({:send_message, message}, _from, state) do
-    state = put_in(state.messages, [message | state.messages])
+    state =
+      if message.text !== "" do
+        state = put_in(state.messages, [message | state.messages])
 
-    Phoenix.PubSub.broadcast(
-      Engage.PubSub,
-      Atom.to_string(state.genserver_name),
-      state.messages
-    )
+        Phoenix.PubSub.broadcast(
+          Engage.PubSub,
+          Atom.to_string(state.genserver_name),
+          state.messages
+        )
+
+        state
+      else
+        state
+      end
 
     {:reply, state.messages, state}
   end
@@ -45,5 +52,4 @@ defmodule Engage.Games.Chat.GenServer do
   def init(state) do
     {:ok, state}
   end
-
 end

@@ -64,7 +64,7 @@ defmodule EngageWeb.TicTacToeLive do
   def handle_event("send-message", %{"message-text" => text}, socket) do
     message = %Message{
       sender: socket.assigns.player_name,
-      text: text,
+      text: String.trim(text),
       sent_at: NaiveDateTime.local_now()
     }
 
