@@ -38,16 +38,23 @@ defmodule EngageWeb.TicTacToeLive do
     game_board = TicTacToe.GenServer.view(game_genserver_name)
     messages = Chat.GenServer.view(chat_genserver_name)
 
-    {:noreply,
-     assign(socket,
-       nth: nth,
-       game_code: game_code,
-       players: players,
-       game_board: game_board,
-       messages: messages,
-       game_genserver_name: game_genserver_name,
-       chat_genserver_name: chat_genserver_name
-     )}
+    socket =
+      if TicTacToe.GenServer.game_started?(game_genserver_name) do
+        assign(socket,
+          nth: nth,
+          game_code: game_code,
+          players: players,
+          game_board: game_board,
+          messages: messages,
+          game_genserver_name: game_genserver_name,
+          chat_genserver_name: chat_genserver_name
+        )
+      else
+        route = "/game-lobby/tic-tac-toe/#{game_code}"
+        push_redirect(socket, to: route)
+      end
+
+    {:noreply, socket}
   end
 
   def handle_event("make-move", %{"coordinate-x" => x, "coordinate-y" => y}, socket) do
@@ -78,6 +85,7 @@ defmodule EngageWeb.TicTacToeLive do
 
   def handle_event("clipboard-insert", _, socket) do
     :timer.send_after(2500, :clear_flash)
+
     {:noreply,
      socket
      |> put_flash(:info, "Copied game code \"#{socket.assigns.game_code}\" to clipboard.")}

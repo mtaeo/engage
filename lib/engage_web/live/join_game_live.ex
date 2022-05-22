@@ -19,7 +19,12 @@ defmodule EngageWeb.JoinGameLive do
   def handle_event("join", %{"code" => code}, socket) do
     if Process.whereis(String.to_atom(code)) do
       state = :sys.get_state(String.to_atom(code))
-      route = "/games/#{state.game_name}/#{code}"
+
+      route = if state.game_started? do
+        "/games/#{state.game_name}/#{code}"
+      else
+        "/game-lobby/#{state.game_name}/#{code}"
+      end
 
       {:noreply, push_redirect(socket, to: route)}
     else
