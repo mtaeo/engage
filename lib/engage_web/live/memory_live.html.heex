@@ -127,7 +127,7 @@
             </div>
 
             <div class="area-full grid place-items-center bg-theme-2 dark-t:bg-theme-4 border-4 border-theme-3 dark-t:border-theme-5 rounded-2xl shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 no-backface rotate-y-180">
-              <%= card.symbol %>
+              <%= if card.face_up?, do: card.symbol %>
             </div>
           </div>
         <% end %>
