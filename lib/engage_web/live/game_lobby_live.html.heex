@@ -43,6 +43,8 @@
       <%= @game_genserver_name %>
     </button>
 
-    <button phx-click="start-game" class="grid place-items-center px-4 py-2 rounded-lg text-theme-neutral-1 bg-theme-8 hover:bg-theme-6 transition-colors">Start early</button>
+    <%= if @is_lobby_owner do %>
+      <button phx-click="start-game" class="grid place-items-center px-4 py-2 rounded-lg text-theme-neutral-1 bg-theme-8 hover:bg-theme-6 transition-colors">Start early</button>
+    <% end %>
   </div>
 </div>
