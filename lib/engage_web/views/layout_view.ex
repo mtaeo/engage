@@ -10,14 +10,14 @@ defmodule EngageWeb.LayoutView do
     |> case do
       %{theme: theme} -> theme
       %{current_user: %{theme: theme}} -> theme
-      _ -> :light
+      _ -> :automatic
     end
     |> case do
-      :automatic -> "theme-auto"
-      :light -> "theme-light"
       :dark -> "theme-dark"
+      :light -> "theme-light"
+      :automatic -> "theme-auto"
       # this should never be reached
-      _ -> "theme-light"
+      _ -> "theme-auto"
     end
   end
 end
