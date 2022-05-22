@@ -285,6 +285,11 @@ defmodule Engage.Games.Memory.GenServer do
         :timer.send_after(@card_delay, {:replay, state})
         state
 
+      :draw ->
+        insert_draw_game_event_into_db(state.game_id, state.players.second.id, state.players.first.id)
+        :timer.send_after(@card_delay, {:replay, state})
+        state
+
       nil ->
         state
     end
@@ -296,12 +301,16 @@ defmodule Engage.Games.Memory.GenServer do
 
     cond do
       first_player_score > second_player_score and
-          first_player_score + second_player_score == num_of_card_pairs(state) ->
+          first_player_score + second_player_score === num_of_card_pairs(state) ->
         :first
 
       second_player_score > first_player_score and
-          second_player_score + first_player_score == num_of_card_pairs(state) ->
+          second_player_score + first_player_score === num_of_card_pairs(state) ->
         :second
+
+      first_player_score === second_player_score and
+        first_player_score + second_player_score === num_of_card_pairs(state) ->
+          :draw
 
       true ->
         nil
@@ -310,10 +319,6 @@ defmodule Engage.Games.Memory.GenServer do
 
   defp num_of_card_pairs(state) do
     div(Enum.count(state.board.state), 2)
-  end
-
-  defp all_players_joined?(state) do
-    state.players.first !== nil and state.players.second !== nil
   end
 
   defp get_player_nth_by_name_helper(state, player_name) do
@@ -333,6 +338,22 @@ defmodule Engage.Games.Memory.GenServer do
       game_id: game_id,
       user_id: loser_id,
       opponent_user_id: winner_id
+    })
+  end
+
+  defp insert_draw_game_event_into_db(game_id, first_player_id, second_player_id) do
+    Engage.GameEvents.insert_game_event(%GameEvent{
+      outcome: :draw,
+      game_id: game_id,
+      user_id: first_player_id,
+      opponent_user_id: second_player_id
+    })
+
+    Engage.GameEvents.insert_game_event(%GameEvent{
+      outcome: :draw,
+      game_id: game_id,
+      user_id: second_player_id,
+      opponent_user_id: first_player_id
     })
   end
 end
