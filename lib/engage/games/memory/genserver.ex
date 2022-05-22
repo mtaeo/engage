@@ -120,8 +120,19 @@ defmodule Engage.Games.Memory.GenServer do
     {:reply, game_started?, state}
   end
 
-  def handle_call({:kick_player, _nth, _kicked_player_id}, _from, state) do
-    # TODO: Finish implementation to kick players from the lobby
+  def handle_call({:kick_player, owner_nth, kicked_player_id}, _from, state) do
+    state =
+      if owner_nth === :first and
+           state.players[owner_nth].id !== kicked_player_id and
+           not state.game_started? do
+        kicked_nth = get_player_nth_by_id(state, kicked_player_id)
+        state = put_in(state.players[kicked_nth], nil)
+        :timer.send_after(0, {:send_players, state})
+        state
+      else
+        state
+      end
+
     {:reply, nil, state}
   end
 
@@ -363,5 +374,10 @@ defmodule Engage.Games.Memory.GenServer do
       user_id: second_player_id,
       opponent_user_id: first_player_id
     })
+  end
+
+  defp get_player_nth_by_id(state, player_id) when is_integer(player_id) do
+    {nth, _player} = Enum.find(state.players, fn {_nth, player} -> player.id === player_id end)
+    nth
   end
 end

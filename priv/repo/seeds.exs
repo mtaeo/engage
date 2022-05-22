@@ -45,7 +45,8 @@ Repo.insert!(
     %{
       username: "test",
       email: "test@test.com",
-      password: "test"
+      password: "test",
+      confirmed_at: NaiveDateTime.local_now()
     }
   )
 )
@@ -56,7 +57,8 @@ Repo.insert!(
     %{
       username: "moderator",
       email: "moderator@moderator.com",
-      password: "test"
+      password: "test",
+      confirmed_at: NaiveDateTime.local_now()
     }
   )
 )
@@ -67,7 +69,8 @@ Repo.insert!(
     %{
       username: "admin",
       email: "admin@admin.com",
-      password: "test"
+      password: "test",
+      confirmed_at: NaiveDateTime.local_now()
     }
   )
 )

@@ -36,7 +36,14 @@ defmodule EngageWeb.GameLobbyLive do
   end
 
   def handle_info(players, socket) when is_map(players) do
-    {:noreply, assign(socket, players: players)}
+    socket = if players[socket.assigns.nth] === nil do
+      socket
+        |> put_flash(:error, "You have been kicked from the game.")
+        |> push_redirect(to: Routes.game_list_path(socket, :index))
+      else
+        assign(socket, players: players)
+    end
+    {:noreply, socket}
   end
 
   def handle_info(:game_started, socket) do
