@@ -35,16 +35,23 @@ defmodule EngageWeb.MemoryLive do
     game_board = Memory.GenServer.view(game_genserver_name)
     messages = Chat.GenServer.view(chat_genserver_name)
 
-    {:noreply,
-     assign(socket,
-       nth: nth,
-       game_code: game_code,
-       players: players,
-       game_board: game_board,
-       messages: messages,
-       game_genserver_name: game_genserver_name,
-       chat_genserver_name: chat_genserver_name
-     )}
+    socket =
+      if Memory.GenServer.game_started?(game_genserver_name) do
+        assign(socket,
+          nth: nth,
+          game_code: game_code,
+          players: players,
+          game_board: game_board,
+          messages: messages,
+          game_genserver_name: game_genserver_name,
+          chat_genserver_name: chat_genserver_name
+        )
+      else
+        route = "/game-lobby/memory/#{game_code}"
+        push_redirect(socket, to: route)
+      end
+
+    {:noreply, socket}
   end
 
   def handle_event("make-move", %{"index" => index}, socket) do
