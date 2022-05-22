@@ -6,11 +6,17 @@ defmodule EngageWeb.LayoutView do
   @compile {:no_warn_undefined, {Routes, :live_dashboard_path, 2}}
 
   defp app_theme(conn) do
-    case conn.assigns do
-      %{theme: :automatic} -> "theme-auto"
-      %{theme: :light} -> "theme-light"
-      %{theme: :dark} -> "theme-dark"
-      # unauthorized users must endure a light theme
+    conn.assigns
+    |> case do
+      %{theme: theme} -> theme
+      %{current_user: %{theme: theme}} -> theme
+      _ -> :light
+    end
+    |> case do
+      :automatic -> "theme-auto"
+      :light -> "theme-light"
+      :dark -> "theme-dark"
+      # this should never be reached
       _ -> "theme-light"
     end
   end
