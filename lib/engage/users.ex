@@ -361,7 +361,9 @@ defmodule Engage.Users do
         {:ok, user}
 
       _ ->
-        register_user(attrs)
+        attrs
+        |> Map.put(:confirmed_at, NaiveDateTime.local_now())
+        |> register_user()
     end
   end
 
