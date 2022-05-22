@@ -1,8 +1,8 @@
 <div class="grid place-items-center min-h-screen bg-pattern">
-	<main class="flex flex-col gap-4 w-full max-w-sm p-6 md:p-8 my-5 rounded-3xl bg-theme-1 dark:bg-theme-2 shadow-equal">
+	<main class="flex flex-col gap-4 w-full max-w-sm p-6 md:p-8 my-5 rounded-3xl bg-theme-1 dark-t:bg-theme-2 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
 		<h1 class="sr-only">Log in</h1>
 
-		<.form class="contents" let={f} for={@conn} action={Routes.user_session_path(@conn, :create)} as={:user}>
+		<.form let={f} for={@conn} action={Routes.user_session_path(@conn, :create)} as={:user} class="contents">
 		  <%= if @error_message do %>
 			  <div class="alert alert-danger">
 		  	  <p><%= @error_message %></p>
@@ -52,7 +52,7 @@
         Continue with Discord
       <% end %>
 
-		  <div class="m-auto my-2 p-1.5 bg-theme-neutral-8 rounded-full"></div>
+      <hr class="w-2/3 mx-auto my-4">
 
       <div class="flex flex-col gap-1.5">
 		    <%= label f, :email, "E-mail" %>
@@ -75,7 +75,8 @@
 		</.form>
 
 		<p class="text-center text-theme-neutral-6 mt-4 cursor-default">
-		  <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "underline hover:text-theme-neutral-10 transition-colors" %> |
+		  <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "underline hover:text-theme-neutral-10 transition-colors" %>
+      |
 		  <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new), class: "underline hover:text-theme-neutral-10 transition-colors" %>
 		</p>
 	</main>
