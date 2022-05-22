@@ -114,9 +114,13 @@ defmodule EngageWeb.UserAuth do
   """
   def redirect_if_user_is_authenticated(conn, _opts) do
     if conn.assigns[:current_user] do
-      conn
-      |> redirect(to: signed_in_path(conn))
-      |> halt()
+      if is_nil(conn.assigns[:current_user].confirmed_at) do
+        conn
+      else
+        conn
+        |> redirect(to: signed_in_path(conn))
+        |> halt()
+      end
     else
       conn
     end
@@ -130,7 +134,15 @@ defmodule EngageWeb.UserAuth do
   """
   def require_authenticated_user(conn, _opts) do
     if conn.assigns[:current_user] do
-      conn
+      if is_nil(conn.assigns[:current_user].confirmed_at) do
+        conn
+        |> put_flash(:error, "Please confirm your account before continuing.")
+        |> maybe_store_return_to()
+        |> redirect(to: Routes.user_confirmation_path(conn, :new))
+        |> halt()
+      else
+        conn
+      end
     else
       conn
       |> put_flash(:error, "You must log in to access this page.")

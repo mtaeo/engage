@@ -1,5 +1,7 @@
-<h1>Resend confirmation instructions</h1>
+<h3>Confirm your email address</h3>
+<h6>To use your account on Engage, you need to confirm your email address.</h6>
 
+<p>Didn't receive the confirmation email?</p>
 <.form let={f} for={:user} action={Routes.user_confirmation_path(@conn, :create)}>
   <%= label f, :email %>
   <%= email_input f, :email, required: true %>

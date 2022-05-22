@@ -10,7 +10,7 @@ defmodule Engage.Users.User do
     field :coins, :integer, default: 0
     field :theme, Ecto.Enum, values: [:dark, :light, :automatic], default: :automatic
     field :role, Ecto.Enum, values: [:user, :moderator, :admin], default: :user
-    field :gravatar_style, Ecto.Enum, values: [:mp, :identicon, :monsterid, :wavatar, :retro, :robohash], default: :retro
+    field :gravatar_style, Ecto.Enum, values: [:mp, :identicon, :monsterid, :wavatar, :retro, :robohash], default: :robohash
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
@@ -37,7 +37,7 @@ defmodule Engage.Users.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:username, :email, :password])
+    |> cast(attrs, [:username, :email, :password, :confirmed_at])
     |> validate_username()
     |> validate_email()
     |> validate_password(opts)
