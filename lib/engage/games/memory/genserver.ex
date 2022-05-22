@@ -55,6 +55,10 @@ defmodule Engage.Games.Memory.GenServer do
     GenServer.call(genserver_name, {:kick_player, nth, kicked_player_id})
   end
 
+  def game_started?(genserver_name) do
+    GenServer.call(genserver_name, :game_started?)
+  end
+
   # Server API
 
   def handle_call({:add_player, player_id, player_name}, _from, state) do
@@ -123,6 +127,10 @@ defmodule Engage.Games.Memory.GenServer do
 
   def handle_call(:view, _from, state) do
     {:reply, state.board, state}
+  end
+
+  def handle_call(:game_started?, _from, state) do
+    {:reply, state.game_started?, state}
   end
 
   def init(state) do
