@@ -1,12 +1,16 @@
-<h1>Confirm account</h1>
+<div class="grid place-items-center min-h-screen bg-pattern">
+	<main class="flex flex-col gap-4 w-full max-w-sm p-6 md:p-8 my-5 rounded-3xl bg-theme-1 dark-t:bg-theme-2 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
+    <h1 class="text-center">Confirm account</h1>
 
-<.form let={_f} for={:user} action={Routes.user_confirmation_path(@conn, :update, @token)}>
-  <div>
-    <%= submit "Confirm my account" %>
-  </div>
-</.form>
+    <.form let={_f} for={:user} action={Routes.user_confirmation_path(@conn, :update, @token)}>
+      <%= submit "Confirm my account", class: "block self-center p-3 rounded-xl text-theme-neutral-1 bg-theme-neutral-8 hover:bg-theme-neutral-6 font-display transition-colors" %>
+    </.form>
 
-<p>
-  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
-</p>
+		<p class="text-center text-theme-neutral-6 cursor-default">
+		  <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "underline hover:text-theme-neutral-10 transition-colors" %>
+      |
+		  <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "underline hover:text-theme-neutral-10 transition-colors" %>
+    </p>
+
+  </main>
+</div>

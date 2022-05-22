@@ -8,7 +8,9 @@ defmodule EngageWeb.UserConfirmationController do
     render(conn, "new.html")
   end
 
-  def create(conn, %{"user" => %{"email" => email}}) do
+  def create(conn, _params) do
+    email = conn.assigns.current_user.email
+
     if user = Users.get_user_by_email(email) do
       Users.deliver_user_confirmation_instructions(
         user,
@@ -19,8 +21,7 @@ defmodule EngageWeb.UserConfirmationController do
     conn
     |> put_flash(
       :info,
-      "If your email is in our system and it has not been confirmed yet, " <>
-        "you will receive an email with instructions shortly."
+      "If your email is in our system and it has not been confirmed yet, you will receive an email with instructions shortly."
     )
     |> redirect(to: "/")
   end
