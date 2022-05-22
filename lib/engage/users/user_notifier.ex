@@ -8,7 +8,7 @@ defmodule Engage.Users.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"MyApp", "contact@example.com"})
+      |> from({"Engage", "play.engage.dev@gmail.com"})
       |> subject(subject)
       |> text_body(body)
 
