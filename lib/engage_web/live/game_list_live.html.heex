@@ -1,7 +1,7 @@
-<div class="self-start grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 xl:gap-8 rounded-3xl">
-  <%= for game <- Games.get_all_games do %>
-    <section phx-click={ game.name } class="rounded-lg overflow-hidden text-center bg-theme-2 dark-t:bg-theme-3 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 cursor-pointer test:bg-red-500">
-      <img src={ game.image_path } class="object-cover">
+<div class="self-start grid grid-cols-[repeat(auto-fill,minmax(0,12rem))] grid-rows-[repeat(auto-fit,1fr)] justify-evenly gap-8">
+  <%= for game <- Games.get_all_games() do %>
+    <section phx-click={ game.name } class="bg-theme-2 dark-t:bg-theme-3 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 test:bg-red-500 rounded-lg overflow-hidden text-center cursor-pointer">
+      <img src={ game.image_path } class="max-w-full">
       <h2 class="p-4 font-sans font-normal leading-none text-xl"><%= game.display_name %></h2>
     </section>
   <% end %>
