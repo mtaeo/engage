@@ -28,7 +28,7 @@ defmodule EngageWeb.GameInfoLive do
   end
 
   def handle_event("create-game", _, socket) do
-    game_id = CodeGenerator.generate(:four_alphanumeric_characters)
+    game_id = CodeGenerator.generate_game_code()
     route = "/games/#{socket.assigns.game.name}/#{game_id}"
     {:noreply, push_redirect(socket, to: route)}
   end

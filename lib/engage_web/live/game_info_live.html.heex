@@ -19,7 +19,7 @@
     %>
 
     <%= live_redirect "Start New Game",
-      to: Routes.game_lobby_path(@socket, :index, @game.name, CodeGenerator.generate(:four_alphanumeric_characters)),
+      to: Routes.game_lobby_path(@socket, :index, @game.name, CodeGenerator.generate_game_code()),
       class: "grid place-items-center px-4 py-2 rounded-lg text-theme-neutral-1 bg-theme-8 hover:bg-theme-6 transition-colors"
     %>
   </div>

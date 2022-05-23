@@ -379,4 +379,9 @@ defmodule Engage.Users do
     |> Repo.update
   end
 
+  def exists_username?(username) when is_binary(username) do
+    query = from u in User, where: u.username == ^username
+    Repo.exists?(query)
+  end
+
 end
