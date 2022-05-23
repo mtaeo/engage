@@ -5,6 +5,6 @@ defmodule Engage.Helpers.CodeGenerator do
 
   def generate_username(name) when is_binary(name) do
     code = for _ <- 0..3, into: "", do: <<Enum.random(?0..?9)>>
-    name <> code
+    String.trim(name) <> "-" <> code
   end
 end

@@ -12,7 +12,7 @@ defmodule EngageWeb.UserOauthController do
   end
 
   def callback(%{assigns: %{ueberauth_auth: %{info: user_info}}} = conn, %{"provider" => _}) do
-    name = user_info.nickname || user_info.first_name
+    name = user_info.nickname || user_info.first_name || user_info.name
 
     user_params = %{
       username: generate_unique_username(name),
