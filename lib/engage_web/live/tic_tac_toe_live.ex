@@ -8,6 +8,7 @@ defmodule EngageWeb.TicTacToeLive do
   alias Engage.Games.Chat.Message
   alias Engage.Helpers.Gravatar
   import EngageWeb.LiveHelpers
+  alias EngageWeb.Util
 
   def mount(_params, session, socket) do
     socket =

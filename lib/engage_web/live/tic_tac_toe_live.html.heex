@@ -2,13 +2,13 @@
   <div class="shrink-0 flex gap-4 z-20">
     <div class="basis-80 shrink-0 hidden md:flex items-center gap-2 p-2">
       <div class="relative">
-        <button class="hidden md:block p-2 rounded-md hover:bg-theme-3 transition-colors" onclick="window.util.toggleLocalDropdown(this);">
+        <button phx-click={Util.toggle_class("#game-menu-desktop", "hidden")} class="hidden md:block p-2 rounded-md hover:bg-theme-3 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="h-8 w-8">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
 
-        <div class="hidden rounded-lg shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 absolute left-0 top-full translate-y-1 js-local-dropdown">
+        <div id="game-menu-desktop" class="hidden rounded-lg shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 absolute left-0 top-full translate-y-1">
           <div class="flex flex-col bg-theme-2 border border-theme-3 rounded-lg clip-border overflow-clip">
             <%= live_redirect "Leave", to: Routes.game_list_path(@socket, :index), class: "px-4 py-2 text-red-600 dark-t:text-red-400 hover:bg-red-100 dark-t:hover:bg-red-900 transition-colors" %>
           </div>
@@ -28,7 +28,7 @@
     </div>
 
     <header class="basis-full flex gap-1 sm:gap-2 items-center p-2 font-display text-xl">
-      <button class="md:hidden p-2 rounded-md hover:bg-theme-3 transition-colors" onclick="window.util.toggleSidebar();">
+      <button phx-click={Util.toggle_sidebar()} class="md:hidden p-2 rounded-md hover:bg-theme-3 transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
@@ -61,13 +61,13 @@
     <aside id="sidebar" class="shrink-0 flex flex-col gap-2 p-2 max-w-xs basis-80 absolute inset-0 -translate-x-full sidebar-toggled:transform-none transition-transform duration-300 bg-black md:bg-transparent bg-opacity-50 dark-t:bg-opacity-75 md:static md:transform-none z-10 before:bg-gradient-to-r before:absolute before:from-[#00000080] before:to-transparent before:inset-0 before:left-full before:right-0 sidebar-toggled:before:-right-full before:transition-[right] before:duration-300 md:before:content-none">
       <div class="flex md:hidden justify-between">
         <div class="relative">
-          <button class="p-2 rounded-md hover:bg-theme-3 transition-colors" onclick="window.util.toggleLocalDropdown(this);">
+          <button phx-click={Util.toggle_class("#game-menu-mobile", "hidden")} class="p-2 rounded-md hover:bg-theme-3 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="h-7 w-7">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
             </svg>
           </button>
 
-          <div class="hidden rounded-lg shadow-equal absolute top-0 left-full translate-x-1 js-local-dropdown">
+          <div id="game-menu-mobile" class="hidden rounded-lg shadow-equal absolute top-0 left-full translate-x-1">
             <div class="flex flex-col bg-theme-2 border border-theme-3 rounded-lg clip-border overflow-clip">
               <%= live_redirect "Leave", to: Routes.game_list_path(@socket, :index), class: "px-4 py-2 text-red-600 dark-t:text-red-400 hover:bg-red-100 dark-t:hover:bg-red-900 transition-colors" %>
             </div>
