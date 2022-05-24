@@ -20,4 +20,8 @@ defmodule Engage.UserCosmetics do
     |> Repo.preload([:user, cosmetic: :game])
   end
 
+  def purchase_cosmetic_id_by_user_id(cosmetic_id, user_id) do
+true
+  end
+
 end

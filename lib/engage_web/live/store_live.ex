@@ -26,6 +26,11 @@ defmodule EngageWeb.StoreLive do
      )}
   end
 
+  def handle_event("buy-cosmetic", %{"cosmetic" => cosmetic}, socket) when is_map(cosmetic) do
+
+    {:noreply, socket}
+  end
+
   defp content_for_cosmetic(%Cosmetic{} = cosmetic) do
     content_for_cosmetic_application(cosmetic, cosmetic.application)
   end
@@ -33,8 +38,8 @@ defmodule EngageWeb.StoreLive do
   defp content_for_cosmetic_application(%Cosmetic{} = cosmetic, "x-color") do
     assigns = %{}
     ~H"""
-    <svg class={"stroke-[#{cosmetic.value}]"} version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg">
-      <path fill="none" stroke-linecap="round" stroke-width="0.4" d="">
+    <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg">
+      <path style={"stroke: #{cosmetic.value};"} fill="none" stroke-linecap="round" stroke-width="0.4" d="">
         <animate attributeName="d" values="M1 1 l0 0;M1 1 l2 2;M1 1 l2 2 M1 3 l0 0;M1 1 l2 2 M1 3 l2-2" fill="freeze" dur="0.5s" calcMode="spline" keySplines="0 0 0.58 1;0 0 0 0;0 0 0.58 1" keyTimes="0;0.5;0.5;1" repeatCount="1" />
       </path>
     </svg>
@@ -45,7 +50,7 @@ defmodule EngageWeb.StoreLive do
     assigns = %{}
     ~H"""
     <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="2" cy="2" r="1.125" fill="none" stroke-linecap="round" stroke-width="0.4" stroke-dasharray="7.065" stroke-dashoffset="7.065" transform="rotate(-90 2 2)">
+      <circle style={"stroke: #{cosmetic.value};"} cx="2" cy="2" r="1.125" fill="none" stroke-linecap="round" stroke-width="0.4" stroke-dasharray="7.065" stroke-dashoffset="7.065" transform="rotate(-90 2 2)">
         <animate attributeName="stroke-dashoffset" values="7.065;0" fill="freeze" dur="0.75s" calcMode="spline" keySplines="0 0 0.58 1" repeatCount="1" />
       </circle>
     </svg>

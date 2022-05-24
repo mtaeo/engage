@@ -4,6 +4,8 @@
         <%= for cosmetic <- cosmetics do %>
             <div class="max-w-sm">
                 <%= content_for_cosmetic(cosmetic) %>
+                <p>Price: <%= cosmetic.price %></p>
+                <%# <button phx-click="buy-cosmetic" phx-value-cosmetic={cosmetic} class="outline">Buy</button> %>
             </div>
         <% end %>
     <% end %>
