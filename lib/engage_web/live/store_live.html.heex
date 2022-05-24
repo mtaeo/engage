@@ -1,9 +1,10 @@
 <div>
-    <h1>User Profile</h1>
-        <h6>Avatar borders</h6>
-        <h6>Profile backgrounds</h6>
-
-    <h1>Tic-Tac-Toe</h1>
-    <h1>Memory</h1>
-    <h1>Generic</h1>
+    <%= for {game, cosmetics} <- @games_cosmetics do %>
+        <h2><%= game.display_name %></h2>
+        <%= for cosmetic <- cosmetics do %>
+            <div class="max-w-sm">
+                <%= content_for_cosmetic(cosmetic) %>
+            </div>
+        <% end %>
+    <% end %>
 </div>

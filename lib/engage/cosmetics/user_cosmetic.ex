@@ -6,5 +6,6 @@ defmodule Engage.Cosmetics.UserCosmetic do
   schema "users_cosmetics" do
     belongs_to :cosmetic, Cosmetic
     belongs_to :user, User
+    field :is_equipped, :boolean, default: false
   end
 end
