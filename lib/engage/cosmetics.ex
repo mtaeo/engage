@@ -9,6 +9,10 @@ defmodule Engage.Cosmetics do
     |> Repo.preload([:game])
   end
 
+  def get_cosmetic_by_id(id) when is_integer(id) do
+    Repo.one(from c in Cosmetic, where: c.id == ^id)
+  end
+
   def get_all_cosmetics_by_game_id(game_id) when is_integer(game_id) do
     Repo.all(from c in Cosmetic, where: c.game_id == ^game_id)
     |> Repo.preload([:game])

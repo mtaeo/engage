@@ -1,9 +1,11 @@
 defmodule EngageWeb.StoreLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
   import EngageWeb.LiveHelpers
+  import Ecto.Changeset
   alias Engage.Users.User
   alias Engage.{UserCosmetics, Cosmetics, Games}
   alias Engage.Cosmetics.Cosmetic
+  alias EngageWeb.Router.Helpers, as: Routes
 
   def mount(_params, session, socket) do
     socket =
@@ -29,19 +31,53 @@ defmodule EngageWeb.StoreLive do
 
   def handle_event("buy-cosmetic", %{"cosmetic-id" => cosmetic_id}, socket) do
     cosmetic_id = String.to_integer(cosmetic_id)
-    UserCosmetics.purchase_cosmetic(socket.assigns.user.id, cosmetic_id)
+
+    socket =
+      case UserCosmetics.purchase_cosmetic(socket.assigns.user.id, cosmetic_id) do
+        {:ok, _uc} ->
+          push_redirect(socket, to: Routes.store_path(socket, :index))
+
+        {:error, changeset} ->
+          coins_error_message = traverse_errors(changeset, fn {msg, opts} -> {msg, opts} end).coins
+          {message, _validations} = List.first(coins_error_message)
+
+          message = message || "There was an error while purchasing your cosmetic!"
+          socket
+          |> put_flash(:error,  message)
+      end
+
     {:noreply, socket}
   end
 
   def handle_event("equip-cosmetic", %{"cosmetic-id" => cosmetic_id}, socket) do
     cosmetic_id = String.to_integer(cosmetic_id)
-    UserCosmetics.equip_cosmetic(socket.assigns.user.id, cosmetic_id)
+
+    socket =
+      case UserCosmetics.equip_cosmetic(socket.assigns.user.id, cosmetic_id) do
+        {:ok, _uc} ->
+          push_redirect(socket, to: Routes.store_path(socket, :index))
+
+        {:error, _changeset} ->
+          socket
+          |> put_flash(:error, "There was an error while equipping your cosmetic!")
+      end
+
     {:noreply, socket}
   end
 
   def handle_event("unequip-cosmetic", %{"cosmetic-id" => cosmetic_id}, socket) do
     cosmetic_id = String.to_integer(cosmetic_id)
-    UserCosmetics.unequip_cosmetic(socket.assigns.user.id, cosmetic_id)
+
+    socket =
+      case UserCosmetics.unequip_cosmetic(socket.assigns.user.id, cosmetic_id) do
+        {:ok, _uc} ->
+          push_redirect(socket, to: Routes.store_path(socket, :index))
+
+        {:error, _changeset} ->
+          socket
+          |> put_flash(:error, "There was an error while unequipping your cosmetic!")
+      end
+
     {:noreply, socket}
   end
 

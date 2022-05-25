@@ -27,20 +27,27 @@ defmodule Engage.UserCosmetics do
     user = Repo.one(from u in User, where: u.id == ^user_id)
     cosmetic = Repo.one(from c in Cosmetic, where: c.id == ^cosmetic_id)
 
-    if not user_owns_cosmetic?(user_id, cosmetic_id) do
-      Repo.transaction(fn ->
-        Repo.update(
-          User.purchase_cosmetic_changeset(
-            user,
-            %{coins: user.coins - cosmetic.price}
-          )
+    if user_owns_cosmetic?(user_id, cosmetic_id) do
+      {:error, nil}
+    else
+      changeset =
+        User.purchase_cosmetic_changeset(
+          user,
+          %{coins: user.coins - cosmetic.price}
         )
 
-        Repo.insert(%UserCosmetic{
-          user_id: user_id,
-          cosmetic_id: cosmetic_id
-        })
-      end)
+      if changeset.valid? do
+        Repo.transaction(fn ->
+          Repo.update(changeset)
+
+          Repo.insert(%UserCosmetic{
+            user_id: user_id,
+            cosmetic_id: cosmetic_id
+          })
+        end)
+      else
+        {:error, changeset}
+      end
     end
   end
 
