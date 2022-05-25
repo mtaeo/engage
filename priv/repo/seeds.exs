@@ -1,4 +1,5 @@
 alias Engage.Repo
+alias Engage.Cosmetics.{Cosmetic, UserCosmetic}
 alias Engage.Games.{Game, XpToLevel}
 alias Engage.Users.User
 
@@ -41,7 +42,9 @@ Repo.insert!(%XpToLevel{id: 15, level: 15, min_xp: 10_000})
 
 Repo.insert!(
   User.registration_changeset(
-    %User{},
+    %User{
+      coins: 1000
+    },
     %{
       username: "test",
       email: "test@test.com",
@@ -53,7 +56,9 @@ Repo.insert!(
 
 Repo.insert!(
   User.registration_changeset(
-    %User{},
+    %User{
+      coins: 5000
+    },
     %{
       username: "moderator",
       email: "moderator@moderator.com",
@@ -65,7 +70,9 @@ Repo.insert!(
 
 Repo.insert!(
   User.registration_changeset(
-    %User{},
+    %User{
+      coins: 9999
+    },
     %{
       username: "admin",
       email: "admin@admin.com",
@@ -74,3 +81,71 @@ Repo.insert!(
     }
   )
 )
+
+Repo.insert!(
+  Cosmetic.changeset(
+    %Cosmetic{},
+    %{
+      game_id: 1,
+      application: "x-color",
+      value: "#FF0000",
+      price: 250
+    }
+  )
+)
+
+Repo.insert!(
+  Cosmetic.changeset(
+    %Cosmetic{},
+    %{
+      game_id: 1,
+      application: "o-color",
+      value: "#00FF00",
+      price: 250
+    }
+  )
+)
+
+Repo.insert!(
+  Cosmetic.changeset(
+    %Cosmetic{},
+    %{
+      game_id: 1,
+      application: "x-color",
+      value: "#0000FF",
+      price: 250
+    }
+  )
+)
+
+Repo.insert!(
+  Cosmetic.changeset(
+    %Cosmetic{},
+    %{
+      game_id: nil,
+      application: "profile-background",
+      value: "#FF00FF",
+      price: 500
+    }
+  )
+)
+
+Repo.insert!(%UserCosmetic{
+  user_id: 1,
+  cosmetic_id: 1
+})
+
+Repo.insert!(%UserCosmetic{
+  user_id: 1,
+  cosmetic_id: 2
+})
+
+Repo.insert!(%UserCosmetic{
+  user_id: 1,
+  cosmetic_id: 3
+})
+
+Repo.insert!(%UserCosmetic{
+  user_id: 1,
+  cosmetic_id: 4
+})

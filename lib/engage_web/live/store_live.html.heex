@@ -1,0 +1,20 @@
+<div>
+    <%= for {game, cosmetics} <- @games_cosmetics do %>
+        <h2><%= game.display_name %></h2>
+        <%= for cosmetic <- cosmetics do %>
+            <div class="max-w-sm">
+                <%= content_for_cosmetic(cosmetic) %>
+                <p>Price: <%= cosmetic.price %></p>
+                <%= if owner_of_cosmetic?(@user, cosmetic) do %>
+                    <%= if equipped_cosmetic?(@user, cosmetic) do %>
+                        <button phx-click="unequip-cosmetic" phx-value-cosmetic-id={cosmetic.id} class="outline">Unequip</button>
+                    <% else %>
+                        <button phx-click="equip-cosmetic" phx-value-cosmetic-id={cosmetic.id} class="outline">Equip</button>
+                    <% end %>
+                <% else %>
+                    <button phx-click="buy-cosmetic" phx-value-cosmetic-id={cosmetic.id} class="outline">Buy</button>
+                <% end %>
+            </div>
+        <% end %>
+    <% end %>
+</div>
