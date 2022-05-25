@@ -384,8 +384,8 @@ defmodule Engage.Users do
     Repo.exists?(query)
   end
 
-  def get_all_users_sorted_by_level_desc() do
-    query = from u in User, order_by: [desc: :total_xp]
+  def get_users_for_leaderboard() do
+    query = from u in User, where: u.total_xp > 0, order_by: [desc: :total_xp]
     Repo.all(query)
   end
 
