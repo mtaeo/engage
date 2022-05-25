@@ -1,7 +1,8 @@
 defmodule EngageWeb.StoreLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
   import EngageWeb.LiveHelpers
-  alias Engage.{Cosmetics, UserCosmetics, Games}
+  alias Engage.Users.User
+  alias Engage.{UserCosmetics, Cosmetics, Games}
   alias Engage.Cosmetics.Cosmetic
 
   def mount(_params, session, socket) do
@@ -26,8 +27,21 @@ defmodule EngageWeb.StoreLive do
      )}
   end
 
-  def handle_event("buy-cosmetic", %{"cosmetic" => cosmetic}, socket) when is_map(cosmetic) do
+  def handle_event("buy-cosmetic", %{"cosmetic-id" => cosmetic_id}, socket) do
+    cosmetic_id = String.to_integer(cosmetic_id)
+    UserCosmetics.purchase_cosmetic(socket.assigns.user.id, cosmetic_id)
+    {:noreply, socket}
+  end
 
+  def handle_event("equip-cosmetic", %{"cosmetic-id" => cosmetic_id}, socket) do
+    cosmetic_id = String.to_integer(cosmetic_id)
+    UserCosmetics.equip_cosmetic(socket.assigns.user.id, cosmetic_id)
+    {:noreply, socket}
+  end
+
+  def handle_event("unequip-cosmetic", %{"cosmetic-id" => cosmetic_id}, socket) do
+    cosmetic_id = String.to_integer(cosmetic_id)
+    UserCosmetics.unequip_cosmetic(socket.assigns.user.id, cosmetic_id)
     {:noreply, socket}
   end
 
@@ -37,6 +51,7 @@ defmodule EngageWeb.StoreLive do
 
   defp content_for_cosmetic_application(%Cosmetic{} = cosmetic, "x-color") do
     assigns = %{}
+
     ~H"""
     <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg">
       <path style={"stroke: #{cosmetic.value};"} fill="none" stroke-linecap="round" stroke-width="0.4" d="">
@@ -48,6 +63,7 @@ defmodule EngageWeb.StoreLive do
 
   defp content_for_cosmetic_application(%Cosmetic{} = cosmetic, "o-color") do
     assigns = %{}
+
     ~H"""
     <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg">
       <circle style={"stroke: #{cosmetic.value};"} cx="2" cy="2" r="1.125" fill="none" stroke-linecap="round" stroke-width="0.4" stroke-dasharray="7.065" stroke-dashoffset="7.065" transform="rotate(-90 2 2)">
@@ -57,15 +73,11 @@ defmodule EngageWeb.StoreLive do
     """
   end
 
-  defp user_owner_of_cosmetic?(user_id, cosmetic_id)
-       when is_integer(user_id) and
-              is_integer(cosmetic_id) do
-    false
+  defp owner_of_cosmetic?(%User{} = user, %Cosmetic{} = cosmetic) do
+    UserCosmetics.user_owns_cosmetic?(user.id, cosmetic.id)
   end
 
-  defp user_equipped_cosmetic?(user_id, cosmetic_id)
-       when is_integer(user_id) and
-              is_integer(cosmetic_id) do
-                false
+  defp equipped_cosmetic?(%User{} = user, %Cosmetic{} = cosmetic) do
+    UserCosmetics.user_equipped_cosmetic?(user.id, cosmetic.id)
   end
 end

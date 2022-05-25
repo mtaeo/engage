@@ -172,4 +172,16 @@ defmodule Engage.Users.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
+
+  def purchase_cosmetic_changeset(user, attrs, _opts \\ []) do
+    user
+    |> cast(attrs, [:coins])
+    |> validate_coins
+  end
+
+  defp validate_coins(changeset) do
+    changeset
+    |> validate_required([:coins])
+    |> validate_number(:coins, greater_than_or_equal_to: 0, message: "You don't have enough coins to purchase this item!")
+  end
 end

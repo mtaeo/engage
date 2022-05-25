@@ -1,7 +1,8 @@
 defmodule Engage.Cosmetics do
   import Ecto.Query, warn: false
   alias Engage.Repo
-  alias Engage.Cosmetics.Cosmetic
+  alias Engage.Users.User
+  alias Engage.Cosmetics.{Cosmetic, UserCosmetic}
 
   def get_all_cosmetics do
     Repo.all(Cosmetic)
