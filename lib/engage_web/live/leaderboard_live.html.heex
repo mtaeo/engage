@@ -1,0 +1,7 @@
+<div>
+
+<%= for user <- @users do %>
+    <p class={ if user.id === @user.id, do: "bg-blue-100"}><%= "##{user.rank} #{user.username} XP: #{user.total_xp}" %></p>
+<% end %>
+
+</div>
