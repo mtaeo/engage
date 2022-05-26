@@ -94,7 +94,7 @@ defmodule EngageWeb.TicTacToeLive do
   end
 
   def handle_event("clipboard-insert", _, socket) do
-    :timer.send_after(2500, :clear_flash)
+    :timer.send_after(3500, :clear_flash)
 
     {:noreply,
      socket
