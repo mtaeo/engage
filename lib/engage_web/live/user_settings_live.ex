@@ -20,7 +20,7 @@ defmodule EngageWeb.UserSettingsLive do
         avatar_changeset = User.avatar_changeset(user)
 
         socket
-        |> assign(user: user)
+        |> assign(user: user, user_role: user.role)
         |> assign(profile_changeset: profile_changeset)
         |> assign(
           change_password: change_password,

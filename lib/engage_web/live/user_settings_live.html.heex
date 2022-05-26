@@ -40,29 +40,31 @@
       <%= select f, :gravatar_style, gravatar_styles(), class: "px-4 py-2 rounded-xl bg-transparent border-2 border-theme-5 hover:border-theme-7 transition-colors" %>
   </div>
 
-  <section class="flex flex-col gap-4 max-w-sm">
-    <.form let={f_password} for={@change_password_changeset} phx-change="validate_change_password" phx-submit="submit_change_password" class="contents">
-      <h2 class="text-lg sm:text-2xl">Change password</h2>
+  <%= if @user_role !== :guest do %>
+    <section class="flex flex-col gap-4 max-w-sm">
+      <.form let={f_password} for={@change_password_changeset} phx-change="validate_change_password" phx-submit="submit_change_password" class="contents">
+        <h2 class="text-lg sm:text-2xl">Change password</h2>
 
-      <div class="flex flex-col gap-1">
-        <%= label f_password, :old_password, "Old password" %>
-        <%= password_input f_password, :old_password, value: Changeset.get_change(@change_password_changeset, :old_password, ""), "phx-debounce": "100", required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-theme-5 hover:border-theme-7 transition-colors" %>
-        <%= error_tag f_password, :old_password %>
-      </div>
+        <div class="flex flex-col gap-1">
+          <%= label f_password, :old_password, "Old password" %>
+          <%= password_input f_password, :old_password, value: Changeset.get_change(@change_password_changeset, :old_password, ""), "phx-debounce": "100", required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-theme-5 hover:border-theme-7 transition-colors" %>
+          <%= error_tag f_password, :old_password %>
+        </div>
 
-      <div class="flex flex-col gap-1">
-        <%= label f_password, :new_password, "New password" %>
-        <%= password_input f_password, :new_password, value: Changeset.get_change(@change_password_changeset, :new_password, ""), "phx-debounce": "100", required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-theme-5 hover:border-theme-7 transition-colors" %>
-        <%= error_tag f_password, :new_password %>
-      </div>
+        <div class="flex flex-col gap-1">
+          <%= label f_password, :new_password, "New password" %>
+          <%= password_input f_password, :new_password, value: Changeset.get_change(@change_password_changeset, :new_password, ""), "phx-debounce": "100", required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-theme-5 hover:border-theme-7 transition-colors" %>
+          <%= error_tag f_password, :new_password %>
+        </div>
 
-      <div class="flex flex-col gap-1">
-        <%= label f_password, :new_password_repeat, "Repeat new password" %>
-        <%= password_input f_password, :new_password_repeat, value: Changeset.get_change(@change_password_changeset, :new_password_repeat, ""), "phx-debounce": "100", required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-theme-5 hover:border-theme-7 transition-colors" %>
-        <%= error_tag f_password, :new_password_repeat %>
-      </div>
+        <div class="flex flex-col gap-1">
+          <%= label f_password, :new_password_repeat, "Repeat new password" %>
+          <%= password_input f_password, :new_password_repeat, value: Changeset.get_change(@change_password_changeset, :new_password_repeat, ""), "phx-debounce": "100", required: true, class: "px-4 py-2 rounded-xl bg-transparent border-2 border-theme-5 hover:border-theme-7 transition-colors" %>
+          <%= error_tag f_password, :new_password_repeat %>
+        </div>
 
-      <button type="submit" disabled={!changeset_valid?(@change_password_changeset)} class="block px-4 py-2 mt-2 rounded-xl text-theme-neutral-1 bg-theme-9 hover:bg-theme-7 disabled:bg-theme-6 disabled:cursor-not-allowed font-display transition-colors">Change password</button>
-    </.form>
-  </section>
+        <button type="submit" disabled={!changeset_valid?(@change_password_changeset)} class="block px-4 py-2 mt-2 rounded-xl text-theme-neutral-1 bg-theme-9 hover:bg-theme-7 disabled:bg-theme-6 disabled:cursor-not-allowed font-display transition-colors">Change password</button>
+      </.form>
+    </section>
+  <% end %>
 </div>
