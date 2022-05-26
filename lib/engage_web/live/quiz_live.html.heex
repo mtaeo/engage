@@ -1,0 +1,9 @@
+<%= if @quiz_started do %>
+    <p>Question: 1</p>
+<% else %>
+    <div>
+        <p>Daily Challenge Quiz: <%= todays_date() %></p>
+        <p><%= @quiz_title %></p>
+        <button phx-click="start-quiz" class="outline">Start Quiz</button>
+    </div>
+<% end %>
