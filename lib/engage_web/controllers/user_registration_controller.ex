@@ -3,7 +3,6 @@ defmodule EngageWeb.UserRegistrationController do
 
   alias Engage.Users
   alias Engage.Users.User
-  alias EngageWeb.UserAuth
   alias EngageWeb.Router.Helpers, as: Routes
 
   def new(conn, _params) do

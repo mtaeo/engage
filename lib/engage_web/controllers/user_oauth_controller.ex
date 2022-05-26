@@ -17,6 +17,7 @@ defmodule EngageWeb.UserOauthController do
     user_params = %{
       username: username,
       email: username <> "@engage.com",
+      role: :guest,
       password: random_password(),
     }
 
