@@ -52,6 +52,10 @@ defmodule EngageWeb.GameLobbyLive do
     {:noreply, push_redirect(socket, to: path)}
   end
 
+  def handle_info(:clear_flash, socket) do
+    {:noreply, clear_flash(socket)}
+  end
+
   def handle_event("kick-player", %{"kicked-player-id" => kicked_player_id}, socket) do
     kicked_player_id = String.to_integer(kicked_player_id)
 
@@ -79,6 +83,14 @@ defmodule EngageWeb.GameLobbyLive do
         else: put_flash(socket, :error, "Not enough players have joined.")
 
     {:noreply, socket}
+  end
+
+  def handle_event("clipboard-insert", _, socket) do
+    :timer.send_after(3500, :clear_flash)
+
+    {:noreply,
+     socket
+     |> put_flash(:info, "Copied game code \"#{socket.assigns.game_code}\" to clipboard.")}
   end
 
   defp setup(socket, game, game_code) do
