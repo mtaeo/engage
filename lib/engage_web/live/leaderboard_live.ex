@@ -2,6 +2,7 @@ defmodule EngageWeb.LeaderboardLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
   import EngageWeb.LiveHelpers
   alias Engage.Users
+  alias EngageWeb.Router.Helpers, as: Routes
 
   def mount(_params, session, socket) do
     socket =
@@ -15,7 +16,8 @@ defmodule EngageWeb.LeaderboardLive do
       |> Enum.with_index()
       |> Enum.map(fn {user, index} ->
         Map.merge(user, %{
-          rank: index + 1
+          rank: index + 1,
+          avatar_src: Engage.Helpers.Gravatar.get_image_src_by_email(user.email, user.gravatar_style)
         })
       end)
 
