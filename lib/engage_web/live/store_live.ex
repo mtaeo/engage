@@ -2,6 +2,7 @@ defmodule EngageWeb.StoreLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
   import EngageWeb.LiveHelpers
   import Ecto.Changeset
+  alias Phoenix.LiveView.JS
   alias Engage.Users.User
   alias Engage.{UserCosmetics, Cosmetics, Games}
   alias Engage.Cosmetics.Cosmetic
@@ -22,11 +23,15 @@ defmodule EngageWeb.StoreLive do
         {g, cosmetics}
       end)
 
-    {:ok,
-     assign(socket,
-       games: games,
-       games_cosmetics: games_cosmetics
-     )}
+    socket =
+      socket
+      |> assign(
+        games: games,
+        games_cosmetics: games_cosmetics
+      )
+      |> push_event("init-scrollx", %{class: "js-scrollx"})
+
+    {:ok, socket}
   end
 
   def handle_event("buy-cosmetic", %{"cosmetic-id" => cosmetic_id}, socket) do
@@ -86,7 +91,9 @@ defmodule EngageWeb.StoreLive do
 
   defp item_button(user, cosmetic) do
     assigns = %{}
-    classes = "grid place-items-center p-2 rounded-full bg-accent-500 hover:bg-accent-400 text-neutral-50 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 transition-colors absolute right-2 top-0 -translate-y-1/2"
+
+    classes =
+      "p-2 rounded-full bg-accent-500 hover:bg-accent-400 text-neutral-50 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 transition-colors absolute right-2 top-0 -translate-y-1/2"
 
     cond do
       owner_of_cosmetic?(user, cosmetic) and equipped_cosmetic?(user, cosmetic) ->
@@ -116,30 +123,6 @@ defmodule EngageWeb.StoreLive do
         </button>
         """
     end
-  end
-
-  defp cosmetic_preview(%Cosmetic{} = cosmetic) do
-    cosmetic_preview(cosmetic, cosmetic.application)
-  end
-
-  defp cosmetic_preview(%Cosmetic{} = cosmetic, "x-color") do
-    assigns = %{}
-
-    ~H"""
-    <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg" class="w-32 h-32">
-      <path style={"stroke: #{cosmetic.value};"} fill="none" stroke-linecap="round" stroke-width="0.4" d="M1 1 l2 2 M1 3 l2-2" />
-    </svg>
-    """
-  end
-
-  defp cosmetic_preview(%Cosmetic{} = cosmetic, "o-color") do
-    assigns = %{}
-
-    ~H"""
-    <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg" class="w-32 h-32">
-      <circle style={"stroke: #{cosmetic.value};"} cx="2" cy="2" r="1.125" fill="none" stroke-linecap="round" stroke-width="0.4" stroke-dasharray="7.065" stroke-dashoffset="0" transform="rotate(-90 2 2)" />
-    </svg>
-    """
   end
 
   defp owner_of_cosmetic?(%User{} = user, %Cosmetic{} = cosmetic) do
