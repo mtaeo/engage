@@ -17,10 +17,22 @@ defmodule EngageWeb.LeaderboardLive do
       |> Enum.map(fn {user, index} ->
         Map.merge(user, %{
           rank: index + 1,
-          avatar_src: Engage.Helpers.Gravatar.get_image_src_by_email(user.email, user.gravatar_style)
+          avatar_src:
+            Engage.Helpers.Gravatar.get_image_src_by_email(user.email, user.gravatar_style)
         })
       end)
 
     {:ok, assign(socket, users: users)}
+  end
+
+  defp top_three(users) do
+    temp =
+      users
+      |> Stream.take(3)
+      |> Enum.reverse()
+
+    [nil, nil, nil | temp]
+    |> Enum.reverse()
+    |> Enum.take(3)
   end
 end
