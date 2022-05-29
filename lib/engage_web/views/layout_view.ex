@@ -1,5 +1,6 @@
 defmodule EngageWeb.LayoutView do
   use EngageWeb, :view
+  alias Phoenix.LiveView.JS
   alias EngageWeb.Util
 
   # Phoenix LiveDashboard is available only in development by default,
