@@ -1,20 +1,54 @@
-<div>
-    <%= for {game, cosmetics} <- @games_cosmetics do %>
-        <h2><%= game.display_name %></h2>
-        <%= for cosmetic <- cosmetics do %>
-            <div class="max-w-sm">
-                <%= content_for_cosmetic(cosmetic) %>
-                <p>Price: <%= cosmetic.price %></p>
-                <%= if owner_of_cosmetic?(@user, cosmetic) do %>
-                    <%= if equipped_cosmetic?(@user, cosmetic) do %>
-                        <button phx-click="unequip-cosmetic" phx-value-cosmetic-id={cosmetic.id} class="outline">Unequip</button>
-                    <% else %>
-                        <button phx-click="equip-cosmetic" phx-value-cosmetic-id={cosmetic.id} class="outline">Equip</button>
-                    <% end %>
-                <% else %>
-                    <button phx-click="buy-cosmetic" phx-value-cosmetic-id={cosmetic.id} class="outline">Buy</button>
-                <% end %>
-            </div>
-        <% end %>
-    <% end %>
+<div class="justify-self-center self-start w-full max-w-[80vw] md:max-w-[58vw] lg:max-w-[67vw] xl:max-w-4xl flex flex-col gap-8">
+  <h1 class="sr-only">Store</h1>
+
+  <%= for {game, cosmetics} <- @games_cosmetics do %>
+    <section class="flex flex-col gap-4 relative">
+      <div class="flex items-center gap-2 xs:gap-8">
+        <h2 class="text-xl"><%= game.display_name %></h2>
+        <%#= live_redirect "Show all" to: EngageWeb.Router.Helpers.store_path(@socket, :index, game.name), class: "" %>
+        <a href="#" class="flex items-center px-2 py-1 rounded-xl border-2 border-theme-5 hover:border-theme-7 focus:border-theme-7 focus:ring-0 transition-colors">
+          Show all
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </a>
+      </div>
+
+      <div id={"scroll-#{game.name}"} class="overflow-hidden scroll-smooth js-scrollx">
+        <ul class="flex gap-4 sm:gap-8">
+          <%= for cosmetic <- cosmetics do %>
+            <li class="basis-64 shrink-0 rounded-lg shadow-equal shadow-theme-neutral-4 dark-t:shadow-theme-neutral-1">
+              <div class="flex flex-col bg-theme-2 dark-t:bg-theme-3 rounded-lg overflow-clip clip-border">
+                <div class="basis-36 shrink-0 grid gap-4">
+                  <img src="" alt="preview image placeholder" class="grid place-items-center bg-theme-3 dark-t:bg-theme-4">
+                </div>
+
+                <div class="flex justify-between gap-2 pr-12 p-3 relative font-display">
+                  <div class="grid place-items-center"><%= cosmetic.application %> <%= cosmetic.value %></div>
+
+                  <%= if not owner_of_cosmetic?(@user, cosmetic) do %>
+                    <div class="grid place-items-center text-amber-500 dark-t:text-yellow-400"><%= cosmetic.price %>¢</div>
+                  <% end %>
+
+                  <%= item_button(@user, cosmetic) %>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+
+        <button class="hidden p-2 rounded-full bg-accent-500 opacity-60 hover:opacity-100 text-neutral-50 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 transition-opacity absolute top-1/2 -translate-x-1/2 left-0 js-scrollx-left" onclick={"window.util.scrollXPage(this,'scroll-#{game.name}', -1)"} data-hide={JS.add_class("hidden", time: 0)} data-show={JS.remove_class("hidden", time: 0)}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+        </button>
+
+        <button class="hidden p-2 rounded-full bg-accent-500 opacity-60 hover:opacity-100 text-neutral-50 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 transition-opacity absolute top-1/2 translate-x-1/2 right-0 js-scrollx-right" onclick={"window.util.scrollXPage(this,'scroll-#{game.name}', 1)"} data-hide={JS.add_class("hidden", time: 0)} data-show={JS.remove_class("hidden", time: 0)}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
+      </div>
+    </section>
+  <% end %>
 </div>
