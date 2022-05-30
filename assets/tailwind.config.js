@@ -41,6 +41,9 @@ module.exports = {
 			backgroundImage: {
 				'pattern': "var(--bg-pattern)"
 			},
+			borderWidth: {
+				'3': '3px'
+			},
 			boxShadow: {
 				'equal': '0 0 12px -3px hsl(0 0% 0% / 0.5)',
 				'equal-lg': '0 0 12px 0px hsl(0 0% 0% / 0.5)'
