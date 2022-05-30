@@ -1,9 +1,9 @@
 <div class="justify-self-center self-start w-full max-w-lg flex flex-col gap-8">
   <h1 class="sr-only"><%= @profile.username %></h1>
 
-  <div class="self-center flex flex-col sm:flex-row sm:items-center gap-4 lg:gap-8 font-display">
-    <div class="self-center basis-full shrink-[2] max-w-[16rem] aspect-square grid">
-      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 4" fill="none" class="area-full bg-theme-3 dark-t:bg-theme-1 rounded-full">
+  <div class="self-center flex flex-col sm:flex-row sm:items-center gap-4 md:gap-8 font-display">
+    <div class="self-center max-w-[16rem] aspect-square grid">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" class="area-full bg-theme-3 dark-t:bg-theme-1 rounded-full">
         <defs>
           <linearGradient id="level-gradient-1" gradientTransform="rotate(180, 0.5, 0.5)">
             <stop offset="0%" stop-color="#471278" />
@@ -15,22 +15,22 @@
           </linearGradient>
         </defs>
 
-        <g stroke-width="4" stroke-dasharray="12.566" stroke-dashoffset="12.566" transform="rotate(35 2 2)">
-      	  <circle cx="2" cy="2" r="2" stroke="url(#level-gradient-2)">
-      	  	<animate attributeName="stroke-dashoffset" values={"12.566;#{ (1 - @profile.level_up_progress) * 12.566 }"} fill="freeze" dur="1s" calcMode="spline" keySplines="0 0 0.58 1" repeatCount="1" />
+        <g stroke-width="8" stroke-dasharray="779.1" stroke-dashoffset="779.1" stroke-linecap="round" transform="rotate(37 128 128)">
+      	  <circle cx="128" cy="128" r="124" stroke="url(#level-gradient-2)">
+      	  	<animate attributeName="stroke-dashoffset" values={"779.1;#{ (1 - @profile.level_up_progress) * 779.1 }"} fill="freeze" dur="1s" calcMode="spline" keySplines="0 0 0.58 1" repeatCount="1" />
       	  </circle>
 
-      	  <circle cx="2" cy="2" r="2" stroke="url(#level-gradient-1)">
-      	  	<animate attributeName="stroke-dashoffset" values={"12.566;#{ (1 - min(0.5, @profile.level_up_progress)) * 12.566 }"} fill="freeze" dur="1s" calcMode="spline" keySplines="0 0 0.58 1" repeatCount="1" />
+      	  <circle cx="128" cy="128" r="124" stroke="url(#level-gradient-1)">
+      	  	<animate attributeName="stroke-dashoffset" values={"779.1;#{ (1 - min(0.5, @profile.level_up_progress)) * 779.1 }"} fill="freeze" dur="1s" calcMode="spline" keySplines="0 0 0.58 1" repeatCount="1" />
       	  </circle>
         </g>
       </svg>
 
-      <div class="area-full p-1" title={"#{@profile.current_level_xp}/#{@profile.upper_xp} XP"}>
+      <div class="area-full p-[3.125%]" title={"#{@profile.current_level_xp}/#{@profile.upper_xp} XP"}>
         <img src={@profile.avatar_src} alt="avatar" class="max-w-full rounded-full bg-theme-1 dark-t:bg-theme-2">
       </div>
 
-      <div class="area-full place-self-end mb-[15%] mr-[15%] translate-x-1/2 translate-y-1/2 grid place-items-center w-12 aspect-square bg-theme-2 border-2 border-accent-500 rounded-full text-lg lg:text-2xl leading-none" title={"Level #{@profile.level}"}>
+      <div class="area-full place-self-end mb-[15%] mr-[15%] translate-x-1/2 translate-y-1/2 grid place-items-center w-12 aspect-square bg-theme-2 border-2 border-accent-500 rounded-full text-2xl leading-none" title={"Level #{@profile.level}"}>
         <%= @profile.level %>
       </div>
     </div>
