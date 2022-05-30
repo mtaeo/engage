@@ -12,6 +12,7 @@ defmodule EngageWeb.UserResetPasswordController do
   def create(conn, %{"user" => %{"email" => email}}) do
     if user = Users.get_user_by_email(email) do
       Users.deliver_user_reset_password_instructions(
+        conn,
         user,
         &Routes.user_reset_password_url(conn, :edit, &1)
       )
