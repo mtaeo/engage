@@ -8,9 +8,10 @@ defmodule EngageWeb.UserProfileLive do
   import EngageWeb.LiveHelpers
 
   def mount(_params, session, socket) do
-    socket = live_auth_check(socket, session, fn socket, user ->
-      live_template_assigns(socket, user)
-    end)
+    socket =
+      live_auth_check(socket, session, fn socket, user ->
+        live_template_assigns(socket, user)
+      end)
 
     {:ok, socket}
   end
@@ -34,14 +35,17 @@ defmodule EngageWeb.UserProfileLive do
 
     socket =
       assign(socket,
-        username: fetched_user.username,
-        coins: fetched_user.coins,
-        bio: fetched_user.bio,
-        profile_image_src: Gravatar.get_image_src_by_email(fetched_user.email, fetched_user.gravatar_style),
-        level: level,
-        current_level_xp: current_level_xp,
-        upper_xp: upper_xp,
-        level_up_percentage: current_level_xp / (upper_xp || fetched_user.total_xp) * 100
+        profile: %{
+          username: fetched_user.username,
+          coins: fetched_user.coins,
+          bio: fetched_user.bio,
+          avatar_src:
+            Gravatar.get_image_src_by_email(fetched_user.email, fetched_user.gravatar_style),
+          level: level,
+          current_level_xp: current_level_xp,
+          upper_xp: upper_xp,
+          level_up_progress: current_level_xp / (upper_xp || fetched_user.total_xp)
+        }
       )
 
     {:noreply, socket}
