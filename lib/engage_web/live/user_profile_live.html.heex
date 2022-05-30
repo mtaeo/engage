@@ -1,30 +1,50 @@
-<div class="justify-self-center self-start w-full max-w-4xl flex flex-col gap-8">
-  <h1 class="text-lg sm:text-2xl"><%= @username %></h1>
+<div class="justify-self-center self-start w-full max-w-lg flex flex-col gap-8">
+  <h1 class="sr-only"><%= @profile.username %></h1>
 
-  <div class="flex flex-col md:flex-row gap-4 lg:gap-8 font-display">
-    <div class="self-center max-w-[256px] basis-full shrink-[2] relative">
-      <img src={@profile_image_src} alt="avatar" class="w-full rounded-full border-4 border-accent-500">
-      <div class="absolute bottom-[15%] right-[15%] translate-x-1/2 translate-y-1/2 grid place-items-center w-12 aspect-square bg-theme-2 border-2 border-accent-500 rounded-full text-lg lg:text-2xl leading-none">
-        <%= @level %>
+  <div class="self-center flex flex-col sm:flex-row sm:items-center gap-4 md:gap-8 font-display">
+    <div class="self-center max-w-[16rem] aspect-square grid">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" class="area-full bg-theme-3 dark-t:bg-theme-1 rounded-full">
+        <defs>
+          <linearGradient id="level-gradient-1" gradientTransform="rotate(180, 0.5, 0.5)">
+            <stop offset="0%" stop-color="#471278" />
+            <stop offset="100%" stop-color="#9727e7" />
+          </linearGradient>
+          <linearGradient id="level-gradient-2" gradientTransform="rotate(0, 0.5, 0.5)">
+            <stop offset="0%" stop-color="#9727e7" />
+            <stop offset="100%" stop-color="#d88efb" />
+          </linearGradient>
+        </defs>
+
+        <g stroke-width="8" stroke-dasharray="779.1" stroke-dashoffset="779.1" stroke-linecap="round" transform="rotate(37 128 128)">
+      	  <circle cx="128" cy="128" r="124" stroke="url(#level-gradient-2)">
+      	  	<animate attributeName="stroke-dashoffset" values={"779.1;#{ (1 - @profile.level_up_progress) * 779.1 }"} fill="freeze" dur="1s" calcMode="spline" keySplines="0 0 0.58 1" repeatCount="1" />
+      	  </circle>
+
+      	  <circle cx="128" cy="128" r="124" stroke="url(#level-gradient-1)">
+      	  	<animate attributeName="stroke-dashoffset" values={"779.1;#{ (1 - min(0.5, @profile.level_up_progress)) * 779.1 }"} fill="freeze" dur="1s" calcMode="spline" keySplines="0 0 0.58 1" repeatCount="1" />
+      	  </circle>
+        </g>
+      </svg>
+
+      <div class="area-full p-[3.125%]" title={"#{@profile.current_level_xp}/#{@profile.upper_xp} XP"}>
+        <img src={@profile.avatar_src} alt="avatar" class="max-w-full rounded-full bg-theme-1 dark-t:bg-theme-2">
+      </div>
+
+      <div class="area-full place-self-end mb-[15%] mr-[15%] translate-x-1/2 translate-y-1/2 grid place-items-center w-12 aspect-square bg-theme-2 border-2 border-accent-500 rounded-full text-2xl leading-none" title={"Level #{@profile.level}"}>
+        <%= @profile.level %>
       </div>
     </div>
 
-    <div class="basis-full shrink flex flex-col justify-center gap-2">
-      <div class="rounded-full bg-theme-2 dark-t:bg-theme-1">
-        <div class="h-3 rounded-full bg-gradient-to-r from-accent-600 to-accent-400" style={"width: #{ @level_up_percentage }%;"}></div>
-      </div>
-
-      <div class="flex justify-between text-base sm:text-lg">
-        <div><%= @current_level_xp %> / <%= @upper_xp %> XP</div>
-        <div><%= @coins %>¢</div>
-      </div>
+    <div class="flex flex-col gap-4 leading-none">
+      <p class="text-xl"><%= @profile.username %></p>
+      <p class="text-amber-500 dark-t:text-yellow-400"><%= @profile.coins %>¢</p>
     </div>
   </div>
 
   <section class="flex flex-col gap-2">
-    <h2 class="text-lg sm:text-2xl">Bio</h2>
-    <div class={"max-w-prose p-4 border rounded-2xl border-theme-3 break-words #{unless @bio, do: "italic"}"}>
-      <%= if @bio, do: @bio, else: "We don't know much about them, but we're sure #{@username} is great." %>
+    <h2 class="text-lg">Bio</h2>
+    <div class={"max-w-prose p-4 border rounded-2xl border-theme-3 break-words #{unless @profile.bio, do: "italic"}"}>
+      <%= if @profile.bio, do: @profile.bio, else: "We don't know much about them, but we're sure #{@profile.username} is great." %>
     </div>
   </section>
 </div>
