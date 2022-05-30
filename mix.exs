@@ -45,6 +45,7 @@ defmodule Engage.MixProject do
       {:phoenix_live_dashboard, "~> 0.6"},
       {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.6"},
+      {:phoenix_swoosh, "~> 1.0"},
       {:gen_smtp, "~> 1.1.1"},
       {:hackney, "~> 1.18.0"},
       {:telemetry_metrics, "~> 0.6"},

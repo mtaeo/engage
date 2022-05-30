@@ -170,12 +170,17 @@ defmodule Engage.Users do
       {:ok, %{to: ..., body: ...}}
 
   """
-  def deliver_update_email_instructions(%User{} = user, current_email, update_email_url_fun)
+  def deliver_update_email_instructions(conn, %User{} = user, current_email, update_email_url_fun)
       when is_function(update_email_url_fun, 1) do
     {encoded_token, user_token} = UserToken.build_email_token(user, "change:#{current_email}")
 
     Repo.insert!(user_token)
-    UserNotifier.deliver_update_email_instructions(user, update_email_url_fun.(encoded_token))
+
+    UserNotifier.deliver_update_email_instructions(
+      conn,
+      user,
+      update_email_url_fun.(encoded_token)
+    )
   end
 
   @doc """
@@ -260,14 +265,19 @@ defmodule Engage.Users do
       {:error, :already_confirmed}
 
   """
-  def deliver_user_confirmation_instructions(%User{} = user, confirmation_url_fun)
+  def deliver_user_confirmation_instructions(conn, %User{} = user, confirmation_url_fun)
       when is_function(confirmation_url_fun, 1) do
     if user.confirmed_at do
       {:error, :already_confirmed}
     else
       {encoded_token, user_token} = UserToken.build_email_token(user, "confirm")
       Repo.insert!(user_token)
-      UserNotifier.deliver_confirmation_instructions(user, confirmation_url_fun.(encoded_token))
+
+      UserNotifier.deliver_confirmation_instructions(
+        conn,
+        user,
+        confirmation_url_fun.(encoded_token)
+      )
     end
   end
 
@@ -304,11 +314,16 @@ defmodule Engage.Users do
       {:ok, %{to: ..., body: ...}}
 
   """
-  def deliver_user_reset_password_instructions(%User{} = user, reset_password_url_fun)
+  def deliver_user_reset_password_instructions(conn, %User{} = user, reset_password_url_fun)
       when is_function(reset_password_url_fun, 1) do
     {encoded_token, user_token} = UserToken.build_email_token(user, "reset_password")
     Repo.insert!(user_token)
-    UserNotifier.deliver_reset_password_instructions(user, reset_password_url_fun.(encoded_token))
+
+    UserNotifier.deliver_reset_password_instructions(
+      conn,
+      user,
+      reset_password_url_fun.(encoded_token)
+    )
   end
 
   @doc """
@@ -370,13 +385,13 @@ defmodule Engage.Users do
   def update_user_avatar(user, attrs) do
     user
     |> User.avatar_changeset(attrs)
-    |> Repo.update
+    |> Repo.update()
   end
 
   def update_user_profile(user, attrs) do
     user
     |> User.profile_changeset(attrs)
-    |> Repo.update
+    |> Repo.update()
   end
 
   def exists_username?(username) when is_binary(username) do
@@ -388,5 +403,4 @@ defmodule Engage.Users do
     query = from u in User, where: u.total_xp > 0, order_by: [desc: :total_xp]
     Repo.all(query)
   end
-
 end

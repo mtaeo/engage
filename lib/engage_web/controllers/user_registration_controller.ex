@@ -15,6 +15,7 @@ defmodule EngageWeb.UserRegistrationController do
       {:ok, user} ->
         {:ok, _} =
           Users.deliver_user_confirmation_instructions(
+            conn,
             user,
             &Routes.user_confirmation_url(conn, :edit, &1)
           )
