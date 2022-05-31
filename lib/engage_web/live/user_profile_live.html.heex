@@ -37,7 +37,12 @@
 
     <div class="flex flex-col gap-4 leading-none">
       <p class="text-xl"><%= @profile.username %></p>
-      <p class="text-amber-500 dark-t:text-yellow-400"><%= @profile.coins %>¢</p>
+      <p title="Coins" class="flex items-center text-amber-500 dark-t:text-yellow-400">
+        <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" class="inline w-6 h-6 mr-1">
+          <path d="m10.1 17.4v-1.41m0-7.91v-1.41m2.9 3.39c-0.598-1.22-1.7-1.98-2.9-1.98-1.85 4.27e-4 -3.35 1.77-3.35 3.95-1.4e-4 2.18 1.5 3.95 3.35 3.95 1.19-0.0044 2.3-0.76 2.89-1.98m-2.89-10.8s-0.346-9.26e-5 3.8-9.3e-5c4.15 4e-7 7.51 3.97 7.51 8.87-1e-6 4.9-3.36 8.87-7.51 8.87-4.15 0-3.8 9.2e-5 -3.8 9.2e-5m7.51-8.87a7.51 8.87 0 0 1-7.51 8.87 7.51 8.87 0 0 1-7.51-8.87 7.51 8.87 0 0 1 7.51-8.87 7.51 8.87 0 0 1 7.51 8.87z" />
+        </svg>
+        <%= @profile.coins %>
+      </p>
     </div>
   </div>
 

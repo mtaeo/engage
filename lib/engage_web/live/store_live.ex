@@ -93,7 +93,7 @@ defmodule EngageWeb.StoreLive do
     assigns = %{}
 
     classes =
-      "p-2 rounded-full bg-accent-500 hover:bg-accent-400 text-neutral-50 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 transition-colors absolute right-2 top-0 -translate-y-1/2"
+      "p-2 rounded-full bg-accent-500 hover:bg-accent-400 text-neutral-50 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 transition-colors absolute right-2 top-0 -translate-y-2/3"
 
     cond do
       owner_of_cosmetic?(user, cosmetic) and equipped_cosmetic?(user, cosmetic) ->
