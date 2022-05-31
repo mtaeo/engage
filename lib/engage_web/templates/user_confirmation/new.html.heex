@@ -5,6 +5,11 @@
     <p>Didn't receive the confirmation email?</p>
 
     <.form for={:user} action={Routes.user_confirmation_path(@conn, :create)} class="contents">
+      <div class="flex flex-col gap-1.5">
+        <%= label :user, :email, "E-mail" %>
+        <%= email_input :user, :email, required: true, placeholder: "john.doe@example.com", class: "p-3 rounded-xl bg-transparent border-2 border-theme-neutral-7 hover:border-theme-neutral-5 transition-colors" %>
+      </div>
+
   	  <%= submit "Resend", class: "block self-center p-3 rounded-xl text-theme-neutral-1 bg-theme-neutral-8 hover:bg-theme-neutral-6 font-display transition-colors" %>
     </.form>
 
