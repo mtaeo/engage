@@ -147,6 +147,10 @@
 		--scrollbar-bg: var(--theme-2);
 		--scrollbar-thumb: var(--theme-4);
 	}
+	
+	.wrap-anywhere {
+		overflow-wrap: anywhere;
+	}
 
 	.clip-border {
 		clip-path: border-box;
