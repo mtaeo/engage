@@ -105,6 +105,9 @@ module.exports = {
 				'presentation': '3fr 2fr',
 				'presentation-reverse': '2fr 3fr'
 			},
+			inset: {
+				'2/5': '40%'
+			},
 			maxHeight: {
 				'256': '64rem'
 			},
