@@ -3,7 +3,7 @@
 <% else %>
     <div>
         <p>Daily Challenge Quiz: <%= todays_date() %></p>
-        <p><%= @quiz_title %></p>
+        <p><%= @quiz.display_name %></p>
         <button phx-click="start-quiz" class="outline">Start Quiz</button>
     </div>
 <% end %>

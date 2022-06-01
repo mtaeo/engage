@@ -2,6 +2,7 @@ alias Engage.Repo
 alias Engage.Cosmetics.{Cosmetic, UserCosmetic}
 alias Engage.Games.{Game, XpToLevel}
 alias Engage.Users.User
+alias Engage.Challenges.Quiz.{Quiz, Question, Answer}
 
 Repo.insert!(%Game{
   name: "tic-tac-toe",
@@ -148,4 +149,91 @@ Repo.insert!(%UserCosmetic{
 Repo.insert!(%UserCosmetic{
   user_id: 1,
   cosmetic_id: 4
+})
+
+Repo.insert!(%Quiz{
+  display_name: "Quick Maths",
+  category: "Sports",
+  seconds_per_question: 45,
+  utc_start_date:
+    DateTime.utc_now()
+    |> DateTime.truncate(:second)
+})
+
+Repo.insert!(%Question{
+  quiz_id: 1,
+  text: "What is 2+2?"
+})
+
+Repo.insert!(%Question{
+  quiz_id: 1,
+  text: "What is 10+10?"
+})
+
+Repo.insert!(%Question{
+  quiz_id: 1,
+  text: "What is 50+50?"
+})
+
+Repo.insert(%Answer{
+  question_id: 1,
+  text: "4",
+  is_correct: true
+})
+
+Repo.insert(%Answer{
+  question_id: 1,
+  text: "6"
+})
+
+Repo.insert(%Answer{
+  question_id: 1,
+  text: "8"
+})
+
+Repo.insert(%Answer{
+  question_id: 1,
+  text: "10"
+})
+
+Repo.insert(%Answer{
+  question_id: 2,
+  text: "15"
+})
+
+Repo.insert(%Answer{
+  question_id: 2,
+  text: "20",
+  is_correct: true
+})
+
+Repo.insert(%Answer{
+  question_id: 2,
+  text: "30"
+})
+
+Repo.insert(%Answer{
+  question_id: 2,
+  text: "40"
+})
+
+Repo.insert(%Answer{
+  question_id: 3,
+  text: "200"
+})
+
+Repo.insert(%Answer{
+  question_id: 3,
+  text: "150"
+})
+
+Repo.insert(%Answer{
+  question_id: 3,
+  text: "25"
+})
+
+Repo.insert(%Answer{
+  question_id: 3,
+  text: "100",
+  is_correct: true
 })

@@ -1,6 +1,7 @@
 defmodule EngageWeb.QuizLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
   import EngageWeb.LiveHelpers
+  alias Engage.Quizzes
 
   def mount(_params, session, socket) do
     socket =
@@ -10,12 +11,14 @@ defmodule EngageWeb.QuizLive do
 
     {:ok,
      assign(socket,
+      user: session["current_user"],
        quiz_started: false,
-       quiz_title: "Quiz Title"
+       quiz: Quizzes.get_daily_quiz
      )}
   end
 
   def handle_event("start-quiz", _, socket) do
+    Quizzes.start_quiz(socket.assigns.user.id, socket.assigns.quiz.id)
     {:noreply, assign(socket, quiz_started: true)}
   end
 
