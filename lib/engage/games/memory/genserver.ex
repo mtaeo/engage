@@ -12,8 +12,7 @@ defmodule Engage.Games.Memory.GenServer do
         genserver_name,
         state \\ %{
           players: %{first: nil, second: nil},
-          board: %GameBoard{},
-          nth_player_turn: :first
+          board: %GameBoard{}
         }
       )
       when is_atom(genserver_name) do
@@ -91,7 +90,7 @@ defmodule Engage.Games.Memory.GenServer do
     {nth, _player} = get_player_nth_by_name_helper(state, player.name)
 
     state =
-      if nth == state.nth_player_turn and
+      if nth == state.board.current_player and
            all_players_joined?(state) and
            not two_cards_face_up?(state) do
         reveal_card(state, player, index)
@@ -273,13 +272,13 @@ defmodule Engage.Games.Memory.GenServer do
   end
 
   defp set_next_players_turn(state) do
-    next_nth_player_turn =
-      case state.nth_player_turn do
+    next_player =
+      case state.board.current_player do
         :first -> :second
         :second -> :first
       end
 
-    put_in(state.nth_player_turn, next_nth_player_turn)
+    put_in(state.board.current_player, next_player)
   end
 
   defp shuffle_cards(state) do

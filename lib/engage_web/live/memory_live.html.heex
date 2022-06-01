@@ -36,13 +36,13 @@
         </button>
 
         <p class="basis-144 mx-auto flex items-center gap-4 p-2">
-          <span class="basis-full text-ellipsis"><%= if @players.first, do: @players.first.name, else: "waiting..." %></span>
+          <span class={ "mr-auto" <> player_indicator_classes(@game_board, @nth, :first) }><%= if @players.first, do: @players.first.name, else: "waiting..." %></span>
 
-          <span class="shrink-0 flex items-center gap-2">
+          <span class="flex items-center gap-2">
               <%= if @players.first, do: @players.first.matched_pairs_current_game, else: 0 %> : <%= if @players.second, do: @players.second.matched_pairs_current_game, else: 0 %>
           </span>
 
-          <span class="basis-full text-right text-ellipsis"><%= if @players.second, do: @players.second.name, else: "waiting..." %></span>
+          <span class={ "ml-auto text-right" <> player_indicator_classes(@game_board, @nth, :second) }><%= if @players.second, do: @players.second.name, else: "waiting..." %></span>
         </p>
       </header>
     </div>
