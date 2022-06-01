@@ -90,7 +90,6 @@ defmodule Engage.Games.TicTacToe.GenServer do
     state =
       if state.game_started? and is_valid_turn?(state, player, coordinate) do
         state = put_in(state.board.state[coordinate], player.value)
-        state = put_in(state.board.turn_number, state.board.turn_number + 1)
 
         state = update_outcome_and_scores(state)
 
@@ -216,7 +215,7 @@ defmodule Engage.Games.TicTacToe.GenServer do
           state
 
         _ ->
-          state
+          put_in(state.board.turn_number, state.board.turn_number + 1)
       end
 
     if outcome !== nil do

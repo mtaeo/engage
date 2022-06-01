@@ -35,10 +35,10 @@
           </svg>
         </button>
 
-        <p class="basis-144 mx-auto flex items-center gap-4 p-2">
-          <span class="basis-full text-ellipsis"><%= if @players.first, do: @players.first.name, else: "waiting..." %></span>
+        <p class="basis-144 mx-auto flex items-center gap-4 p-2 leading-none">
+          <span class={ "mr-auto" <> player_indicator_classes(@game_board, @nth, 0) }><%= if @players.first, do: @players.first.name, else: "waiting..." %></span>
 
-          <span class="shrink-0 flex items-center gap-2">
+          <span class="flex items-center gap-2">
             <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg" class="h-[1.5em] hidden sm:block">
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="0.4" d="M1 1 l2 2 M1 3 l2-2" />
             </svg>
@@ -53,7 +53,7 @@
             </svg>
           </span>
 
-          <span class="basis-full text-right text-ellipsis"><%= if @players.second, do: @players.second.name, else: "waiting..." %></span>
+          <span class={"ml-auto text-right" <> player_indicator_classes(@game_board, @nth, 1) }><%= if @players.second, do: @players.second.name, else: "waiting..." %></span>
         </p>
       </header>
     </div>

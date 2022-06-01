@@ -129,6 +129,28 @@ defmodule EngageWeb.MemoryLive do
     )
   end
 
+  defp player_indicator_classes(game_board, current, n) do
+    if nths_turn?(game_board, n) do
+      " -text-accent-600 -dark-t:text-accent-400 outline outline-2" <>
+        if this_player?(current, n) do
+          " outline-accent-600 dark-t:outline-accent-400 animate-pulse"
+        else
+          " outline-accent-500"
+        end
+    else
+      " "
+    end <>
+      " px-3 py-1 rounded-md text-ellipsis transition-colors"
+  end
+
+  defp this_player?(current, n) do
+    current === n
+  end
+
+  defp nths_turn?(game_board, n) do
+    game_board.current_player === n
+  end
+
   defp scroll_chat(socket) do
     push_event(socket, "scroll-end", %{id: "chat"})
   end
