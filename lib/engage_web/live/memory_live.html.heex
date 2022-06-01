@@ -74,7 +74,7 @@
 
         <section class="basis-120 md:basis-144 max-h-120 md:max-h-144 my-auto flex flex-col bg-theme-1 dark-t:bg-theme-2 border border-theme-3 rounded-lg overflow-clip clip-border md:shadow-equal md:shadow-theme-neutral-5 dark-t:md:shadow-theme-neutral-1 scrollbar-1-3 dark-t:scrollbar-2-4 top-fade-shadow [--fade-from:var(--theme-1)] dark-t:[--fade-from:var(--theme-2)]">
           <div id="chat" class="basis-full overflow-y-auto">
-            <ul class="flex flex-col justify-end gap-4 p-2 pt-8 min-h-full text-base">
+            <ul class="flex flex-col justify-end gap-4 p-2 pt-8 min-h-full text-base wrap-anywhere">
               <%= for message <- Enum.reverse(@messages) do %>
                 <li class="flex gap-2">
                   <img src={message.avatar_src} alt="avatar" class="shrink-0 h-10 w-10 rounded-full">
