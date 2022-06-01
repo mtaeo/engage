@@ -105,6 +105,9 @@ module.exports = {
 				'presentation': '3fr 2fr',
 				'presentation-reverse': '2fr 3fr'
 			},
+			maxHeight: {
+				'256': '64rem'
+			},
 			spacing: {
 				'120': '30rem',
 				'144': '36rem'

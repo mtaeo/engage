@@ -2,7 +2,7 @@
   <h1 class="sr-only">Store</h1>
 
   <%= for {game, cosmetics} <- @games_cosmetics do %>
-    <section class="flex flex-col gap-4 relative">
+    <section class="max-w-full flex flex-col gap-4 relative">
       <div class="flex items-center gap-2 xs:gap-8">
         <h2 class="text-xl"><%= game.display_name %></h2>
         <%#= live_redirect "Show all" to: EngageWeb.Router.Helpers.store_path(@socket, :index, game.name), class: "" %>
