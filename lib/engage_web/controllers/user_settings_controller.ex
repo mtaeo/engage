@@ -17,6 +17,7 @@ defmodule EngageWeb.UserSettingsController do
     case Users.apply_user_email(user, password, user_params) do
       {:ok, applied_user} ->
         Users.deliver_update_email_instructions(
+          conn,
           applied_user,
           user.email,
           &Routes.user_settings_url(conn, :confirm_email, &1)

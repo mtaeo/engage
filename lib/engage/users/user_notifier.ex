@@ -1,16 +1,27 @@
 defmodule Engage.Users.UserNotifier do
-  import Swoosh.Email
+  use Phoenix.Swoosh,
+    view: EngageWeb.UserNotifierView,
+    layout: {EngageWeb.LayoutView, :email}
 
+  import Swoosh.Email
   alias Engage.Mailer
 
   # Delivers the email using the application mailer.
-  defp deliver(recipient, subject, body) do
+  defp deliver(conn, recipient, subject, template_name, assigns) when is_map(assigns) do
+    assigns =
+      assigns
+      |> Map.merge(%{
+        conn: conn,
+        recipient_email: recipient,
+        title: subject
+      })
+
     email =
       new()
-      |> to(recipient)
       |> from({"Engage", "play.engage.dev@gmail.com"})
-      |> subject(subject)
-      |> text_body(body)
+      |> to(recipient)
+      |> subject("[Engage] " <> subject)
+      |> render_body(template_name, assigns)
 
     with {:ok, _metadata} <- Mailer.deliver(email) do
       {:ok, email}
@@ -20,60 +31,48 @@ defmodule Engage.Users.UserNotifier do
   @doc """
   Deliver instructions to confirm account.
   """
-  def deliver_confirmation_instructions(user, url) do
-    deliver(user.email, "Confirmation instructions", """
-
-    ==============================
-
-    Hi #{user.email},
-
-    You can confirm your account by visiting the URL below:
-
-    #{url}
-
-    If you didn't create an account with us, please ignore this.
-
-    ==============================
-    """)
+  def deliver_confirmation_instructions(conn, user, url) do
+    deliver(
+      conn,
+      user.email,
+      "Confirmation instructions",
+      "confirm_account.html",
+      %{
+        username: user.username,
+        link: url
+      }
+    )
   end
 
   @doc """
   Deliver instructions to reset a user password.
   """
-  def deliver_reset_password_instructions(user, url) do
-    deliver(user.email, "Reset password instructions", """
-
-    ==============================
-
-    Hi #{user.email},
-
-    You can reset your password by visiting the URL below:
-
-    #{url}
-
-    If you didn't request this change, please ignore this.
-
-    ==============================
-    """)
+  def deliver_reset_password_instructions(conn, user, url) do
+    deliver(
+      conn,
+      user.email,
+      "Reset password instructions",
+      "reset_password.html",
+      %{
+        username: user.username,
+        link: url
+      }
+    )
   end
 
   @doc """
   Deliver instructions to update a user email.
   """
-  def deliver_update_email_instructions(user, url) do
-    deliver(user.email, "Update email instructions", """
-
-    ==============================
-
-    Hi #{user.email},
-
-    You can change your email by visiting the URL below:
-
-    #{url}
-
-    If you didn't request this change, please ignore this.
-
-    ==============================
-    """)
+  def deliver_update_email_instructions(conn, user, url) do
+    deliver(
+      conn,
+      user.email,
+      "Update email instructions",
+      "update_email.html",
+      %{
+        username: user.username,
+        link: url
+      }
+    )
   end
 end

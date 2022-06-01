@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= if @title do %>
+    <title><%= @title %></title>
+  <% end %>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Poppins:wght@600&display=swap');
+
+    body, p, a {
+      font-family: "Open Sans", sans-serif;
+      font-size: 16px;
+    }
+
+    .wrapper {
+      max-width: 768px;
+      margin: 0 auto;
+      padding: 2em 0;
+    }
+
+    h1, h2, img {
+      color: #404040;
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 1em 0 0.25em;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin: 2.5em 0 0.25em;
+    }
+
+    p {
+      margin: 0.5em 0;
+    }
+
+    .logo {
+      display: block;
+      height: 64px;
+      margin: 0 auto;
+      padding: 1em 0;
+    }
+    
+    .button-wrapper {
+      margin: 1em 0;
+      line-height: 2.5;
+      text-align: center;
+    }
+
+    a.button {
+      padding: 0.75em 1.5em;
+      background-color: #9727e7;
+      border-radius: 0.5em;
+
+      color: white;
+      font-size: 18px;
+      font-family: "Poppins";
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .no-link a {
+      color: inherit !important;
+      font: inherit !important;
+      text-decoration: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <img src={ Routes.static_url(@conn, "/images/logo-black.svg") } alt="Engage logo" class="logo">
+
+    <%= @inner_content %>
+  </div>
+</body>
+
+</html>

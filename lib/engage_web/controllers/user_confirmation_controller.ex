@@ -8,11 +8,10 @@ defmodule EngageWeb.UserConfirmationController do
     render(conn, "new.html")
   end
 
-  def create(conn, _params) do
-    email = conn.assigns.current_user.email
-
+  def create(conn, %{"user" => %{"email" => email}}) do
     if user = Users.get_user_by_email(email) do
       Users.deliver_user_confirmation_instructions(
+        conn,
         user,
         &Routes.user_confirmation_url(conn, :edit, &1)
       )

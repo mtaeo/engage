@@ -2,6 +2,7 @@ defmodule EngageWeb.StoreLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
   import EngageWeb.LiveHelpers
   import Ecto.Changeset
+  alias Phoenix.LiveView.JS
   alias Engage.Users.User
   alias Engage.{UserCosmetics, Cosmetics, Games}
   alias Engage.Cosmetics.Cosmetic
@@ -22,11 +23,15 @@ defmodule EngageWeb.StoreLive do
         {g, cosmetics}
       end)
 
-    {:ok,
-     assign(socket,
-       games: games,
-       games_cosmetics: games_cosmetics
-     )}
+    socket =
+      socket
+      |> assign(
+        games: games,
+        games_cosmetics: games_cosmetics
+      )
+      |> push_event("init-scrollx", %{class: "js-scrollx"})
+
+    {:ok, socket}
   end
 
   def handle_event("buy-cosmetic", %{"cosmetic-id" => cosmetic_id}, socket) do
@@ -38,12 +43,15 @@ defmodule EngageWeb.StoreLive do
           push_redirect(socket, to: Routes.store_path(socket, :index))
 
         {:error, changeset} ->
-          coins_error_message = traverse_errors(changeset, fn {msg, opts} -> {msg, opts} end).coins
+          coins_error_message =
+            traverse_errors(changeset, fn {msg, opts} -> {msg, opts} end).coins
+
           {message, _validations} = List.first(coins_error_message)
 
           message = message || "There was an error while purchasing your cosmetic!"
+
           socket
-          |> put_flash(:error,  message)
+          |> put_flash(:error, message)
       end
 
     {:noreply, socket}
@@ -81,32 +89,40 @@ defmodule EngageWeb.StoreLive do
     {:noreply, socket}
   end
 
-  defp content_for_cosmetic(%Cosmetic{} = cosmetic) do
-    content_for_cosmetic_application(cosmetic, cosmetic.application)
-  end
-
-  defp content_for_cosmetic_application(%Cosmetic{} = cosmetic, "x-color") do
+  defp item_button(user, cosmetic) do
     assigns = %{}
 
-    ~H"""
-    <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg">
-      <path style={"stroke: #{cosmetic.value};"} fill="none" stroke-linecap="round" stroke-width="0.4" d="">
-        <animate attributeName="d" values="M1 1 l0 0;M1 1 l2 2;M1 1 l2 2 M1 3 l0 0;M1 1 l2 2 M1 3 l2-2" fill="freeze" dur="0.5s" calcMode="spline" keySplines="0 0 0.58 1;0 0 0 0;0 0 0.58 1" keyTimes="0;0.5;0.5;1" repeatCount="1" />
-      </path>
-    </svg>
-    """
-  end
+    classes =
+      "p-2 rounded-full bg-accent-500 hover:bg-accent-400 text-neutral-50 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 transition-colors absolute right-2 top-0 -translate-y-2/3"
 
-  defp content_for_cosmetic_application(%Cosmetic{} = cosmetic, "o-color") do
-    assigns = %{}
+    cond do
+      owner_of_cosmetic?(user, cosmetic) and equipped_cosmetic?(user, cosmetic) ->
+        ~H"""
+        <button phx-click="unequip-cosmetic" phx-value-cosmetic-id={cosmetic.id} class={classes}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+          </svg>
+        </button>
+        """
 
-    ~H"""
-    <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg">
-      <circle style={"stroke: #{cosmetic.value};"} cx="2" cy="2" r="1.125" fill="none" stroke-linecap="round" stroke-width="0.4" stroke-dasharray="7.065" stroke-dashoffset="7.065" transform="rotate(-90 2 2)">
-        <animate attributeName="stroke-dashoffset" values="7.065;0" fill="freeze" dur="0.75s" calcMode="spline" keySplines="0 0 0.58 1" repeatCount="1" />
-      </circle>
-    </svg>
-    """
+      owner_of_cosmetic?(user, cosmetic) ->
+        ~H"""
+        <button phx-click="equip-cosmetic" phx-value-cosmetic-id={cosmetic.id} class={classes}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+        """
+
+      true ->
+        ~H"""
+        <button phx-click="buy-cosmetic" phx-value-cosmetic-id={cosmetic.id} class={classes}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </button>
+        """
+    end
   end
 
   defp owner_of_cosmetic?(%User{} = user, %Cosmetic{} = cosmetic) do
