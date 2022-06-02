@@ -36,11 +36,13 @@ defmodule Engage.Repo.Migrations.CreateGamesTables do
       AS $$
       DECLARE
         xp integer NOT NULL := 0;
+        won_coins integer NOT NULL := 0;
         xp_multiplier integer NOT NULL := 1;
       BEGIN
         CASE NEW.outcome
           WHEN 'won' THEN
           xp := 5;
+          won_coins := 10;
           WHEN 'lost' THEN
           xp := 1;
           WHEN 'draw' THEN
@@ -52,7 +54,8 @@ defmodule Engage.Repo.Migrations.CreateGamesTables do
         SELECT g.xp_multiplier FROM games g WHERE id = NEW.game_id INTO xp_multiplier;
 
         UPDATE users
-        SET total_xp = total_xp + (xp * xp_multiplier)
+        SET total_xp = total_xp + (xp * xp_multiplier),
+            coins = coins + won_coins
         WHERE id = NEW.user_id;
 
         RETURN NEW;

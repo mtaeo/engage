@@ -11,7 +11,10 @@
     <% current_question = Enum.at(@quiz.questions, @question_index) %>
     <%= if is_nil(current_question) do %>
       <p>Quiz finished!</p>
-      <p>Score: <%= Engage.Quizzes.get_score(@user.id, @quiz.id) %></p>
+      <% score = Engage.Quizzes.get_score(@user.id, @quiz.id) %>
+      <p>Score: <%= score %></p>
+      <% update_take_score(assigns, score) %>
+      <p>You gained: <%= 10*score %> XP and <%= 10*score %> coins!</p>
     <% else %>
       <p><%= (@question_index + 1) %></p>
       <p><%= current_question.text %></p>

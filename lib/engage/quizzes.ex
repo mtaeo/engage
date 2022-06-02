@@ -74,4 +74,17 @@ defmodule Engage.Quizzes do
 
     Enum.count(Enum.filter(take_answers, fn ta -> ta.answer.is_correct end))
   end
+
+  def update_take_score(%Take{} = take, score) when is_integer(score) do
+    if take.is_finished do
+      {:error, nil}
+    else
+      Repo.update(
+        Take.score_changeset(
+          take,
+          %{score: score, is_finished: true}
+        )
+      )
+    end
+  end
 end
