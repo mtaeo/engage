@@ -1,6 +1,6 @@
 <div class="self-start grid grid-cols-[repeat(auto-fill,minmax(0,12rem))] grid-rows-[repeat(auto-fit,1fr)] justify-evenly gap-8">
   <%= for game <- Games.get_all_games() do %>
-    <section phx-click={ game.name } class="bg-theme-2 dark-t:bg-theme-3 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 test:bg-red-500 rounded-lg overflow-hidden text-center cursor-pointer">
+    <section phx-click="open-game" phx-value-game-name={ game.name } class="bg-theme-2 dark-t:bg-theme-3 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 test:bg-red-500 rounded-lg overflow-hidden text-center cursor-pointer">
       <img src={ game.image_path } class="max-w-full">
       <h2 class="p-4 font-sans font-normal leading-none text-xl"><%= game.display_name %></h2>
     </section>
