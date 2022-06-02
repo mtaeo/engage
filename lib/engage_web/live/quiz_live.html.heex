@@ -1,9 +1,27 @@
-<%= if @quiz_started do %>
-    <p>Question: 1</p>
+<%= if is_nil(@quiz) do %>
+  <p>No daily quiz available for <%= todays_date() %></p>
 <% else %>
+  <%= if is_nil(@take) do %>
     <div>
-        <p>Daily Challenge Quiz: <%= todays_date() %></p>
-        <p><%= @quiz.display_name %></p>
-        <button phx-click="start-quiz" class="outline">Start Quiz</button>
+      <p>Daily Challenge Quiz: <%= todays_date() %></p>
+      <p><%= @quiz.display_name %></p>
+      <button phx-click="start-quiz" class="outline">Start Quiz</button>
     </div>
+  <% else %>
+    <% current_question = Enum.at(@quiz.questions, @question_index) %>
+    <%= if is_nil(current_question) do %>
+      <p>Quiz finished!</p>
+      <p>Score: <%= Engage.Quizzes.get_score(@user.id, @quiz.id) %></p>
+    <% else %>
+      <p><%= (@question_index + 1) %></p>
+      <p><%= current_question.text %></p>
+      <ul>
+        <%= for answer <- current_question.answers do %>
+          <li phx-click="chose-answer" phx-value-answer-id={ answer.id } class={ chosen_answer_indicator_classes(answer, @chosen_answer_id) }>
+            <%= answer.text %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
 <% end %>

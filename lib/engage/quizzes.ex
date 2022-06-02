@@ -1,7 +1,7 @@
 defmodule Engage.Quizzes do
   import Ecto.Query, warn: false
   alias Engage.Repo
-  alias Engage.Challenges.Quiz.{Quiz, Question, Answer, Take, TakeAnswer}
+  alias Engage.Challenges.Quiz.{Quiz, Question, Take, TakeAnswer}
 
   def get_all_quizzes() do
     Repo.all(Quiz)
@@ -37,13 +37,41 @@ defmodule Engage.Quizzes do
              is_integer(quiz_id) do
     case get_take(user_id, quiz_id) do
       nil ->
-        Repo.insert(%Take{
-          user_id: user_id,
-          quiz_id: quiz_id
-        })
+        {:ok, take} =
+          Repo.insert(%Take{
+            user_id: user_id,
+            quiz_id: quiz_id
+          })
+
+        take
 
       take ->
         take
     end
+  end
+
+  def get_take_answers(take_id) when is_integer(take_id) do
+    Repo.all(from ta in TakeAnswer, where: ta.take_id == ^take_id)
+  end
+
+  def insert_take_answer(take_id, question_id, answer_id)
+      when is_integer(take_id) and
+             is_integer(question_id) and
+             is_integer(answer_id) do
+    Repo.insert(%TakeAnswer{
+      take_id: take_id,
+      question_id: question_id,
+      answer_id: answer_id
+    })
+  end
+
+  def get_score(user_id, quiz_id) do
+    take = get_take(user_id, quiz_id)
+
+    take_answers =
+      Repo.all(from ta in TakeAnswer, where: ta.take_id == ^take.id)
+      |> Repo.preload([:answer])
+
+    Enum.count(Enum.filter(take_answers, fn ta -> ta.answer.is_correct end))
   end
 end
