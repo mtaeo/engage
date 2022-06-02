@@ -93,6 +93,15 @@
     <div class="grow flex overflow-x-clip md:overflow-x-visible relative md:static">
       <nav id="sidebar" class="absolute inset-0 -translate-x-full sidebar-toggled:transform-none transition-transform duration-300 bg-theme-2 md:static md:transform-none md:sidebar-toggled:hidden lg:sidebar-toggled:block md:bg-transparent shrink-0 basis-60 flex flex-col gap-1 p-3 font-display before:bg-gradient-to-r before:absolute before:from-[#00000080] before:to-transparent before:inset-0 before:left-full before:right-0 sidebar-toggled:before:-right-full before:transition-[right] before:duration-300 md:before:content-none z-50">
         <ul class="contents">
+          <li class="contents">
+            <%= live_redirect to: Routes.quiz_path(@socket, :index), class: "block p-2 rounded-md hover:bg-theme-3 transition-colors" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline h-6 w-6 mr-2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Challenges
+            <% end %>
+          </li>
+
           <li class="hidden">
             <a href="#" class="p-2 rounded-md hover:bg-theme-3 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline w-6 h-6 mr-2">
