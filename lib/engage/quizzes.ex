@@ -54,6 +54,12 @@ defmodule Engage.Quizzes do
     Repo.all(from ta in TakeAnswer, where: ta.take_id == ^take_id)
   end
 
+  def get_take_answers_status(take_id) when is_integer(take_id) do
+    get_take_answers(take_id)
+    |> Repo.preload([:answer])
+    |> Enum.map(fn ta -> ta.answer.is_correct end)
+  end
+
   def insert_take_answer(take_id, question_id, answer_id)
       when is_integer(take_id) and
              is_integer(question_id) and

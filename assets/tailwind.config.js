@@ -18,7 +18,8 @@ module.exports = {
 		extend: {
 			animation: {
 				'alert-enter-down': 'alert-enter-down 0.3s ease-out',
-				'alert-leave-up': 'alert-leave-up 5s ease-out'
+				'alert-leave-up': 'alert-leave-up 5s ease-out',
+				'pulse-attention': 'pulse-attention 500ms cubic-bezier(0.4, 0, 0.6, 1) 1'
 			},
 			keyframes: {
 				'alert-enter-down': {
@@ -35,6 +36,14 @@ module.exports = {
 					},
 					'100%': {
 						transform: 'translate(-50%, calc(-100% - 8rem))'
+					}
+				},
+				'pulse-attention': {
+					'0%, 67%': {
+						opacity: '.5'
+					},
+					'33%, 100%': {
+						opacity: '1'
 					}
 				}
 			},
