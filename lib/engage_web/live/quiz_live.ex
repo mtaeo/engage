@@ -19,7 +19,7 @@ defmodule EngageWeb.QuizLive do
     socket =
       socket
       |> update(:question_index, &(&1 + 1))
-      |> assign(chosen_answer_id: nil)
+      |> assign(chosen_answer_id: nil, is_user_input_allowed: true)
 
     {:noreply, socket}
   end
@@ -34,13 +34,19 @@ defmodule EngageWeb.QuizLive do
   end
 
   def handle_event("chose-answer", %{"answer-id" => answer_id}, socket) do
-    answer_id = String.to_integer(answer_id)
-    question = Enum.at(socket.assigns.quiz.questions, socket.assigns.question_index)
-    Quizzes.insert_take_answer(socket.assigns.take.id, question.id, answer_id)
+    socket =
+      if socket.assigns.is_user_input_allowed do
+        answer_id = String.to_integer(answer_id)
+        question = Enum.at(socket.assigns.quiz.questions, socket.assigns.question_index)
+        Quizzes.insert_take_answer(socket.assigns.take.id, question.id, answer_id)
 
-    :timer.send_after(2500, self(), :next_question)
+        :timer.send_after(2500, self(), :next_question)
+        assign(socket, chosen_answer_id: answer_id, is_user_input_allowed: false)
+      else
+        socket
+      end
 
-    {:noreply, assign(socket, chosen_answer_id: answer_id)}
+    {:noreply, socket}
   end
 
   defp setup(socket, user) do
@@ -55,7 +61,8 @@ defmodule EngageWeb.QuizLive do
       take: take,
       initial_take_answers: initial_take_answers,
       question_index: question_index,
-      chosen_answer_id: nil
+      chosen_answer_id: nil,
+      is_user_input_allowed: true
     )
   end
 
