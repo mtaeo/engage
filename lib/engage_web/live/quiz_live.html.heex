@@ -36,8 +36,7 @@
     <% :quiz_over -> %>
       <% score = Engage.Quizzes.get_score(@user.id, @quiz.id) %>
       <% update_take_score(assigns, score) %>
-      <%# TODO: fetch this data from the DB %>
-      <% given_answers = [true, true, false, true, false] %>
+      <% given_answers = Quizzes.get_take_answers_status(@take.id) %>
 
       <h1 class="text-2xl">Quiz finished!</h1>
 
