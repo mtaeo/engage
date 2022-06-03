@@ -20,9 +20,19 @@ Repo.insert!(%Game{
   name: "memory",
   description: "Each person turns over two cards at a time,
                 with the goal of turning over a matching pair, by using their memory.",
-  xp_multiplier: 3,
+  xp_multiplier: 5,
   type: :multiplayer,
   image_path: "/images/memory.jpeg"
+})
+
+Repo.insert!(%Game{
+  display_name: "Rock Paper Scissors",
+  name: "rock-paper-scissors",
+  description: "A hand game originating from China, played between two people,
+                in which each player simultaneously forms one of three shapes with an outstretched hand.",
+  xp_multiplier: 1,
+  type: :multiplayer,
+  image_path: "/images/rock_paper_scissors.png"
 })
 
 Repo.insert!(%XpToLevel{id: 1, level: 1, min_xp: 0})
