@@ -40,10 +40,7 @@ defmodule EngageWeb.QuizLive do
 
     :timer.send_after(2500, self(), :next_question)
 
-    {:noreply,
-     assign(socket,
-       chosen_answer_id: answer_id
-     )}
+    {:noreply, assign(socket, chosen_answer_id: answer_id)}
   end
 
   defp setup(socket, user) do
@@ -68,22 +65,57 @@ defmodule EngageWeb.QuizLive do
     Quizzes.update_take_score(assigns.take, score)
   end
 
+  defp current_view(quiz, take, question_index) do
+    cond do
+      quiz === nil -> :no_quiz_today
+      take === nil -> :quiz_begin
+      Enum.at(quiz.questions, question_index) === nil -> :quiz_over
+      true -> :question
+    end
+  end
+
+  defp answer_classes(%Answer{} = answer, chosen_answer_id) do
+    correct? = answer.is_correct
+    this? = answer.id === chosen_answer_id
+    default = "border-theme-8 hover:border-theme-6"
+
+    cond do
+      chosen_answer_id === nil ->
+        default
+
+      this? and correct? ->
+        "bg-green-500 border-green-500"
+
+      this? and not correct? ->
+        "bg-red-500 border-red-500"
+
+      not this? and correct? ->
+        "bg-green-500 border-green-500 animate-pulse-attention"
+
+      true ->
+        default
+    end
+  end
+
   defp todays_date do
     today = DateTime.utc_now()
     Enum.join([today.day, today.month, today.year], ".")
   end
 
-  defp chosen_answer_indicator_classes(%Answer{} = answer, chosen_answer_id) do
-    if is_nil(chosen_answer_id) do
-      ""
-    else
-      if answer.is_correct do
-        "bg-green-600"
-      else
-        if answer.id == chosen_answer_id do
-          "bg-red-600"
-        end
+  defp copy_results(answers) do
+    emojis =
+      for a <- answers, into: "" do
+        if a, do: "🟩", else: "🟥"
       end
-    end
+
+    content =
+      """
+      Engage Daily Quiz #{todays_date()}
+      #{emojis} #{Enum.count(answers, & &1)}/#{length(answers)}
+      #engage https://play-engage.com
+      """
+      |> String.replace("\n", "\\n")
+
+    "window.util.clipboardInsert('#{content}')"
   end
 end
