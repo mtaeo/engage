@@ -137,6 +137,9 @@ module.exports = {
 			},
 			translate: {
 				'alert-hide': 'calc(-100% - 8rem)'
+			},
+			transitionTimingFunction: {
+				'ease' :'ease'
 			}
 		}
 	},

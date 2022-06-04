@@ -159,6 +159,10 @@
 	.area-full {
 		grid-area: 1 / -1;
 	}
+	
+	.object-cover {
+		object-fit: cover;
+	}
 
 	.perspective {
 		perspective: 50rem;
