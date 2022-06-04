@@ -130,8 +130,8 @@ defmodule EngageWeb.RockPaperScissorsLive do
     )
   end
 
-  defp symbol_button(symbol, picked) when is_atom(symbol) and is_atom(picked) do
-    assigns = %{symbol: symbol}
+  defp symbol_button(socket, symbol, picked) when is_atom(symbol) and is_atom(picked) do
+    assigns = %{}
 
     classes =
       cond do
@@ -151,27 +151,25 @@ defmodule EngageWeb.RockPaperScissorsLive do
       end
 
     ~H"""
-    <button class={ "rounded-lg hover:bg-theme-3 dark-t:hover:bg-theme-2 transition " <> classes } phx-click="choose-symbol" phx-value-symbol={@symbol}>
-      <%= symbol(@symbol) %>
+    <button class={ "rounded-lg hover:bg-theme-3 dark-t:hover:bg-theme-2 transition " <> classes } phx-click="choose-symbol" phx-value-symbol={symbol}>
+      <%= symbol(socket, symbol) %>
     </button>
     """
   end
 
-  defp symbol(symbol, classes \\ "") when is_atom(symbol) do
-    assigns = %{
-      symbol:
-        case symbol do
-          :rock -> "🪨"
-          :paper -> "📄"
-          :scissors -> "✂️"
-          _ -> "❓"
-        end
-    }
+  defp symbol(socket, symbol, classes \\ "") when is_atom(symbol) and is_binary(classes) do
+    assigns = %{}
+
+    {src, alt} =
+      case symbol do
+        :rock -> {"rock.svg", "rock"}
+        :paper -> {"paper.svg", "paper"}
+        :scissors -> {"scissors.svg", "scissors"}
+        _ -> {"question-mark.svg", "question mark"}
+      end
 
     ~H"""
-    <div class={ "h-[1.5em] aspect-square grid place-items-center text-5xl xxs:text-6xl leading-none " <> classes }>
-      <%= @symbol %>
-    </div>
+    <img src={Routes.static_path(socket, "/images/rps/#{src}")} alt={alt} class={ "w-20 p-2 aspect-square grid place-items-center leading-none " <> classes }>
     """
   end
 

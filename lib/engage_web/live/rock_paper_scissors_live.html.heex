@@ -107,17 +107,17 @@
             <div class="grid">
               <% show? = both_players_chose_symbol?(@players) %>
 
-              <%= symbol(nil, "area-full #{if show?, do: "animate-fade-out", else: ""}" ) %>
+              <%= symbol(@socket, nil, "area-full #{if show?, do: "animate-fade-out", else: ""}" ) %>
 
               <%= if show? do %>
-                <%= symbol(@players[other(@nth)].symbol, "area-full opacity-0 animate-fade-in-after-1") %>
+                <%= symbol(@socket, @players[other(@nth)].symbol, "area-full opacity-0 animate-fade-in-after-1") %>
               <% end %>
             </div>
 
             <div class="grid grid-cols-3 gap-3 xss:gap-6">
-              <%= symbol_button(:rock, @players[@nth].symbol) %>
-              <%= symbol_button(:paper, @players[@nth].symbol) %>
-              <%= symbol_button(:scissors, @players[@nth].symbol) %>
+              <%= symbol_button(@socket, :rock, @players[@nth].symbol) %>
+              <%= symbol_button(@socket, :paper, @players[@nth].symbol) %>
+              <%= symbol_button(@socket, :scissors, @players[@nth].symbol) %>
             </div>
           </div>
 
