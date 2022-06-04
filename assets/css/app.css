@@ -42,6 +42,10 @@
 		font-weight: 600;
 	}
 
+	input {
+		font: inherit !important;
+	}
+	
 	option {
 		/* best possible styling for this element */
 		color: theme("colors.neutral.800");
