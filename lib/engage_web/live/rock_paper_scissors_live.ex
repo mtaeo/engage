@@ -9,8 +9,6 @@ defmodule EngageWeb.RockPaperScissorsLive do
   alias Engage.Helpers.Gravatar
   alias EngageWeb.Util
 
-  @next_round_delay 2000
-
   def mount(_params, session, socket) do
     socket =
       live_auth_check(socket, session, fn socket, user ->
@@ -132,27 +130,59 @@ defmodule EngageWeb.RockPaperScissorsLive do
     )
   end
 
-  defp player_indicator_classes(players, nth)
-       when is_map(players) and
-              is_atom(nth) do
-    if is_nil(players[nth].symbol) do
-      " "
-    else
-      " -text-accent-600 -dark-t:text-accent-400 outline outline-2"
-    end <>
-      " px-3 py-1 rounded-md text-ellipsis transition-colors"
+  defp symbol_button(symbol, picked) when is_atom(symbol) and is_atom(picked) do
+    assigns = %{symbol: symbol}
+
+    classes =
+      cond do
+        picked === nil ->
+          "translate-x-0"
+
+        symbol === picked ->
+          case symbol do
+            :rock -> "translate-x-[calc(100%+0.75rem)]"
+            :paper -> "translate-x-0"
+            :scissors -> "translate-x-[calc(-100%-0.75rem)]"
+            _ -> ""
+          end
+
+        true ->
+          "translate-x-0 opacity-0"
+      end
+
+    ~H"""
+    <button class={ "rounded-lg hover:bg-theme-3 dark-t:hover:bg-theme-2 transition " <> classes } phx-click="choose-symbol" phx-value-symbol={@symbol}>
+      <%= symbol(@symbol) %>
+    </button>
+    """
+  end
+
+  defp symbol(symbol, classes \\ "") when is_atom(symbol) do
+    assigns = %{
+      symbol:
+        case symbol do
+          :rock -> "🪨"
+          :paper -> "📄"
+          :scissors -> "✂️"
+          _ -> "❓"
+        end
+    }
+
+    ~H"""
+    <div class={ "h-[1.5em] aspect-square grid place-items-center text-5xl xxs:text-6xl leading-none " <> classes }>
+      <%= @symbol %>
+    </div>
+    """
   end
 
   defp both_players_chose_symbol?(players) do
     not Enum.any?(players, fn {_nth, player} -> is_nil(player.symbol) end)
   end
 
-  defp cell_contect(symbol) when is_atom(symbol) do
-    case symbol do
-      :rock -> "Rock 🪨"
-      :paper -> "Paper 📄"
-      :scissors -> "Scissors ✂️"
-      _ -> ""
+  defp other(nth) do
+    case nth do
+      :first -> :second
+      :second -> :first
     end
   end
 

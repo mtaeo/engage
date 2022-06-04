@@ -1,7 +1,7 @@
 <div class="grid justify-items-center">
-  <div class="w-full max-w-7xl max-h-256 flex flex-col">
+  <div class="w-full max-w-5xl max-h-256 flex flex-col">
     <div class="shrink-0 flex gap-4 z-20">
-      <div class="basis-80 shrink-0 hidden md:flex items-center gap-2 p-2">
+      <div class="basis-96 shrink-0 hidden md:flex items-center gap-2 p-2">
         <div class="relative">
           <button phx-click={Util.toggle_class("#game-menu-desktop", "hidden")} phx-click-away={JS.add_class("hidden", to: "#game-menu-desktop", time: 0)} class="hidden md:block p-2 rounded-md hover:bg-theme-3 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-7 h-7">
@@ -34,16 +34,6 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-
-        <p class="basis-144 mx-auto flex items-center gap-4 p-2">
-          <span class={ "mr-auto" <> player_indicator_classes(@players, :first) }><%= if @players.first, do: @players.first.name, else: "waiting..." %></span>
-
-          <span class="flex items-center gap-2">
-              <%= if @players.first, do: @players.first.score, else: 0 %> : <%= if @players.second, do: @players.second.score, else: 0 %>
-          </span>
-
-          <span class={ "ml-auto text-right" <> player_indicator_classes(@players, :second) }><%= if @players.second, do: @players.second.name, else: "waiting..." %></span>
-        </p>
       </header>
     </div>
 
@@ -106,21 +96,35 @@
         </section>
       </aside>
 
-      <main class="basis-full grid place-items-center p-2 xxs:p-6">
-        <div class="flex space-x-5 mt-5 justify-center">
-          <%= if both_players_chose_symbol?(@players) do %>
-            <%= for {_nth, player} <- @players do %>
-              <p><%= cell_contect(player.symbol) %></p>
-            <% end %>
-          <% else %>
-            <%= if is_nil(@players[@nth].symbol) do %>
-              <p phx-click="choose-symbol" phx-value-symbol={:rock}><%= cell_contect(:rock) %></p>
-              <p phx-click="choose-symbol" phx-value-symbol={:paper}><%= cell_contect(:paper) %></p>
-              <p phx-click="choose-symbol" phx-value-symbol={:scissors}><%= cell_contect(:scissors) %></p>
-            <% else %>
-              <p><%= cell_contect(@players[@nth].symbol) %></p>
-            <% end %>
-          <% end %>
+      <main class="basis-full grid place-items-center p-6">
+        <div class="flex flex-col items-center gap-4">
+          <p class="text-xl font-display">
+            <%= if @players[other(@nth)], do: @players[other(@nth)].name, else: "waiting..." %>:
+            <%= if @players[other(@nth)], do: @players[other(@nth)].score, else: 0 %>
+          </p>
+
+          <div class="flex flex-col items-center gap-12">
+            <div class="grid">
+              <% show? = both_players_chose_symbol?(@players) %>
+
+              <%= symbol(nil, "area-full #{if show?, do: "animate-fade-out", else: ""}" ) %>
+
+              <%= if show? do %>
+                <%= symbol(@players[other(@nth)].symbol, "area-full opacity-0 animate-fade-in-after-1") %>
+              <% end %>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 xss:gap-6">
+              <%= symbol_button(:rock, @players[@nth].symbol) %>
+              <%= symbol_button(:paper, @players[@nth].symbol) %>
+              <%= symbol_button(:scissors, @players[@nth].symbol) %>
+            </div>
+          </div>
+
+          <p class="text-xl font-display">
+            <%= if @players[@nth], do: @players[@nth].name, else: "waiting..." %>:
+            <%= if @players[@nth], do: @players[@nth].score, else: 0 %>
+          </p>
         </div>
       </main>
     </div>
