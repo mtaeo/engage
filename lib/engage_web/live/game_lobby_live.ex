@@ -2,7 +2,7 @@ defmodule EngageWeb.GameLobbyLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
   import EngageWeb.LiveHelpers
   alias Engage.Games
-  alias Engage.Games.{Chat, TicTacToe, Memory, RockPaperScissors}
+  alias Engage.Games.{Chat, TicTacToe, Memory, RockPaperScissors, ConnectFour}
   alias EngageWeb.Router.Helpers, as: Routes
 
   def mount(_params, session, socket) do
@@ -141,6 +141,9 @@ defmodule EngageWeb.GameLobbyLive do
 
       "rock-paper-scissors" ->
         RockPaperScissors.GenServer
+
+      "connect-four" ->
+        ConnectFour.GenServer
     end
   end
 end

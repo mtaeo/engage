@@ -1,0 +1,306 @@
+<style>
+  .board-wrapper {
+    padding-top: 100px;
+    display: flex;
+    justify-content: center;
+    margin: auto auto 0 auto; /*ask why this is needed*/
+    position: relative;
+    overflow: hidden;
+  }
+
+  .board {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 706px;
+    background-color: #00c;
+    padding: 3px;
+  }
+
+  .board div {
+    width: 100px;
+    height: 100px;
+    position: relative;
+  }
+
+  .board div span {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #00c;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    box-shadow: inset 0px 0px 13px #0606aa;
+  }
+
+  .board div span:before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle, transparent 40px, blue 0);
+    border: 3px solid #00c;
+    z-index: 3;
+  }
+
+  .board .chip {
+    display: block;
+    position: absolute;
+    background-color: transparent;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+  }
+
+  .board .chip:after {
+    content: "";
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 15px solid red;
+    background-color: red;
+    box-shadow: inset 0px 0px 20px #cc0000;
+    position: absolute;
+    left: 3px;
+    top: 0;
+    opacity: 0;
+    transition: all .5s ease;
+  }
+
+  .board div:nth-of-type(7n+1):hover~.chip:after {
+    transform: translateX(10px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+1):hover~.chip:before {
+    transform: translateX(10px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+2):hover~.chip:after {
+    transform: translateX(110px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+2):hover~.chip:before {
+    transform: translateX(110px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+3):hover~.chip:after {
+    transform: translateX(210px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+3):hover~.chip:before {
+    transform: translateX(210px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+4):hover~.chip:after {
+    transform: translateX(310px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+4):hover~.chip:before {
+    transform: translateX(310px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+5):hover~.chip:after {
+    transform: translateX(410px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+5):hover~.chip:before {
+    transform: translateX(410px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+6):hover~.chip:after {
+    transform: translateX(510px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+6):hover~.chip:before {
+    transform: translateX(510px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+7):hover~.chip:after {
+    transform: translateX(610px);
+    opacity: 1;
+  }
+
+  .board div:nth-of-type(7n+7):hover~.chip:before {
+    transform: translateX(610px);
+    opacity: 1;
+  }
+
+  .p1:after,
+  .p2:after {
+    content: "";
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 15px solid var(--c, red);
+    background-color: var(--c, red);
+    box-shadow: inset 0px 0px 20px var(--s, #cc0000);
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 1;
+    animation-name: drop;
+    animation-fill-mode: forwards;
+    animation-duration: .5s;
+    animation-timing-function: ease-in;
+  }
+
+  .p2 {
+    --c: yellow;
+    --s: #ced639;
+  }
+
+  @keyframes drop {
+    from {
+  top: -1500px;
+    }
+    to {
+  top: 0;
+    }
+  }
+</style>
+
+<div class="grid justify-items-center">
+  <div class="w-full max-w-7xl max-h-256 flex flex-col">
+    <div class="shrink-0 flex gap-4 z-20">
+      <div class="basis-80 shrink-0 hidden md:flex items-center gap-2 p-2">
+        <div class="relative">
+          <button phx-click={Util.toggle_class("#game-menu-desktop", "hidden")} phx-click-away={JS.add_class("hidden", to: "#game-menu-desktop", time: 0)} class="hidden md:block p-2 rounded-md hover:bg-theme-3 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-7 h-7">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+            </svg>
+          </button>
+
+          <div id="game-menu-desktop" class="hidden rounded-lg shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 absolute left-0 top-full translate-y-1">
+            <div class="flex flex-col bg-theme-2 border border-theme-3 rounded-lg clip-border overflow-clip">
+              <%= live_redirect "Leave", to: Routes.game_list_path(@socket, :index), class: "px-4 py-2 text-red-600 dark-t:text-red-400 hover:bg-red-100 dark-t:hover:bg-red-900 transition-colors" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="grow hidden md:flex items-center justify-between">
+          <h1 class="text-xl">Connect Four</h1>
+
+          <button phx-click="clipboard-insert" class="flex items-center gap-2 p-2 rounded-md hover:bg-theme-3 font-display transition-colors" onclick={"window.util.clipboardInsert('#{@game_genserver_name}')"}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline w-7 h-7">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            <%= @game_genserver_name %>
+          </button>
+        </div>
+      </div>
+
+      <header class="basis-full flex gap-1 sm:gap-2 items-center p-2 font-display text-xl">
+        <button phx-click={Util.toggle_sidebar()} class="md:hidden p-2 rounded-md hover:bg-theme-3 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-8 h-8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
+        <p class="basis-144 mx-auto flex items-center gap-4 p-2">
+          <span class={ "mr-auto" <> player_indicator_classes(@game_board, @nth, :first) }><%= if @players.first, do: @players.first.name, else: "waiting..." %></span>
+
+          <span class="flex items-center gap-2">
+              <%= if @players.first, do: @players.first.score, else: 0 %> : <%= if @players.second, do: @players.second.score, else: 0 %>
+          </span>
+
+          <span class={ "ml-auto text-right" <> player_indicator_classes(@game_board, @nth, :second) }><%= if @players.second, do: @players.second.name, else: "waiting..." %></span>
+        </p>
+      </header>
+    </div>
+
+    <div class="basis-full flex relative md:static overflow-x-clip">
+      <aside id="sidebar" class="shrink-0 flex flex-col gap-2 p-2 max-w-xs basis-80 absolute inset-0 -translate-x-full sidebar-toggled:transform-none transition-transform duration-300 bg-black md:bg-transparent bg-opacity-50 dark-t:bg-opacity-75 md:static md:transform-none z-10 before:bg-gradient-to-r before:absolute before:from-[#00000080] before:to-transparent before:inset-0 before:left-full before:right-0 sidebar-toggled:before:-right-full before:transition-[right] before:duration-300 md:before:content-none">
+        <div class="flex md:hidden justify-between">
+          <div class="relative">
+            <button phx-click={Util.toggle_class("#game-menu-mobile", "hidden")} phx-click-away={JS.add_class("hidden", to: "#game-menu-mobile", time: 0)} class="p-2 rounded-md hover:bg-theme-3 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-7 h-7">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+              </svg>
+            </button>
+
+            <div id="game-menu-mobile" class="hidden rounded-lg shadow-equal absolute top-0 left-full translate-x-1">
+              <div class="flex flex-col bg-theme-2 border border-theme-3 rounded-lg clip-border overflow-clip">
+                <%= live_redirect "Leave", to: Routes.game_list_path(@socket, :index), class: "px-4 py-2 text-red-600 dark-t:text-red-400 hover:bg-red-100 dark-t:hover:bg-red-900 transition-colors" %>
+              </div>
+            </div>
+          </div>
+
+          <button phx-click="clipboard-insert" class="flex items-center gap-2 p-2 rounded-md hover:bg-theme-3 font-display transition-colors" onclick={"window.util.clipboardInsert('#{@game_genserver_name}')"}>
+            <%= @game_genserver_name %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline w-7 h-7">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </button>
+        </div>
+
+        <section class="basis-120 md:basis-144 max-h-120 md:max-h-144 my-auto flex flex-col bg-theme-1 dark-t:bg-theme-2 border border-theme-3 rounded-lg overflow-clip clip-border md:shadow-equal md:shadow-theme-neutral-5 dark-t:md:shadow-theme-neutral-1 scrollbar-1-3 dark-t:scrollbar-2-4 top-fade-shadow [--fade-from:var(--theme-1)] dark-t:[--fade-from:var(--theme-2)]">
+          <div id="chat" class="basis-full overflow-y-auto">
+            <ul class="flex flex-col justify-end gap-4 p-2 pt-8 min-h-full text-base wrap-anywhere">
+              <%= for message <- Enum.reverse(@messages) do %>
+                <li class="flex gap-2">
+                  <img src={message.avatar_src} alt="avatar" class="shrink-0 w-10 aspect-square rounded-full">
+
+                  <div>
+                    <h2 class="shrink-0 leading-none"><%= message.sender %></h2>
+                    <p class="text-sm"><%= message.text %></p>
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+
+          <form phx-submit="send-message" class="shrink-0 flex items-center gap-2 p-2 border-t border-theme-3">
+            <input id="message-box" type="text" name="message-text" autocomplete="off" class="basis-full dark-t:bg-theme-3 border-theme-3 focus:border-theme-5 rounded-md focus:ring-0 transition-colors">
+
+            <button type="submit" class="p-2 rounded-md hover:bg-theme-2 dark-t:hover:bg-theme-3 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-7 h-7">
+                <defs>
+                  <linearGradient id="accent" gradientTransform="rotate(45, 0.5, 0.5)">
+                    <stop offset="0%" stop-color="#F97316" />
+                    <stop offset="100%" stop-color="#9728e6" />
+                  </linearGradient>
+                </defs>
+                <path stroke="url(#accent)" stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" transform="rotate(90, 12, 12)" />
+              </svg>
+            </button>
+          </form>
+        </section>
+      </aside>
+
+      <main class="basis-full grid place-items-center p-2 xxs:p-6">
+        <div class="board-wrapper">
+            <div class="board">
+                <%= for {index, value} <- Enum.sort_by(@game_board.state, fn {index, _v} -> {index} end) do %>
+                    <div phx-click="make-move" phx-value-index={ index } class={ fill_slot(value) }>
+                        <span class="chip"></span>
+                    </div>
+                <% end %>
+                <span class="chip bg-yellow-400"></span>
+            </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
