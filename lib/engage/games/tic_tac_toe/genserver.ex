@@ -68,11 +68,7 @@ defmodule Engage.Games.TicTacToe.GenServer do
               id: player_id,
               name: player_name,
               value: :x,
-              cosmetics:
-                UserCosmetics.get_all_equipped_user_cosmetics_for_user_id_and_game_id(
-                  player_id,
-                  state.game_id
-                )
+              cosmetics: get_cosmetics_with_defaults(player_id, state.game_id)
             }
 
             put_in(state.players.first, player)
@@ -82,11 +78,7 @@ defmodule Engage.Games.TicTacToe.GenServer do
               id: player_id,
               name: player_name,
               value: :o,
-              cosmetics:
-                UserCosmetics.get_all_equipped_user_cosmetics_for_user_id_and_game_id(
-                  player_id,
-                  state.game_id
-                )
+              cosmetics: get_cosmetics_with_defaults(player_id, state.game_id)
             }
 
             state = put_in(state.players.second, player)
@@ -204,6 +196,19 @@ defmodule Engage.Games.TicTacToe.GenServer do
     )
 
     {:noreply, state}
+  end
+
+  defp get_cosmetics_with_defaults(player_id, game_id) do
+    defaults = %{"x-o-style" => nil}
+
+    UserCosmetics.get_all_equipped_user_cosmetics_for_user_id_and_game_id(
+      player_id,
+      game_id
+    )
+    |> Enum.map(fn x ->
+      {x.cosmetic.exclusion_group, x.cosmetic.name}
+    end)
+    |> Enum.into(defaults)
   end
 
   defp update_outcome_and_scores(state) do

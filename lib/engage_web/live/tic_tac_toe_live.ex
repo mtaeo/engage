@@ -1,7 +1,6 @@
 defmodule EngageWeb.TicTacToeLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "game.html"}
   alias Phoenix.LiveView.JS
-  alias EngageWeb.Router.Helpers, as: Routes
   alias Engage.Games.Generic.Coordinate
   alias Engage.Games.TicTacToe
   alias Engage.Games.TicTacToe.GameBoard
@@ -9,6 +8,7 @@ defmodule EngageWeb.TicTacToeLive do
   alias Engage.Games.Chat.Message
   alias Engage.Helpers.Gravatar
   import EngageWeb.LiveHelpers
+  alias EngageWeb.Router.Helpers, as: Routes
   alias EngageWeb.Util
 
   def mount(_params, session, socket) do
@@ -145,25 +145,67 @@ defmodule EngageWeb.TicTacToeLive do
 
     case symbol do
       :x ->
-        ~H"""
-        <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg">
-        	<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="0.4" d="">
-        		<animate attributeName="d" values="M1 1 l0 0;M1 1 l2 2;M1 1 l2 2 M1 3 l0 0;M1 1 l2 2 M1 3 l2-2" fill="freeze" dur="0.5s" calcMode="spline" keySplines="0 0 0.58 1;0 0 0 0;0 0 0.58 1" keyTimes="0;0.5;0.5;1" repeatCount="1" />
-        	</path>
-        </svg>
-        """
+        ~H(<svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg"><use href="#x" /></svg>)
 
       :o ->
-        ~H"""
-        <svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg">
-        	<circle cx="2" cy="2" r="1.125" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="0.4" stroke-dasharray="7.065" stroke-dashoffset="7.065" transform="rotate(-90 2 2)">
-        		<animate attributeName="stroke-dashoffset" values="7.065;0" fill="freeze" dur="0.75s" calcMode="spline" keySplines="0 0 0.58 1" repeatCount="1" />
-        	</circle>
-        </svg>
-        """
+        ~H(<svg version="1.1" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg"><use href="#o" /></svg>)
 
       _ ->
         ""
+    end
+  end
+  
+  defp get_skin(player, :x) do
+    assigns = %{}
+    
+    case player.cosmetics["x-o-style"] do
+      "retro" ->
+        ~H"""
+        <symbol id="x" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+          <path><animate attributeName="d" values=";m5 5v2h2v-2zm12 0v2h2v-2z" begin="0ms" dur="80ms" fill="freeze" /></path>
+          <path><animate attributeName="d" values=";m7 7v2h2v-2zm8 0v2h2v-2z" begin="80ms" dur="80ms" fill="freeze" /></path>
+          <path><animate attributeName="d" values=";m9 9v2h2v-2zm4 0v2h2v-2z" begin="160ms" dur="80ms" fill="freeze" /></path>
+          <path><animate attributeName="d" values=";m11 11h2v2h-2z" begin="240ms" dur="80ms" fill="freeze" /></path>
+          <path><animate attributeName="d" values=";m9 13v2h2v-2zm4 0v2h2v-2z" begin="320ms" dur="80ms" fill="freeze" /></path>
+          <path><animate attributeName="d" values=";m7 15v2h2v-2zm8 0v2h2v-2z" begin="400ms" dur="80ms" fill="freeze" /></path>
+          <path><animate attributeName="d" values=";m5 17v2h2v-2zm12 0v2h2v-2z" begin="480ms" dur="80ms" fill="freeze" /></path>
+        </symbol>
+        """
+        
+      _ ->
+        ~H"""
+        <symbol id="x" viewBox="0 0 4 4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="0.4">
+          <path d="">
+            <animate attributeName="d" values="M1 1 l0 0;M1 1 l2 2;M1 1 l2 2 M1 3 l0 0;M1 1 l2 2 M1 3 l2-2" fill="freeze" dur="0.5s" calcMode="spline" keySplines="0 0 0.58 1;0 0 0 0;0 0 0.58 1" keyTimes="0;0.5;0.5;1" repeatCount="1" />
+          </path>
+        </symbol>
+        """
+    end
+  end
+  
+  defp get_skin(player, :o) do
+    assigns = %{}
+    
+    case player.cosmetics["x-o-style"] do
+      "retro" ->
+        ~H"""
+        <symbol id="o" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+          <path><animate attributeName="d" values=";m9 5h6v2h-6z" begin="0ms" dur="80ms" calcMode="discrete" fill="freeze" /></path>
+          <path><animate attributeName="d" values=";m7 7v2h2v-2zm8 0v2h2v-2z" begin="80ms" dur="80ms" calcMode="discrete" fill="freeze" /></path>
+          <path><animate attributeName="d" values=";m5 9v2h2v-2zm12 0v2h2v-2z;m5 9v4h2v-4zm12 0v4h2v-4z;m5 9v6h2v-6zm12 0v6h2v-6z" begin="160ms" dur="240ms" calcMode="discrete" fill="freeze" /></path>
+          <path><animate attributeName="d" values=";m7 15v2h2v-2zm8 0v2h2v-2z" begin="400ms" dur="80ms" calcMode="discrete" fill="freeze" /></path>
+          <path><animate attributeName="d" values=";m9 17h6v2h-6z" begin="480ms" dur="80ms" calcMode="discrete" fill="freeze" /></path>
+        </symbol>
+        """
+        
+      _ ->
+        ~H"""
+        <symbol id="o" viewBox="0 0 4 4">
+          <circle cx="2" cy="2" r="1.125" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="0.4" stroke-dasharray="7.065" stroke-dashoffset="7.065" transform="rotate(-90 2 2)">
+            <animate attributeName="stroke-dashoffset" values="7.065;0" fill="freeze" dur="0.75s" calcMode="spline" keySplines="0 0 0.58 1" repeatCount="1" />
+          </circle>
+        </symbol>
+        """
     end
   end
 
