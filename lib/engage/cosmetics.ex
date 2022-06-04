@@ -18,8 +18,8 @@ defmodule Engage.Cosmetics do
     |> Repo.preload([:game])
   end
 
-  def get_all_cosmetics_by_application(application) when is_binary(application) do
-    Repo.all(from c in Cosmetic, where: c.application == ^application)
+  def get_all_cosmetics_by_exclusion_group(exclusion_group) when is_binary(exclusion_group) do
+    Repo.all(from c in Cosmetic, where: c.exclusion_group == ^exclusion_group)
     |> Repo.preload([:game])
   end
 end

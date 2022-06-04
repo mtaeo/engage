@@ -4,26 +4,20 @@ defmodule Engage.Cosmetics.Cosmetic do
   alias Engage.Games.Game
 
   schema "cosmetics" do
+    field :name, :string
+    field :display_name, :string
+    field :category, Ecto.Enum, values: [:game_item, :game_bg, :profile]
     belongs_to :game, Game
-    field :application, :string
-    field :value, :string
     field :price, :integer
+    field :exclusion_group, :string
+    field :data, :string
   end
 
   def changeset(cosmetic, attrs, _opts \\ []) do
     cosmetic
-    |> cast(attrs, [:game_id, :application, :value, :price])
-    |> validate_application()
-    |> validate_value()
+    |> cast(attrs, [:name, :display_name, :game_id, :category, :exclusion_group, :data, :price])
+    |> validate_required([:name, :display_name, :category, :exclusion_group, :data])
     |> validate_price()
-  end
-
-  def validate_application(changeset) do
-    changeset |> validate_required([:application])
-  end
-
-  def validate_value(changeset) do
-    changeset |> validate_required([:value])
   end
 
   def validate_price(changeset) do

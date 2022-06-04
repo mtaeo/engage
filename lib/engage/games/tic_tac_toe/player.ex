@@ -1,3 +1,3 @@
 defmodule Engage.Games.TicTacToe.Player do
-  defstruct id: nil, name: nil, value: nil, score: 0
+  defstruct id: nil, name: nil, value: nil, score: 0, cosmetics: nil
 end

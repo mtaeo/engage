@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="flex justify-between items-end gap-2 p-3 pt-5 relative font-display">
-                  <div class="grid place-items-center"><%= cosmetic.application %> <%= cosmetic.value %></div>
+                  <div class="grid place-items-center"><%= cosmetic.display_name %></div>
 
                   <%= if not owner_of_cosmetic?(@user, cosmetic) do %>
                     <div title="Coins" class="flex items-center text-amber-500 dark-t:text-yellow-400">
