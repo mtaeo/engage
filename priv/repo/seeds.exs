@@ -12,7 +12,7 @@ Repo.insert!(%Game{
                 vertical, or diagonal row is the winner.",
   xp_multiplier: 1,
   type: :multiplayer,
-  image_path: "/images/tic_tac_toe.jpeg"
+  image_path: "/images/game-previews/tic_tac_toe.jpg"
 })
 
 Repo.insert!(%Game{
@@ -22,7 +22,7 @@ Repo.insert!(%Game{
                 with the goal of turning over a matching pair, by using their memory.",
   xp_multiplier: 5,
   type: :multiplayer,
-  image_path: "/images/memory.jpeg"
+  image_path: "/images/game-previews/memory.jpg"
 })
 
 Repo.insert!(%Game{
@@ -32,7 +32,7 @@ Repo.insert!(%Game{
                 in which each player simultaneously forms one of three shapes with an outstretched hand.",
   xp_multiplier: 1,
   type: :multiplayer,
-  image_path: "/images/rock_paper_scissors.png"
+  image_path: "/images/game-previews/rock-paper-scissors.jpg"
 })
 
 Repo.insert!(%XpToLevel{id: 1, level: 1, min_xp: 0})
