@@ -6,19 +6,26 @@ defmodule Engage.UserCosmetics do
 
   def get_all_user_cosmetics_for_user_id(user_id) when is_integer(user_id) do
     Repo.all(from uc in UserCosmetic, where: uc.user_id == ^user_id)
-    |> Repo.preload([:user, cosmetic: :game])
+    |> Repo.preload(:cosmetic)
   end
 
   def get_all_user_cosmetics_for_user_id_and_game_id(user_id, game_id)
       when is_integer(user_id) and
              is_integer(game_id) do
-    Repo.all(from uc in UserCosmetic, where: uc.user_id == ^user_id and uc.game_id == ^game_id)
-    |> Repo.preload([:user, cosmetic: :game])
+    Repo.all(from uc in UserCosmetic, where: uc.user_id == ^user_id)
+    |> Repo.preload(:cosmetic)
+    |> Enum.filter(fn uc -> uc.cosmetic.game_id == game_id end)
   end
 
   def get_all_user_cosmetics_for_user_id_and_game_id(user_id, nil) do
-    Repo.all(from uc in UserCosmetic, where: uc.user_id == ^user_id and is_nil(uc.game_id))
-    |> Repo.preload([:user, cosmetic: :game])
+    Repo.all(from uc in UserCosmetic, where: uc.user_id == ^user_id)
+    |> Repo.preload(:cosmetic)
+    |> Enum.filter(fn uc -> is_nil(uc.cosmetic.game_id) end)
+  end
+
+  def get_all_equipped_user_cosmetics_for_user_id_and_game_id(user_id, game_id) do
+    get_all_user_cosmetics_for_user_id_and_game_id(user_id, game_id)
+    |> Enum.filter(fn uc -> uc.is_equipped end)
   end
 
   def purchase_cosmetic(user_id, cosmetic_id)
@@ -65,7 +72,7 @@ defmodule Engage.UserCosmetics do
         on: uc.cosmetic_id == c.id,
         where:
           uc.user_id == ^user_id and
-            c.application == ^cosmetic.application
+            c.exclusion_group == ^cosmetic.exclusion_group
 
     Repo.transaction(fn ->
       Repo.update_all(uc_query, set: [is_equipped: false])

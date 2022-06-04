@@ -3,6 +3,7 @@ defmodule Engage.Games.TicTacToe.GenServer do
   alias Engage.Games.GameEvent
   alias Engage.Games.Generic.Coordinate
   alias Engage.Games.TicTacToe.{Player, GameBoard}
+  alias Engage.{Games, UserCosmetics}
 
   @game_name "tic-tac-toe"
 
@@ -18,7 +19,7 @@ defmodule Engage.Games.TicTacToe.GenServer do
       __MODULE__,
       Map.merge(state, %{
         genserver_name: genserver_name,
-        game_id: Engage.Games.get_game_by_name(@game_name).id,
+        game_id: Games.get_game_by_name(@game_name).id,
         game_name: @game_name,
         game_started?: false
       }),
@@ -63,11 +64,31 @@ defmodule Engage.Games.TicTacToe.GenServer do
       else
         cond do
           state.players.first === nil ->
-            player = %Player{id: player_id, name: player_name, value: :x}
+            player = %Player{
+              id: player_id,
+              name: player_name,
+              value: :x,
+              cosmetics:
+                UserCosmetics.get_all_equipped_user_cosmetics_for_user_id_and_game_id(
+                  player_id,
+                  state.game_id
+                )
+            }
+
             put_in(state.players.first, player)
 
           state.players.second === nil and state.players.first.id !== player_id ->
-            player = %Player{id: player_id, name: player_name, value: :o}
+            player = %Player{
+              id: player_id,
+              name: player_name,
+              value: :o,
+              cosmetics:
+                UserCosmetics.get_all_equipped_user_cosmetics_for_user_id_and_game_id(
+                  player_id,
+                  state.game_id
+                )
+            }
+
             state = put_in(state.players.second, player)
 
             Phoenix.PubSub.broadcast(

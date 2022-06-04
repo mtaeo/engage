@@ -97,9 +97,12 @@ Repo.insert!(
   Cosmetic.changeset(
     %Cosmetic{},
     %{
+      name: "red",
+      display_name: "Red",
       game_id: 1,
-      application: "x-color",
-      value: "#FF0000",
+      category: :game_item,
+      exclusion_group: "color",
+      data: "#FF0000",
       price: 250
     }
   )
@@ -109,9 +112,12 @@ Repo.insert!(
   Cosmetic.changeset(
     %Cosmetic{},
     %{
+      name: "green",
+      display_name: "Green",
       game_id: 1,
-      application: "o-color",
-      value: "#00FF00",
+      category: :game_item,
+      exclusion_group: "color",
+      data: "#00FF00",
       price: 250
     }
   )
@@ -121,9 +127,12 @@ Repo.insert!(
   Cosmetic.changeset(
     %Cosmetic{},
     %{
+      name: "blue",
+      display_name: "Blue",
       game_id: 1,
-      application: "x-color",
-      value: "#0000FF",
+      category: :game_item,
+      exclusion_group: "color",
+      data: "#0000FF",
       price: 250
     }
   )
@@ -133,9 +142,12 @@ Repo.insert!(
   Cosmetic.changeset(
     %Cosmetic{},
     %{
+      name: "pencils",
+      display_name: "Pencils Profile Background",
       game_id: nil,
-      application: "profile-background",
-      value: "#FF00FF",
+      category: :profile,
+      exclusion_group: "profile-bg",
+      data: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80",
       price: 500
     }
   )
