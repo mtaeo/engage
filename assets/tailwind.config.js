@@ -19,7 +19,10 @@ module.exports = {
 			animation: {
 				'alert-enter-down': 'alert-enter-down 0.3s ease-out',
 				'alert-leave-up': 'alert-leave-up 5s ease-out',
-				'pulse-attention': 'pulse-attention 500ms cubic-bezier(0.4, 0, 0.6, 1) 1'
+				'pulse-attention': 'pulse-attention 500ms cubic-bezier(0.4, 0, 0.6, 1) 1',
+				'fade-in': 'fade-in 300ms ease-out forwards',
+				'fade-in-after-1': 'fade-in 300ms ease-out 300ms forwards',
+				'fade-out': 'fade-in 300ms ease-out reverse forwards',
 			},
 			keyframes: {
 				'alert-enter-down': {
@@ -44,6 +47,14 @@ module.exports = {
 					},
 					'33%, 100%': {
 						opacity: '1'
+					}
+				},
+				'fade-in': {
+					from: {
+						opacity: 0
+					},
+					to: {
+						opacity: 1
 					}
 				}
 			},
