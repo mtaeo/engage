@@ -42,6 +42,10 @@ defmodule Engage.Games.ConnectFour.GenServer do
     GenServer.call(genserver_name, {:make_move, player, index})
   end
 
+  def make_move(genserver_name, {nil, index}) do
+    GenServer.call(genserver_name, :view)
+  end
+
   def start_game(genserver_name, %Player{} = player) do
     GenServer.call(genserver_name, {:start_game, player})
   end
@@ -87,6 +91,7 @@ defmodule Engage.Games.ConnectFour.GenServer do
 
     state =
       if state.game_started? and
+           is_nil(state.board.outcome) and
            nth == state.board.current_player and
            all_players_joined?(state) do
         insert_chip(state, nth, index)
@@ -200,41 +205,61 @@ defmodule Engage.Games.ConnectFour.GenServer do
   defp insert_chip(state, nth, index)
        when is_atom(nth) and
               is_integer(index) do
-                correct_index = get_lowest_chip_index(state, index)
+    correct_index = get_lowest_chip_index(state, index)
+
     state =
-      put_in(state.board.state[correct_index], nth)
-      |> set_next_players_turn
+      if is_nil(correct_index) do
+        state
+      else
+        state =
+          put_in(state.board.state[correct_index], nth)
+          |> set_next_players_turn
+          |> check_for_winner_and_update_scores(nth)
 
-      check_for_winner_and_update_scores(state, nth, correct_index)
+        :timer.send_after(0, {:send_board, state})
 
-    :timer.send_after(0, {:send_board, state})
+        state
+      end
+
     state
   end
 
   defp get_lowest_chip_index(state, index) when is_integer(index) do
     col = rem(index, @cols)
-    {index, _v} =
-      Enum.filter(state.board.state, fn {i, v} -> is_nil(v) and rem(i, @cols) == col end)
-      |> Enum.max_by(fn {i, _v} -> i end)
 
-    index
+    available_slots =
+      Enum.filter(state.board.state, fn {i, v} -> is_nil(v) and rem(i, @cols) == col end)
+
+    if Enum.empty?(available_slots) do
+      nil
+    else
+      {index, _v} =
+        available_slots
+        |> Enum.max_by(fn {i, _v} -> i end)
+
+      index
+    end
   end
 
-  defp check_for_winner_and_update_scores(state, nth, last_played_index) do
-    case decide_winner(state, nth, last_played_index) do
+  defp check_for_winner_and_update_scores(state, nth) do
+    case decide_winner(state, nth) do
       :first ->
+        state = put_in(state.board.outcome, :first)
         state = update_in(state.players.first.score, &(&1 + 1))
         insert_game_event_into_db(state.game_id, state.players.first.id, state.players.second.id)
         :timer.send_after(3000, {:replay, state})
         state
 
       :second ->
+        state = put_in(state.board.outcome, :second)
         state = update_in(state.players.second.score, &(&1 + 1))
         insert_game_event_into_db(state.game_id, state.players.second.id, state.players.first.id)
         :timer.send_after(3000, {:replay, state})
         state
 
       :draw ->
+        state = put_in(state.outcome, :draw)
+
         insert_draw_game_event_into_db(
           state.game_id,
           state.players.second.id,
@@ -249,13 +274,26 @@ defmodule Engage.Games.ConnectFour.GenServer do
     end
   end
 
-  defp decide_winner(state, nth, last_played_index) do
-    check_rows_for_winner(state, nth, last_played_index)
-    state
+  defp decide_winner(state, nth) do
+    if board_full?(state) do
+      :draw
+    else
+      is_winner? =
+        Enum.any?(
+          Enum.map(winning_combinations(), fn w ->
+            Enum.all?(w, fn i ->
+              {:ok, n} = Map.fetch(state.board.state, i)
+              n == nth
+            end)
+          end)
+        )
+
+      if is_winner?, do: nth, else: nil
+    end
   end
 
-  defp check_rows_for_winner(state, nth, last_played_index) do
-    state
+  defp board_full?(state) do
+    Enum.count(Enum.filter(state.board.state, fn {_i, v} -> not is_nil(v) end)) === 0
   end
 
   defp insert_game_event_into_db(game_id, winner_id, loser_id) do
@@ -291,11 +329,87 @@ defmodule Engage.Games.ConnectFour.GenServer do
   end
 
   defp get_player_nth_by_name_helper(state, player_name) do
-    Enum.find(state.players, fn {_, v} -> v.name === player_name end)
+    Enum.find(state.players, {nil, nil}, fn {_, v} -> v.name === player_name end)
   end
 
   defp get_player_nth_by_id(state, player_id) when is_integer(player_id) do
-    {nth, _player} = Enum.find(state.players, fn {_nth, player} -> player.id === player_id end)
+    {nth, _player} = Enum.find(state.players, {nil, nil}, fn {_nth, player} -> player.id === player_id end)
     nth
+  end
+
+  # I'm sorry
+  # TODO: Refactor
+  defp winning_combinations() do
+    [
+      [0, 1, 2, 3],
+      [41, 40, 39, 38],
+      [7, 8, 9, 10],
+      [34, 33, 32, 31],
+      [14, 15, 16, 17],
+      [27, 26, 25, 24],
+      [21, 22, 23, 24],
+      [20, 19, 18, 17],
+      [28, 29, 30, 31],
+      [13, 12, 11, 10],
+      [35, 36, 37, 38],
+      [6, 5, 4, 3],
+      [0, 7, 14, 21],
+      [41, 34, 27, 20],
+      [1, 8, 15, 22],
+      [40, 33, 26, 19],
+      [2, 9, 16, 23],
+      [39, 32, 25, 18],
+      [3, 10, 17, 24],
+      [38, 31, 24, 17],
+      [4, 11, 18, 25],
+      [37, 30, 23, 16],
+      [5, 12, 19, 26],
+      [36, 29, 22, 15],
+      [6, 13, 20, 27],
+      [35, 28, 21, 14],
+      [0, 8, 16, 24],
+      [41, 33, 25, 17],
+      [7, 15, 23, 31],
+      [34, 26, 18, 10],
+      [14, 22, 30, 38],
+      [27, 19, 11, 3],
+      [35, 29, 23, 17],
+      [6, 12, 18, 24],
+      [28, 22, 16, 10],
+      [13, 19, 25, 31],
+      [21, 15, 9, 3],
+      [20, 26, 32, 38],
+      [36, 30, 24, 18],
+      [5, 11, 17, 23],
+      [37, 31, 25, 19],
+      [4, 10, 16, 22],
+      [2, 10, 18, 26],
+      [39, 31, 23, 15],
+      [1, 9, 17, 25],
+      [40, 32, 24, 16],
+      [9, 17, 25, 33],
+      [8, 16, 24, 32],
+      [11, 17, 23, 29],
+      [12, 18, 24, 30],
+      [1, 2, 3, 4],
+      [5, 4, 3, 2],
+      [8, 9, 10, 11],
+      [12, 11, 10, 9],
+      [15, 16, 17, 18],
+      [19, 18, 17, 16],
+      [22, 23, 24, 25],
+      [26, 25, 24, 23],
+      [29, 30, 31, 32],
+      [33, 32, 31, 30],
+      [36, 37, 38, 39],
+      [40, 39, 38, 37],
+      [7, 14, 21, 28],
+      [8, 15, 22, 29],
+      [9, 16, 23, 30],
+      [10, 17, 24, 31],
+      [11, 18, 25, 32],
+      [12, 19, 26, 33],
+      [13, 20, 27, 34]
+    ]
   end
 end
