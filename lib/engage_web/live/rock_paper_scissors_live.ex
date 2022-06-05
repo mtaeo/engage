@@ -57,6 +57,17 @@ defmodule EngageWeb.RockPaperScissorsLive do
         push_redirect(socket, to: route)
       end
 
+    socket =
+      if is_nil(nth) do
+        route = "/games"
+
+        socket
+        |> put_flash(:error, "Spectating a Rock-Paper-Scissors game is not allowed.")
+        |> push_redirect(to: route)
+      else
+        socket
+      end
+
     {:noreply, socket}
   end
 
