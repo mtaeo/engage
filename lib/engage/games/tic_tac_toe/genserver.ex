@@ -43,6 +43,10 @@ defmodule Engage.Games.TicTacToe.GenServer do
     GenServer.call(genserver_name, {:make_move, player, coordinate})
   end
 
+  def make_move(genserver_name, {nil, %Coordinate{} = _coordinate}) do
+    GenServer.call(genserver_name, :view)
+  end
+
   def start_game(genserver_name, %Player{} = player) do
     GenServer.call(genserver_name, {:start_game, player})
   end
@@ -121,7 +125,7 @@ defmodule Engage.Games.TicTacToe.GenServer do
   end
 
   def handle_call({:get_player_nth_by_name, player_name}, _from, state) do
-    {nth, _player} = Enum.find(state.players, fn {_, v} -> v.name === player_name end)
+    {nth, _player} = Enum.find(state.players, {nil, nil}, fn {_, v} -> v.name === player_name end)
     {:reply, nth, state}
   end
 

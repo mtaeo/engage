@@ -36,13 +36,15 @@ defmodule EngageWeb.GameLobbyLive do
   end
 
   def handle_info(players, socket) when is_map(players) do
-    socket = if players[socket.assigns.nth] === nil do
-      socket
+    socket =
+      if players[socket.assigns.nth] === nil do
+        socket
         |> put_flash(:error, "You have been kicked from the game.")
         |> push_redirect(to: Routes.game_list_path(socket, :index))
       else
         assign(socket, players: players)
-    end
+      end
+
     {:noreply, socket}
   end
 
@@ -103,14 +105,17 @@ defmodule EngageWeb.GameLobbyLive do
     Phoenix.PubSub.subscribe(Engage.PubSub, "chat_" <> game_code)
 
     players =
-      TicTacToe.GenServer.add_player(
+      game_genserver(game.name).add_player(
         game_genserver_name,
         socket.assigns.player_id,
         socket.assigns.player_name
       )
 
     nth =
-      TicTacToe.GenServer.get_player_nth_by_name(game_genserver_name, socket.assigns.player_name)
+      game_genserver(game.name).get_player_nth_by_name(
+        game_genserver_name,
+        socket.assigns.player_name
+      )
 
     messages = Chat.GenServer.view(chat_genserver_name)
 

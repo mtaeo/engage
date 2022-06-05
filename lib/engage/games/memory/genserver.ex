@@ -46,6 +46,10 @@ defmodule Engage.Games.Memory.GenServer do
     GenServer.call(genserver_name, {:make_move, player, index})
   end
 
+  def make_move(genserver_name, {nil, index}) when is_number(index) do
+    GenServer.call(genserver_name, :view)
+  end
+
   def start_game(genserver_name, %Player{} = player) do
     GenServer.call(genserver_name, {:start_game, player})
   end
@@ -340,7 +344,7 @@ defmodule Engage.Games.Memory.GenServer do
   end
 
   defp get_player_nth_by_name_helper(state, player_name) do
-    Enum.find(state.players, fn {_, v} -> v.name === player_name end)
+    Enum.find(state.players, {nil, nil}, fn {_, v} -> v.name === player_name end)
   end
 
   defp insert_game_event_into_db(game_id, winner_id, loser_id) do

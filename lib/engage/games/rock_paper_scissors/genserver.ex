@@ -200,7 +200,7 @@ defmodule Engage.Games.RockPaperScissors.GenServer do
   end
 
   defp get_player_nth_by_name_helper(state, player_name) do
-    Enum.find(state.players, fn {_, v} -> v.name === player_name end)
+    Enum.find(state.players, {nil, nil}, fn {_, v} -> v.name === player_name end)
   end
 
   defp get_player_nth_by_id(state, player_id) when is_integer(player_id) do
