@@ -33,5 +33,6 @@ defmodule Engage.Games.Memory.GameBoard do
               28 => %EmojiCard{symbol: "😡"},
               29 => %EmojiCard{symbol: "😡"}
             },
-            current_player: :first
+            current_player: :first,
+            card_skin: nil
 end

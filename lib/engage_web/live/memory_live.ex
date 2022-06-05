@@ -129,6 +129,50 @@ defmodule EngageWeb.MemoryLive do
     )
   end
 
+  defp card_front(board) do
+    assigns = %{}
+    classes = "area-full no-backface rotate-y-180"
+
+    case board.card_skin do
+      # not all skins have a special front
+
+      _ ->
+        ~H"""
+        <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class={classes}>
+        	<rect x=".5" y=".5" width="23" height="23" ry="1.92" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" class="fill-theme-2 dark-t:fill-theme-4 stroke-theme-3 dark-t:stroke-theme-5" />
+        </svg>
+        """
+    end
+  end
+
+  defp card_back(board) do
+    assigns = %{}
+    classes = "area-full no-backface rotate-y-0"
+
+    case board.card_skin do
+      "asdf" ->
+        ~H"""
+        ...
+        """
+
+      _ ->
+        ~H"""
+        <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class={classes}>
+          <defs>
+            <linearGradient id="ta">
+              <stop stop-color="#9728e6" offset="0" />
+              <stop stop-color="#eb7a4c" offset="1" />
+            </linearGradient>
+            <linearGradient id="tb" x1="4.58" x2="0" y1="2.71" y2="6.43" gradientTransform="matrix(2.17 0 0 2.17 6.49 2.82)" gradientUnits="userSpaceOnUse" xlink:href="#ta" />
+            <linearGradient id="tc" x1="23.5" x2=".5" y1=".5" y2="23.5" gradientUnits="userSpaceOnUse" xlink:href="#ta" />
+          </defs>
+          <rect x=".5" y=".5" width="23" height="23" ry="1.92" fill-rule="evenodd" stroke="url(#tc)" stroke-linecap="round" stroke-linejoin="round" class="fill-[#f0f2f5] dark-t:fill-theme-3" />
+          <path d="m12.9 7.22c-0.913 0-1.72 0.195-2.42 0.584-0.701 0.39-1.25 0.946-1.64 1.67-0.39 0.724-0.584 1.56-0.584 2.52 0 3.19-1.82 4.78-1.82 4.78h6.46c1.1 0 2.03-0.283 2.79-0.851 0.757-0.579 1.27-1.31 1.54-2.2h-2.52c-0.367 0.746-0.985 1.12-1.85 1.12-0.601 0-1.11-0.19-1.52-0.568-0.412-0.378-0.646-0.902-0.701-1.57h6.76c0.0445-0.267 0.0666-0.567 0.0666-0.901 0-0.902-0.195-1.7-0.584-2.39-0.378-0.701-0.918-1.24-1.62-1.62-0.69-0.378-1.48-0.568-2.35-0.568zm-0.0666 1.92c0.612 0 1.13 0.183 1.55 0.55 0.423 0.356 0.64 0.835 0.651 1.44h-4.39c0.0891-0.623 0.329-1.11 0.719-1.45 0.401-0.356 0.89-0.534 1.47-0.534z" fill="url(#tb)" />
+        </svg>
+        """
+    end
+  end
+
   defp player_indicator_classes(game_board, current, n) do
     if nths_turn?(game_board, n) do
       " -text-accent-600 -dark-t:text-accent-400 outline outline-2" <>
