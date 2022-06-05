@@ -16,7 +16,7 @@ defmodule Engage.Cosmetics.Cosmetic do
   def changeset(cosmetic, attrs, _opts \\ []) do
     cosmetic
     |> cast(attrs, [:name, :display_name, :game_id, :category, :exclusion_group, :data, :price])
-    |> validate_required([:name, :display_name, :category, :exclusion_group, :data])
+    |> validate_required([:name, :display_name, :category, :exclusion_group])
     |> validate_price()
   end
 

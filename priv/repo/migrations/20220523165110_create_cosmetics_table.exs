@@ -14,7 +14,7 @@ defmodule Engage.Repo.Migrations.CreateCosmeticsTable do
       add :game_id, references(:games)
       add :price, :integer, null: false
       add :exclusion_group, :citext
-      add :data, :citext, null: false
+      add :data, :citext
     end
 
     create constraint("cosmetics", :exclusion_group_must_not_be_empty, check: "exclusion_group <> ''")

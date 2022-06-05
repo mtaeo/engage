@@ -97,58 +97,13 @@ Repo.insert!(
   Cosmetic.changeset(
     %Cosmetic{},
     %{
-      name: "red",
-      display_name: "Red",
+      name: "retro",
+      display_name: "Retro",
       game_id: 1,
       category: :game_item,
-      exclusion_group: "color",
-      data: "#FF0000",
+      exclusion_group: "x-o-style",
+      data: nil,
       price: 250
-    }
-  )
-)
-
-Repo.insert!(
-  Cosmetic.changeset(
-    %Cosmetic{},
-    %{
-      name: "green",
-      display_name: "Green",
-      game_id: 1,
-      category: :game_item,
-      exclusion_group: "color",
-      data: "#00FF00",
-      price: 250
-    }
-  )
-)
-
-Repo.insert!(
-  Cosmetic.changeset(
-    %Cosmetic{},
-    %{
-      name: "blue",
-      display_name: "Blue",
-      game_id: 1,
-      category: :game_item,
-      exclusion_group: "color",
-      data: "#0000FF",
-      price: 250
-    }
-  )
-)
-
-Repo.insert!(
-  Cosmetic.changeset(
-    %Cosmetic{},
-    %{
-      name: "pencils",
-      display_name: "Pencils Profile Background",
-      game_id: nil,
-      category: :profile,
-      exclusion_group: "profile-bg",
-      data: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80",
-      price: 500
     }
   )
 )
@@ -156,21 +111,6 @@ Repo.insert!(
 Repo.insert!(%UserCosmetic{
   user_id: 1,
   cosmetic_id: 1
-})
-
-Repo.insert!(%UserCosmetic{
-  user_id: 1,
-  cosmetic_id: 2
-})
-
-Repo.insert!(%UserCosmetic{
-  user_id: 1,
-  cosmetic_id: 3
-})
-
-Repo.insert!(%UserCosmetic{
-  user_id: 1,
-  cosmetic_id: 4
 })
 
 Repo.insert!(%Quiz{
