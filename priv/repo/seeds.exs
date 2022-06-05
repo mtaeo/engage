@@ -108,6 +108,21 @@ Repo.insert!(
   )
 )
 
+Repo.insert!(
+  Cosmetic.changeset(
+    %Cosmetic{},
+    %{
+      name: "scribble",
+      display_name: "Scribble",
+      game_id: 1,
+      category: :game_item,
+      exclusion_group: "x-o-style",
+      data: nil,
+      price: 250
+    }
+  )
+)
+
 Repo.insert!(%UserCosmetic{
   user_id: 1,
   cosmetic_id: 1
