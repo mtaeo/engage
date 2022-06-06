@@ -23,6 +23,12 @@ module.exports = {
 				'fade-in': 'fade-in 300ms ease-out forwards',
 				'fade-in-after-1': 'fade-in 300ms ease-out 300ms forwards',
 				'fade-out': 'fade-in 300ms ease-out reverse forwards',
+				'connect-four-fall-0': 'connect-four-fall-0 200ms ease-in forwards',
+				'connect-four-fall-1': 'connect-four-fall-1 300ms ease-in forwards',
+				'connect-four-fall-2': 'connect-four-fall-2 400ms ease-in forwards',
+				'connect-four-fall-3': 'connect-four-fall-3 500ms ease-in forwards',
+				'connect-four-fall-4': 'connect-four-fall-4 600ms ease-in forwards',
+				'connect-four-fall-5': 'connect-four-fall-5 700ms ease-in forwards',
 			},
 			keyframes: {
 				'alert-enter-down': {
@@ -56,7 +62,25 @@ module.exports = {
 					to: {
 						opacity: 1
 					}
-				}
+				},
+				'connect-four-fall-0': {
+					from: { transform: 'translateY(calc((-1 * 6/5 - 1/6) * 100%))' }, to: { transform: 'translateY(0)' }
+				},
+				'connect-four-fall-1': {
+					from: { transform: 'translateY(calc((-2 * 6/5 - 1/6) * 100%))' }, to: { transform: 'translateY(0)' }
+				},
+				'connect-four-fall-2': {
+					from: { transform: 'translateY(calc((-3 * 6/5 - 1/6) * 100%))' }, to: { transform: 'translateY(0)' }
+				},
+				'connect-four-fall-3': {
+					from: { transform: 'translateY(calc((-4 * 6/5 - 1/6) * 100%))' }, to: { transform: 'translateY(0)' }
+				},
+				'connect-four-fall-4': {
+					from: { transform: 'translateY(calc((-5 * 6/5 - 1/6) * 100%))' }, to: { transform: 'translateY(0)' }
+				},
+				'connect-four-fall-5': {
+					from: { transform: 'translateY(calc((-6 * 6/5 - 1/6) * 100%))' }, to: { transform: 'translateY(0)' }
+				},
 			},
 			backgroundImage: {
 				'pattern': "var(--bg-pattern)"
@@ -152,6 +176,7 @@ module.exports = {
 				'@media (prefers-color-scheme: dark) { .theme-auto & }',
 				'.theme-dark &'
 			]);
+			addVariant('second', '&:nth-child(2)');
 		})
 	]
 }

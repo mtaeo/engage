@@ -63,10 +63,10 @@ defmodule EngageWeb.ConnectFourLive do
     {:noreply, socket}
   end
 
-  def handle_event("make-move", %{"index" => index}, socket) do
+  def handle_event("make-move", %{"column" => col}, socket) do
     ConnectFour.GenServer.make_move(
       socket.assigns.game_genserver_name,
-      {socket.assigns.players[socket.assigns.nth], String.to_integer(index)}
+      {socket.assigns.players[socket.assigns.nth], String.to_integer(col)}
     )
 
     {:noreply, socket}
@@ -134,16 +134,36 @@ defmodule EngageWeb.ConnectFourLive do
     )
   end
 
-  def fill_slot(value) do
-    case value do
+  def player_color(nth) do
+    case nth do
       :first ->
         "bg-red-600"
 
       :second ->
-        "bg-yellow-600"
+        "bg-yellow-500"
 
       _ ->
         ""
+    end
+  end
+
+  defp get_rows_for_column(board_state, col) do
+    board_state
+    |> Stream.drop(col)
+    |> Stream.take_every(7)
+    |> Enum.map(fn {index, player} ->
+      row = div(index - col, 7)
+      {row, player}
+    end)
+  end
+
+  defp rounded_corners(col, row) do
+    cond do
+      col === 0 and row === 0 -> "rounded-tl-2xl"
+      col === 6 and row === 0 -> "rounded-tr-2xl"
+      col === 0 and row === 5 -> "rounded-bl-2xl"
+      col === 6 and row === 5 -> "rounded-br-2xl"
+      true -> ""
     end
   end
 

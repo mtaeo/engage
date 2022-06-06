@@ -199,6 +199,10 @@
 		height: 2rem;
 		background-image: linear-gradient(to bottom, var(--fade-from), transparent)
 	}
+	
+	.bg-hole {
+		background-image: radial-gradient(closest-side, transparent 80%, var(--bg) 80%);
+	}
 }
 
 /* Phoenix specific */

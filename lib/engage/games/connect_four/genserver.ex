@@ -42,7 +42,7 @@ defmodule Engage.Games.ConnectFour.GenServer do
     GenServer.call(genserver_name, {:make_move, player, index})
   end
 
-  def make_move(genserver_name, {nil, index}) do
+  def make_move(genserver_name, {nil, _index}) do
     GenServer.call(genserver_name, :view)
   end
 
@@ -86,7 +86,7 @@ defmodule Engage.Games.ConnectFour.GenServer do
     {:reply, state.players, state}
   end
 
-  def handle_call({:make_move, %Player{} = player, index}, _from, state) do
+  def handle_call({:make_move, %Player{} = player, col}, _from, state) do
     {nth, _player} = get_player_nth_by_name_helper(state, player.name)
 
     state =
@@ -94,7 +94,7 @@ defmodule Engage.Games.ConnectFour.GenServer do
            is_nil(state.board.outcome) and
            nth == state.board.current_player and
            all_players_joined?(state) do
-        insert_chip(state, nth, index)
+        insert_chip(state, nth, col)
       else
         state
       end
@@ -202,18 +202,17 @@ defmodule Engage.Games.ConnectFour.GenServer do
     put_in(state.board.current_player, next_player)
   end
 
-  defp insert_chip(state, nth, index)
+  defp insert_chip(state, nth, col)
        when is_atom(nth) and
-              is_integer(index) do
-    correct_index = get_lowest_chip_index(state, index)
+              is_integer(col) do
+    index = get_lowest_index_for_column(state, col)
 
     state =
-      if is_nil(correct_index) do
+      if is_nil(index) do
         state
       else
         state =
-          put_in(state.board.state[correct_index], nth)
-          |> set_next_players_turn
+          put_in(state.board.state[index], nth)
           |> check_for_winner_and_update_scores(nth)
 
         :timer.send_after(0, {:send_board, state})
@@ -224,9 +223,7 @@ defmodule Engage.Games.ConnectFour.GenServer do
     state
   end
 
-  defp get_lowest_chip_index(state, index) when is_integer(index) do
-    col = rem(index, @cols)
-
+  defp get_lowest_index_for_column(state, col) when is_integer(col) do
     available_slots =
       Enum.filter(state.board.state, fn {i, v} -> is_nil(v) and rem(i, @cols) == col end)
 
@@ -270,7 +267,7 @@ defmodule Engage.Games.ConnectFour.GenServer do
         state
 
       nil ->
-        state
+        set_next_players_turn(state)
     end
   end
 
@@ -333,7 +330,9 @@ defmodule Engage.Games.ConnectFour.GenServer do
   end
 
   defp get_player_nth_by_id(state, player_id) when is_integer(player_id) do
-    {nth, _player} = Enum.find(state.players, {nil, nil}, fn {_nth, player} -> player.id === player_id end)
+    {nth, _player} =
+      Enum.find(state.players, {nil, nil}, fn {_nth, player} -> player.id === player_id end)
+
     nth
   end
 
