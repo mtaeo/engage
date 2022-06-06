@@ -14,6 +14,14 @@ config :engage, EngageWeb.Endpoint, cache_static_manifest: "priv/static/cache_ma
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :gigalixir_engage, Engage.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  url: {:system, "DATABASE_URL"},
+  database: "",
+  ssl: true,
+  pool_size: 2,
+  check_origin: ["www.play-engage.com", "play-engage.com"]
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
