@@ -127,7 +127,7 @@
         <div class="max-w-2xl w-full aspect-square grid grid-cols-7">
           <% board = Enum.sort_by(@game_board.state, fn {index, _v} -> {index} end) %>
           <%= for col <- 0..6 do %>
-            <div phx-click="make-move" phx-value-column={col} class="grid grid-rows-7 group">
+            <div phx-click="make-move" phx-value-column={col} class="grid grid-rows-7 group cursor-pointer">
               <div class="grid place-items-center">
                 <div class={"w-4/5 h-4/5 rounded-full bg-transparent group-hover:#{player_color(@nth)}"}></div>
               </div>

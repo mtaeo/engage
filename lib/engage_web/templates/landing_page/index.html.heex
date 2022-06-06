@@ -9,6 +9,7 @@
       </div>
     </div>
   </nav>
+
   <div class="text-center">
     <div class="flex flex-col items-center gap-6 md:gap-12 w-11/12 md:w-6/12 max-w-3xl mx-auto py-16 md:py-32">
       <h1 class="text-3xl md:text-5xl">Engage in activities!</h1>
@@ -16,10 +17,11 @@
       <%= entry_button(@conn, @current_user, "Play now!") %>
     </div>
   </div>
+
   <section class="bg-theme-2">
     <div class="grid md:grid-cols-presentation items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
       <div>
-        <img src={ Routes.static_path(@conn, "/images/people_playing.jpeg") } alt="Fun experience" class="w-full">
+        <img src={ Routes.static_path(@conn, "/images/people_playing.jpeg") } alt="Fun experience" class="max-w-full">
       </div>
       <div class="flex flex-col gap-4">
         <h2 class="text-2xl md:text-4xl">Show them what you are capable of.</h2>
@@ -27,6 +29,7 @@
       </div>
     </div>
   </section>
+
   <section class="">
     <div class="grid md:grid-cols-presentation-reverse items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
       <div class="flex flex-col gap-4 order-2 md:order-1">
@@ -34,14 +37,15 @@
         <p>Have you mastered one of the oldest games in existence yet? Prove it by beating your friends and never losing a single game.</p>
       </div>
       <div class="order-1 md:order-2">
-        <img src={ Routes.static_path(@conn, "/images/tic_tac_toe_game_example.jpeg") } alt="Tic-Tac-Toe" class="w-full">
+        <img src={ Routes.static_path(@conn, "/images/tic_tac_toe_game_example.jpeg") } alt="Tic-Tac-Toe" class="max-w-full">
       </div>
     </div>
   </section>
+
   <section class="bg-theme-2">
     <div class="grid md:grid-cols-presentation items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
       <div>
-        <img src={ Routes.static_path(@conn, "/images/memory_game_example.jpeg") } alt="Memory" class="w-full">
+        <img src={ Routes.static_path(@conn, "/images/memory-game-example.png") } alt="Memory" class="w-full">
       </div>
       <div class="flex flex-col gap-4 order-2">
         <h2 class="text-2xl md:text-4xl">Memory</h2>
@@ -49,9 +53,35 @@
       </div>
     </div>
   </section>
+
+  <section class="">
+    <div class="grid md:grid-cols-presentation-reverse items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
+      <div class="flex flex-col gap-4 order-2 md:order-1">
+        <h2 class="text-2xl md:text-4xl">Rock paper scissors</h2>
+        <p>Can you recognize patterns in your opponent and use that knowledge to win the next round in Rock Paper Scissors?</p>
+      </div>
+      <div class="order-1 md:order-2">
+        <img src={ Routes.static_path(@conn, "/images/rock-paper-scissors-game-example.png") } alt="Rock Paper Scissors" class="max-w-full">
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-theme-2">
+    <div class="grid md:grid-cols-presentation items-center gap-4 md:gap-16 w-11/12 max-w-7xl mx-auto py-16">
+      <div>
+        <img src={ Routes.static_path(@conn, "/images/connect-four-game-example.png") } alt="Connect Four" class="w-full">
+      </div>
+      <div class="flex flex-col gap-4 order-2">
+        <h2 class="text-2xl md:text-4xl">Connect Four</h2>
+        <p>It's the classic game you love to play with your friends and family. Can you connect four of your coloured disks by dropping them into the holder before your opponent does?</p>
+      </div>
+    </div>
+  </section>
+
   <section class="text-center">
     <div class="flex flex-col items-center gap-6 md:gap-12 w-11/12 mx-auto md:py-16 py-32">
       <h2 class="text-2xl md:text-4xl">Are you ready?</h2>
+      <p>Join and show everyone what you can do!</p>
       <%= entry_button(@conn, @current_user, "Start playing!") %>
     </div>
   </section>
