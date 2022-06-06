@@ -6,7 +6,7 @@ defmodule Engage.Repo.Migrations.CreateGamesTables do
     drop_game_type_query = "DROP TYPE game_type"
     execute(create_game_type_query, drop_game_type_query)
 
-    create_emotion_query = "CREATE TYPE emotion AS ENUM ('angry', 'cry', 'happy', 'scared')"
+    create_emotion_query = "CREATE TYPE emotion AS ENUM ('angry', 'sad', 'happy', 'scared')"
     drop_emotion_query = "DROP TYPE emotion"
     execute(create_emotion_query, drop_emotion_query)
 

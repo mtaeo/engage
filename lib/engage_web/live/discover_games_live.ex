@@ -1,6 +1,5 @@
 defmodule EngageWeb.DiscoverGamesLive do
   use Phoenix.LiveView, layout: {EngageWeb.LayoutView, "live.html"}
-  alias EngageWeb.Router.Helpers, as: Routes
   alias Engage.Games
   import EngageWeb.LiveHelpers
 
@@ -24,6 +23,6 @@ defmodule EngageWeb.DiscoverGamesLive do
   end
 
   defp emotions() do
-    [:angry, :scared, :happy, :cry]
+    [:angry, :scared, :happy, :sad]
   end
 end

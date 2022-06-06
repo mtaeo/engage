@@ -21,7 +21,7 @@ Repo.insert!(%Game{
   name: "memory",
   description: "Each person turns over two cards at a time,
                 with the goal of turning over a matching pair, by using their memory.",
-  emotion: :cry,
+  emotion: :sad,
   xp_multiplier: 5,
   type: :multiplayer,
   image_path: "/images/game-previews/memory.jpg"
