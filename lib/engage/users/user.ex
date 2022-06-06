@@ -7,10 +7,10 @@ defmodule Engage.Users.User do
     field :email, :string
     field :bio, :string
     field :total_xp, :integer, default: 0
-    field :coins, :integer, default: 0
+    field :coins, :integer, default: 1000
     field :theme, Ecto.Enum, values: [:dark, :light, :automatic], default: :automatic
-    field :role, Ecto.Enum, values: [:user, :moderator, :admin], default: :user
-    field :gravatar_style, Ecto.Enum, values: [:mp, :identicon, :monsterid, :wavatar, :retro, :robohash], default: :retro
+    field :role, Ecto.Enum, values: [:guest, :user, :moderator, :admin], default: :user
+    field :gravatar_style, Ecto.Enum, values: [:mp, :identicon, :monsterid, :wavatar, :retro, :robohash], default: :robohash
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
@@ -37,7 +37,7 @@ defmodule Engage.Users.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:username, :email, :password])
+    |> cast(attrs, [:username, :email, :role, :password, :confirmed_at])
     |> validate_username()
     |> validate_email()
     |> validate_password(opts)
@@ -171,5 +171,17 @@ defmodule Engage.Users.User do
     else
       add_error(changeset, :current_password, "is not valid")
     end
+  end
+
+  def purchase_cosmetic_changeset(user, attrs, _opts \\ []) do
+    user
+    |> cast(attrs, [:coins])
+    |> validate_coins
+  end
+
+  defp validate_coins(changeset) do
+    changeset
+    |> validate_required([:coins])
+    |> validate_number(:coins, greater_than_or_equal_to: 0, message: "You don't have enough coins to purchase this item!")
   end
 end

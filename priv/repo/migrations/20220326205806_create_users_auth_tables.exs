@@ -4,7 +4,7 @@ defmodule Engage.Repo.Migrations.CreateUsersAuthTables do
   def change do
     execute "CREATE EXTENSION IF NOT EXISTS citext", ""
 
-    create_user_role_query = "CREATE TYPE user_role AS ENUM ('user', 'moderator', 'admin')"
+    create_user_role_query = "CREATE TYPE user_role AS ENUM ('guest', 'user', 'moderator', 'admin')"
     drop_user_role_query = "DROP TYPE user_role"
     execute(create_user_role_query, drop_user_role_query)
 

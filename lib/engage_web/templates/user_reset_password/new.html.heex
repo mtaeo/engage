@@ -1,15 +1,21 @@
-<h1>Forgot your password?</h1>
+<div class="grid place-items-center min-h-screen bg-pattern p-4 text-sm sm:text-base">
+	<main class="flex flex-col gap-4 w-full max-w-sm p-6 md:p-8 my-5 rounded-3xl bg-theme-1 dark-t:bg-theme-2 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
+    <h1 class="text-center text-xl">Forgot your password?</h1>
+    <p>Enter your e-mail below and we'll send you instructions on how to reset it.</p>
 
-<.form let={f} for={:user} action={Routes.user_reset_password_path(@conn, :create)}>
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
+    <.form let={f} for={:user} action={Routes.user_reset_password_path(@conn, :create)} class="contents">
+      <div class="flex flex-col gap-1.5">
+		    <%= label f, :email, "E-mail" %>
+		    <%= email_input f, :email, required: true, placeholder: "john.doe@example.com", class: "p-3 rounded-xl bg-transparent border-2 border-theme-neutral-7 hover:border-theme-neutral-5 transition-colors" %>
+      </div>
 
-  <div>
-    <%= submit "Send instructions to reset password" %>
-  </div>
-</.form>
+  	  <%= submit "Send", class: "block p-3 rounded-xl text-theme-neutral-1 bg-theme-neutral-8 hover:bg-theme-neutral-6 font-display transition-colors" %>
+    </.form>
 
-<p>
-  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
-</p>
+		<p class="text-center text-theme-neutral-6 mt-4 cursor-default">
+      <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "underline hover:text-theme-neutral-10 transition-colors" %>
+      |
+      <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "underline hover:text-theme-neutral-10 transition-colors" %>
+    </p>
+  </main>
+</div>

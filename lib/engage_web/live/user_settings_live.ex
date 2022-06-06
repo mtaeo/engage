@@ -6,6 +6,7 @@ defmodule EngageWeb.UserSettingsLive do
   alias Engage.Helpers.Gravatar
   alias Engage.Users
   alias Engage.Users.User
+  alias EngageWeb.Router.Helpers, as: Routes
   import EngageWeb.ErrorHelpers
   import EngageWeb.LiveHelpers
 
@@ -19,7 +20,7 @@ defmodule EngageWeb.UserSettingsLive do
         avatar_changeset = User.avatar_changeset(user)
 
         socket
-        |> assign(user: user)
+        |> assign(user: user, user_role: user.role)
         |> assign(profile_changeset: profile_changeset)
         |> assign(
           change_password: change_password,
@@ -64,6 +65,7 @@ defmodule EngageWeb.UserSettingsLive do
           socket
           |> put_flash(:info, "Successfuly updated account information!")
           |> assign(profile_changeset: User.profile_changeset(user))
+          |> redirect(to: Routes.user_settings_path(socket, :index))
 
         {:error, changeset} ->
           socket
@@ -74,19 +76,21 @@ defmodule EngageWeb.UserSettingsLive do
   end
 
   def handle_event("submit_avatar", %{"user" => avatar_style}, socket) do
-    socket = case Users.update_user_avatar(socket.assigns.user, avatar_style) do
-      {:ok, user} ->
-        socket
-        |> assign(
-          avatar_changeset: User.avatar_changeset(user),
-          avatar_uri: Gravatar.get_image_src_by_email(user.email, user.gravatar_style)
-        )
+    socket =
+      case Users.update_user_avatar(socket.assigns.user, avatar_style) do
+        {:ok, user} ->
+          socket
+          |> put_flash(:info, "Avatar style updated!")
+          |> assign(
+            avatar_changeset: User.avatar_changeset(user),
+            avatar_uri: Gravatar.get_image_src_by_email(user.email, user.gravatar_style)
+          )
 
-      {:error, changeset} ->
-        socket
-        |> put_flash(:error, "Error updating user profile avatar.")
-        |> assign(avatar_changeset: changeset)
-    end
+        {:error, changeset} ->
+          socket
+          |> put_flash(:error, "Error updating user profile avatar.")
+          |> assign(avatar_changeset: changeset)
+      end
 
     {:noreply, socket}
   end

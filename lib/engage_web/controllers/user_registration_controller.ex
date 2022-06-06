@@ -3,7 +3,7 @@ defmodule EngageWeb.UserRegistrationController do
 
   alias Engage.Users
   alias Engage.Users.User
-  alias EngageWeb.UserAuth
+  alias EngageWeb.Router.Helpers, as: Routes
 
   def new(conn, _params) do
     changeset = Users.change_user_registration(%User{})
@@ -15,13 +15,13 @@ defmodule EngageWeb.UserRegistrationController do
       {:ok, user} ->
         {:ok, _} =
           Users.deliver_user_confirmation_instructions(
+            conn,
             user,
             &Routes.user_confirmation_url(conn, :edit, &1)
           )
 
         conn
-        |> put_flash(:info, "User created successfully.")
-        |> UserAuth.log_in_user(user)
+        |> redirect(to: Routes.user_confirmation_path(conn, :new))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

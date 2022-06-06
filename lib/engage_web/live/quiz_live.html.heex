@@ -1,0 +1,70 @@
+<div class="place-self-center max-w-md flex flex-col items-center gap-4 text-center">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-12 h-12">
+    <defs>
+      <linearGradient id="accent" gradientTransform="rotate(-60, 0.5, 0.5)">
+        <stop offset="0%" stop-color="#eb7a4c" />
+        <stop offset="100%" stop-color="#9728e6" />
+      </linearGradient>
+    </defs>
+
+    <path stroke="url(#accent)" stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+
+  <%= case current_view(@quiz, @take, @question_index) do %>
+    <% :no_quiz_today -> %>
+      <p class="text-xl">There is no daily quiz today.</p>
+
+    <% :quiz_begin -> %>
+      <h1 class="text-xl">Today's Challenge Quiz:</h1>
+      <p class="text-2xl"><%= @quiz.display_name %></p>
+      <button phx-click="start-quiz" class="mt-8 px-4 py-2 rounded-xl text-theme-neutral-1 bg-theme-9 hover:bg-theme-7 font-display transition-colors">Start Quiz</button>
+
+    <% :question -> %>
+      <% question = Enum.at(@quiz.questions, @question_index) %>
+      <h1 class="text-xl">Question <%= (@question_index + 1) %></h1>
+      <p class="text-2xl"><%= question.text %></p>
+      <ul class="min-w-[12rem] mt-4 flex flex-col gap-2 leading-none">
+        <%= for answer <- question.answers do %>
+          <li class="contents">
+            <button phx-click="chose-answer" phx-value-answer-id={ answer.id } class={"px-4 py-2 bg-transparent border-2 rounded-lg transition-colors " <> answer_classes(answer, @chosen_answer_id)}>
+              <%= answer.text %>
+            </button>
+          </li>
+        <% end %>
+      </ul>
+
+    <% :quiz_over -> %>
+      <% score = Engage.Quizzes.get_score(@user.id, @quiz.id) %>
+      <% update_take_score(assigns, score) %>
+      <% given_answers = Quizzes.get_take_answers_status(@take.id) %>
+
+      <h1 class="text-2xl">Quiz finished!</h1>
+
+      <div class="flex">
+        <%= for answer <- given_answers do %>
+          <%= if answer do %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-8 h-8 text-green-600 dark-t:text-green-500">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          <% else %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-8 h-8 text-red-600 dark-t:text-red-500">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="flex gap-6 font-display text-lg">
+        <p class="text-accent-600 dark-t:text-accent-400">XP +<%= 10 * score %></p>
+        <p class="flex items-center text-amber-600 dark-t:text-yellow-400">
+          <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" class="inline w-6 h-6 mr-1">
+            <path d="m10.1 17.4v-1.41m0-7.91v-1.41m2.9 3.39c-0.598-1.22-1.7-1.98-2.9-1.98-1.85 4.27e-4 -3.35 1.77-3.35 3.95-1.4e-4 2.18 1.5 3.95 3.35 3.95 1.19-0.0044 2.3-0.76 2.89-1.98m-2.89-10.8s-0.346-9.26e-5 3.8-9.3e-5c4.15 4e-7 7.51 3.97 7.51 8.87-1e-6 4.9-3.36 8.87-7.51 8.87-4.15 0-3.8 9.2e-5 -3.8 9.2e-5m7.51-8.87a7.51 8.87 0 0 1-7.51 8.87 7.51 8.87 0 0 1-7.51-8.87 7.51 8.87 0 0 1 7.51-8.87 7.51 8.87 0 0 1 7.51 8.87z" />
+          </svg>
+
+          +<%= 10 * score %>
+        </p>
+      </div>
+
+      <button class="px-4 py-2 rounded-lg border-2 border-theme-8 hover:border-theme-6 leading-none font-display transition-colors" phx-click="clipboard-insert" onclick={copy_results(given_answers)}>Copy</button>
+  <% end %>
+</div>

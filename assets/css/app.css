@@ -33,7 +33,6 @@
 		url("/fonts/poppins-v19-latin-600.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
 		url("/fonts/poppins-v19-latin-600.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
-
 /* custom */
 @layer base {
 	h1,
@@ -42,9 +41,121 @@
 		font-family: "Poppins";
 		font-weight: 600;
 	}
+
+	input {
+		font: inherit !important;
+	}
+	
+	option {
+		/* best possible styling for this element */
+		color: theme("colors.neutral.800");
+		background-color: #e9e9ed;
+	}
+
+	/* scrollbar styling - standard */
+	* {
+		scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg);
+	}
+
+	/* scrollbar styling - webkit, non-standard */
+	::-webkit-scrollbar {
+		width: 17px;
+	}
+
+	::-webkit-scrollbar-track {
+		background-color: var(--scrollbar-bg);
+	}
+
+	::-webkit-scrollbar-thumb {
+		background-color: var(--scrollbar-thumb);
+		border: 3px solid var(--scrollbar-bg);
+		border-radius: 12px;
+	}
+
+	:root {
+		@apply theme-light;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root {
+			@apply theme-dark;
+		}
+	}
 }
 
 @layer utilities {
+	.theme-light {
+		--theme-1: theme("colors.gray.50");
+		--theme-2: theme("colors.gray.100");
+		--theme-3: theme("colors.gray.200");
+		--theme-4: theme("colors.gray.300");
+		--theme-5: theme("colors.gray.400");
+		--theme-6: theme("colors.gray.500");
+		--theme-7: theme("colors.gray.600");
+		--theme-8: theme("colors.gray.700");
+		--theme-9: theme("colors.gray.800");
+		--theme-10: theme("colors.gray.900");
+
+		--theme-neutral-1: theme("colors.neutral.50");
+		--theme-neutral-2: theme("colors.neutral.100");
+		--theme-neutral-3: theme("colors.neutral.200");
+		--theme-neutral-4: theme("colors.neutral.300");
+		--theme-neutral-5: theme("colors.neutral.400");
+		--theme-neutral-6: theme("colors.neutral.500");
+		--theme-neutral-7: theme("colors.neutral.600");
+		--theme-neutral-8: theme("colors.neutral.700");
+		--theme-neutral-9: theme("colors.neutral.800");
+		--theme-neutral-10: theme("colors.neutral.900");
+
+		--scrollbar-bg: var(--theme-2);
+		--scrollbar-thumb: var(--theme-4);
+
+		--bg-pattern: url('/images/background-light.svg');
+	}
+
+	.theme-dark {
+		--theme-1: theme("colors.gray.900");
+		--theme-2: theme("colors.gray.800");
+		--theme-3: theme("colors.gray.700");
+		--theme-4: theme("colors.gray.600");
+		--theme-5: theme("colors.gray.500");
+		--theme-6: theme("colors.gray.400");
+		--theme-7: theme("colors.gray.300");
+		--theme-8: theme("colors.gray.200");
+		--theme-9: theme("colors.gray.100");
+		--theme-10: theme("colors.gray.50");
+
+		--theme-neutral-1: theme("colors.neutral.900");
+		--theme-neutral-2: theme("colors.neutral.800");
+		--theme-neutral-3: theme("colors.neutral.700");
+		--theme-neutral-4: theme("colors.neutral.600");
+		--theme-neutral-5: theme("colors.neutral.500");
+		--theme-neutral-6: theme("colors.neutral.400");
+		--theme-neutral-7: theme("colors.neutral.300");
+		--theme-neutral-8: theme("colors.neutral.200");
+		--theme-neutral-9: theme("colors.neutral.100");
+		--theme-neutral-10: theme("colors.neutral.50");
+
+		--scrollbar-bg: var(--theme-1);
+		--scrollbar-thumb: var(--theme-4);
+
+		--bg-pattern: url('/images/background-dark.svg');
+	}
+	
+	.scrollbar-1-3 {
+		--scrollbar-bg: var(--theme-1);
+		--scrollbar-thumb: var(--theme-3);
+	}
+	
+	.scrollbar-2-4 {
+		--scrollbar-bg: var(--theme-2);
+		--scrollbar-thumb: var(--theme-4);
+	}
+	
+	.wrap-anywhere {
+		overflow-wrap: anywhere;
+	}
+
 	.clip-border {
 		clip-path: border-box;
 	}
@@ -53,45 +164,45 @@
 		grid-area: 1 / -1;
 	}
 	
+	.object-cover {
+		object-fit: cover;
+	}
+
 	.perspective {
 		perspective: 50rem;
 	}
-	
+
 	.preserve-3d {
 		transform-style: preserve-3d;
 	}
-	
+
 	.rotate-y-0 {
 		transform: rotateY(0);
 	}
-	
+
 	.rotate-y-180 {
 		transform: rotateY(180deg);
 	}
-	
+
 	.no-backface {
 		backface-visibility: hidden;
 	}
-}
-
-/* scrollbar styling - standard */
-* {
-	scrollbar-color: theme("colors.gray.500") theme("colors.gray.900");
-}
-
-/* scrollbar styling - webkit non-standard */
-::-webkit-scrollbar {
-	width: 17px;
-}
-
-::-webkit-scrollbar-track {
-	background-color: theme("colors.gray.900");
-}
-
-::-webkit-scrollbar-thumb {
-	background-color: theme("colors.gray.500");
-	border: 3px solid theme("colors.gray.900");
-	border-radius: 12px;
+	
+	.top-fade-shadow {
+		position: relative;
+	}
+	
+	.top-fade-shadow::after {
+		content: "";
+		position: absolute;
+		inset: 0 0 auto 0;
+		height: 2rem;
+		background-image: linear-gradient(to bottom, var(--fade-from), transparent)
+	}
+	
+	.bg-hole {
+		background-image: radial-gradient(closest-side, transparent 80%, var(--bg) 80%);
+	}
 }
 
 /* Phoenix specific */
@@ -148,64 +259,4 @@
 	color: black;
 	text-decoration: none;
 	cursor: pointer;
-}
-
-.fade-in-scale {
-	animation: 0.2s ease-in 0s normal forwards 1 fade-in-scale-keys;
-}
-
-.fade-out-scale {
-	animation: 0.2s ease-out 0s normal forwards 1 fade-out-scale-keys;
-}
-
-.fade-in {
-	animation: 0.2s ease-out 0s normal forwards 1 fade-in-keys;
-}
-
-.fade-out {
-	animation: 0.2s ease-out 0s normal forwards 1 fade-out-keys;
-}
-
-@keyframes fade-in-scale-keys {
-	0% {
-		scale: 0.95;
-		opacity: 0;
-	}
-
-	100% {
-		scale: 1;
-		opacity: 1;
-	}
-}
-
-@keyframes fade-out-scale-keys {
-	0% {
-		scale: 1;
-		opacity: 1;
-	}
-
-	100% {
-		scale: 0.95;
-		opacity: 0;
-	}
-}
-
-@keyframes fade-in-keys {
-	0% {
-		opacity: 0;
-	}
-
-	100% {
-		opacity: 1;
-	}
-}
-
-@keyframes fade-out-keys {
-	0% {
-		opacity: 1;
-	}
-
-	100% {
-		opacity: 0;
-	}
 }

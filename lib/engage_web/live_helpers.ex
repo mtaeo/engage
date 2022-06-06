@@ -15,8 +15,11 @@ defmodule EngageWeb.LiveHelpers do
     # with a freshly fetched User from the database
     case session do
       %{"current_user" => user} ->
-        fetched_user = Users.get_user!(user.id)
-        success.(socket, fetched_user)
+        fetched_user = Users.get_user(user.id)
+
+        socket
+        |> LiveView.assign(theme: fetched_user.theme)
+        |> success.(fetched_user)
 
       _ ->
         LiveView.redirect(socket,
@@ -29,11 +32,12 @@ defmodule EngageWeb.LiveHelpers do
   def live_template_assigns(socket, user) do
     level = XpToLevels.calculate_level_for_xp(user.total_xp)
     upper_xp = XpToLevels.calculate_upper_xp_for_level(level)
+    current_level_xp = user.total_xp - XpToLevels.calculate_lower_xp_for_level(level)
 
     LiveView.assign(socket,
       coins: user.coins,
       level: level,
-      level_progress: user.total_xp / (upper_xp || user.total_xp) * 100
+      level_progress: current_level_xp / (upper_xp || user.total_xp) * 100
     )
   end
 end

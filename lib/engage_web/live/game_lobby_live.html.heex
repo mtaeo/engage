@@ -1,0 +1,49 @@
+<div class="w-full max-w-2xl 2xl:max-w-4xl place-self-center flex flex-col gap-8 2xl:gap-16 items-center sm:items-stretch">
+  <h1 class="sr-only">Game info</h1>
+
+  <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-stretch">
+    <div class="sm:basis-64 2xl:basis-80 max-w-[12rem] sm:max-w-[50%]">
+      <img src={ @game.image_path } alt="game thumbnail" class="max-w-full rounded-2xl">
+    </div>
+
+    <div class="flex flex-col gap-4 text-center sm:text-left">
+      <h2 class="text-3xl"><%= @game.display_name %></h2>
+      <p><%= @game.description %></p>
+    </div>
+  </div>
+
+  <section class="self-center w-full max-w-sm flex flex-col gap-4">
+    <h2 class="text-lg">Joined players:</h2>
+
+    <div class="flex flex-col gap-2">
+      <%= for {_nth, player} when not is_nil(player) <- @players do %>
+        <section class="flex justify-between">
+          <h3><%= player.name %></h3>
+
+          <%= cond do %>
+            <% player.id === @player_id -> %>
+              <span class="px-3 py-1">(you)</span>
+
+            <% @is_lobby_owner -> %>
+              <button phx-click="kick-player" phx-value-kicked-player-id={player.id} class="px-3 py-1 rounded hover:bg-theme-2 dark-t:hover:bg-theme-3 text-red-600 dark-t:text-red-500 transition-colors">Kick</button>
+            <% true -> %>
+          <% end %>
+        </section>
+      <% end %>
+    </div>
+  </section>
+
+  <div class="self-stretch flex flex-col xxs:flex-row justify-evenly gap-4 text-center font-display">
+    <button phx-click="clipboard-insert" class="flex justify-center items-center gap-2 px-4 py-2 rounded-lg border-2 border-theme-7 hover:border-theme-5 transition-colors" onclick={"window.util.clipboardInsert('#{@game_genserver_name}')"}>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="h-6 w-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+      </svg>
+
+      <%= @game_genserver_name %>
+    </button>
+
+    <%= if @is_lobby_owner do %>
+      <button phx-click="start-game" class="grid place-items-center px-4 py-2 rounded-lg text-theme-neutral-1 bg-theme-8 hover:bg-theme-6 transition-colors">Start</button>
+    <% end %>
+  </div>
+</div>

@@ -2,6 +2,7 @@ defmodule EngageWeb.UserConfirmationController do
   use EngageWeb, :controller
 
   alias Engage.Users
+  alias EngageWeb.Router.Helpers, as: Routes
 
   def new(conn, _params) do
     render(conn, "new.html")
@@ -10,6 +11,7 @@ defmodule EngageWeb.UserConfirmationController do
   def create(conn, %{"user" => %{"email" => email}}) do
     if user = Users.get_user_by_email(email) do
       Users.deliver_user_confirmation_instructions(
+        conn,
         user,
         &Routes.user_confirmation_url(conn, :edit, &1)
       )
@@ -18,8 +20,7 @@ defmodule EngageWeb.UserConfirmationController do
     conn
     |> put_flash(
       :info,
-      "If your email is in our system and it has not been confirmed yet, " <>
-        "you will receive an email with instructions shortly."
+      "If your email is in our system and it has not been confirmed yet, you will receive an email with instructions shortly."
     )
     |> redirect(to: "/")
   end
@@ -35,7 +36,7 @@ defmodule EngageWeb.UserConfirmationController do
       {:ok, _} ->
         conn
         |> put_flash(:info, "User confirmed successfully.")
-        |> redirect(to: "/")
+        |> redirect(to: Routes.user_session_path(conn, :new))
 
       :error ->
         # If there is a current user and the account was already confirmed,

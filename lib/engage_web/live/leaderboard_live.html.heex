@@ -1,0 +1,69 @@
+<div class="justify-self-center self-start w-full max-w-2xl flex flex-col gap-4 xs:gap-8">
+  <h1 class="text-center text-4xl">Leaderboard</h1>
+
+  <ul class="self-center grid grid-flow-col auto-cols-fr grid-rows-2 xs:grid-rows-1 justify-items-center gap-2 xxs:gap-4 xs:gap-8 text-lg text-center font-display">
+    <% [first, second, third] = top_three(@users) %>
+
+    <%= if first do %>
+      <li class="xs:order-2 col-span-2 xs:col-span-1 flex flex-col justify-end">
+        <%= live_redirect to: Routes.user_profile_path(@socket, :index, first.username), class: "flex flex-col justify-end items-center gap-2 px-6 py-2 rounded-md hover:bg-theme-2 dark-t:hover:bg-theme-3 transition-colors" do %>
+          <div class="w-32 aspect-square relative">
+            <img src={ first.avatar_src } alt="avatar" loading="lazy" class="rounded-full border-3 border-yellow-500 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
+            <div class="absolute bottom-[15%] right-[15%] translate-x-1/2 translate-y-1/2 grid place-items-center w-10 aspect-square rounded-full bg-theme-1 dark-t:bg-theme-2 border-2 border-yellow-500">#1</div>
+          </div>
+
+          <div class="text-xl"><%= first.username %></div>
+          <div title="Total XP"><%= first.total_xp %></div>
+        <% end %>
+      </li>
+    <% end %>
+
+    <%= if second do %>
+      <li class="xs:order-1 flex flex-col justify-end">
+        <%= live_redirect to: Routes.user_profile_path(@socket, :index, second.username), class: "flex flex-col justify-end items-center gap-2 px-6 py-2 rounded-md hover:bg-theme-2 dark-t:hover:bg-theme-3 transition-colors" do %>
+          <div class="w-24 aspect-square relative">
+            <img src={ second.avatar_src } alt="avatar" loading="lazy" class="rounded-full border-3 border-neutral-400 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
+            <div class="absolute bottom-[15%] right-[15%] translate-x-1/2 translate-y-1/2 grid place-items-center w-9 aspect-square rounded-full bg-theme-1 dark-t:bg-theme-2 border-2 border-neutral-400 text-base">#2</div>
+          </div>
+
+          <div><%= second.username %></div>
+          <div title="Total XP"><%= second.total_xp %></div>
+        <% end %>
+      </li>
+    <% end %>
+
+    <%= if third do %>
+      <li class="xs:order-3 flex flex-col justify-end">
+        <%= live_redirect to: Routes.user_profile_path(@socket, :index, third.username), class: "flex flex-col justify-end items-center gap-2 px-6 py-2 rounded-md hover:bg-theme-2 dark-t:hover:bg-theme-3 transition-colors" do %>
+          <div class="w-20 aspect-square relative">
+            <img src={ third.avatar_src } alt="avatar" loading="lazy" class="rounded-full border-3 border-[#a66535] shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
+            <div class="absolute bottom-[15%] right-[15%] translate-x-1/2 translate-y-1/2 grid place-items-center w-8 aspect-square rounded-full bg-theme-1 dark-t:bg-theme-2 border-2 border-[#a66535] text-base">#3</div>
+          </div>
+
+          <div><%= third.username %></div>
+          <div title="Total XP"><%= third.total_xp %></div>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+
+  <ul class="flex flex-col text-lg font-display">
+    <%= for user <- Stream.drop(@users, 3) do %>
+      <li class={ "flex items-center gap-2 xxs:gap-4 xs:gap-8 xs:px-2 py-2 border-t-2 border-t-theme-2 dark-t:border-t-theme-3" <> if user.id === @user.id, do: "", else: "" }>
+        <div title="Rank">#<%= user.rank %></div>
+
+        <%= live_redirect to: EngageWeb.Router.Helpers.user_profile_path(@socket, :index, user.username), class: "flex items-center gap-4 px-4 p-2 rounded-md hover:bg-theme-2 dark-t:hover:bg-theme-3 transition-colors" do %>
+          <img src={ user.avatar_src } alt="avatar" loading="lazy" class="w-12 aspect-square rounded-full border-2 border-theme-3 dark-t:border-theme-4">
+          <%= user.username %>
+          <%= if user.rank === 1 do %>
+            <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-7 h-7 text-yellow-500">
+            	<path d="m13.3 14.7 1.74 6.78m2-17h4v2c0 2.21-1.79 4-4 4m-10-6h-4v2c0 2.21 1.79 4 4 4m9 11-8 1e-5m2.74-6.78-1.74 6.78m-2-19v7a5 5 0 0 0 5 5 5 5 0 0 0 5-5v-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+            </svg>
+          <% end %>
+        <% end %>
+
+        <div title="Total XP" class="ml-auto"><%= user.total_xp %></div>
+      </li>
+    <% end %>
+  </ul>
+</div>

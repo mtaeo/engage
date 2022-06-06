@@ -18,7 +18,17 @@ module.exports = {
 		extend: {
 			animation: {
 				'alert-enter-down': 'alert-enter-down 0.3s ease-out',
-				'alert-leave-up': 'alert-leave-up 5s ease-out'
+				'alert-leave-up': 'alert-leave-up 5s ease-out',
+				'pulse-attention': 'pulse-attention 500ms cubic-bezier(0.4, 0, 0.6, 1) 1',
+				'fade-in': 'fade-in 300ms ease-out forwards',
+				'fade-in-after-1': 'fade-in 300ms ease-out 300ms forwards',
+				'fade-out': 'fade-in 300ms ease-out reverse forwards',
+				'connect-four-fall-0': 'connect-four-fall-0 200ms ease-in forwards',
+				'connect-four-fall-1': 'connect-four-fall-1 300ms ease-in forwards',
+				'connect-four-fall-2': 'connect-four-fall-2 400ms ease-in forwards',
+				'connect-four-fall-3': 'connect-four-fall-3 500ms ease-in forwards',
+				'connect-four-fall-4': 'connect-four-fall-4 600ms ease-in forwards',
+				'connect-four-fall-5': 'connect-four-fall-5 700ms ease-in forwards',
 			},
 			keyframes: {
 				'alert-enter-down': {
@@ -36,11 +46,47 @@ module.exports = {
 					'100%': {
 						transform: 'translate(-50%, calc(-100% - 8rem))'
 					}
-				}
+				},
+				'pulse-attention': {
+					'0%, 67%': {
+						opacity: '.5'
+					},
+					'33%, 100%': {
+						opacity: '1'
+					}
+				},
+				'fade-in': {
+					from: {
+						opacity: 0
+					},
+					to: {
+						opacity: 1
+					}
+				},
+				'connect-four-fall-0': {
+					from: { transform: 'translateY(calc((-1 * 6/5 - 1/6) * 100%))' }, to: { transform: 'translateY(0)' }
+				},
+				'connect-four-fall-1': {
+					from: { transform: 'translateY(calc((-2 * 6/5 - 1/6) * 100%))' }, to: { transform: 'translateY(0)' }
+				},
+				'connect-four-fall-2': {
+					from: { transform: 'translateY(calc((-3 * 6/5 - 1/6) * 100%))' }, to: { transform: 'translateY(0)' }
+				},
+				'connect-four-fall-3': {
+					from: { transform: 'translateY(calc((-4 * 6/5 - 1/6) * 100%))' }, to: { transform: 'translateY(0)' }
+				},
+				'connect-four-fall-4': {
+					from: { transform: 'translateY(calc((-5 * 6/5 - 1/6) * 100%))' }, to: { transform: 'translateY(0)' }
+				},
+				'connect-four-fall-5': {
+					from: { transform: 'translateY(calc((-6 * 6/5 - 1/6) * 100%))' }, to: { transform: 'translateY(0)' }
+				},
 			},
 			backgroundImage: {
-				'pattern-dark': "url('/images/background-dark.svg')",
-				'pattern-light': "url('/images/background-light.svg')"
+				'pattern': "var(--bg-pattern)"
+			},
+			borderWidth: {
+				'3': '3px'
 			},
 			boxShadow: {
 				'equal': '0 0 12px -3px hsl(0 0% 0% / 0.5)',
@@ -70,6 +116,30 @@ module.exports = {
 					800: '#25272d',
 					900: '#17181c',
 				},
+				theme: {
+					1: 'var(--theme-1)',
+					2: 'var(--theme-2)',
+					3: 'var(--theme-3)',
+					4: 'var(--theme-4)',
+					5: 'var(--theme-5)',
+					6: 'var(--theme-6)',
+					7: 'var(--theme-7)',
+					8: 'var(--theme-8)',
+					9: 'var(--theme-9)',
+					10: 'var(--theme-10)'
+				},
+				'theme-neutral': {
+					1: 'var(--theme-neutral-1)',
+					2: 'var(--theme-neutral-2)',
+					3: 'var(--theme-neutral-3)',
+					4: 'var(--theme-neutral-4)',
+					5: 'var(--theme-neutral-5)',
+					6: 'var(--theme-neutral-6)',
+					7: 'var(--theme-neutral-7)',
+					8: 'var(--theme-neutral-8)',
+					9: 'var(--theme-neutral-9)',
+					10: 'var(--theme-neutral-10)'
+				}
 			},
 			fontFamily: {
 				'sans': ['"Open Sans"', 'sans-serif'],
@@ -79,12 +149,21 @@ module.exports = {
 				'presentation': '3fr 2fr',
 				'presentation-reverse': '2fr 3fr'
 			},
+			inset: {
+				'2/5': '40%'
+			},
+			maxHeight: {
+				'256': '64rem'
+			},
 			spacing: {
 				'120': '30rem',
 				'144': '36rem'
 			},
 			translate: {
 				'alert-hide': 'calc(-100% - 8rem)'
+			},
+			transitionTimingFunction: {
+				'ease' :'ease'
 			}
 		}
 	},
@@ -92,6 +171,12 @@ module.exports = {
 		require('@tailwindcss/forms'),
 		plugin(({addVariant}) => {
 			addVariant('sidebar-toggled', '&.sidebar-toggled');
+			// can't override existing variants and the default is inadequate for the app's needs
+			addVariant('dark-t', [
+				'@media (prefers-color-scheme: dark) { .theme-auto & }',
+				'.theme-dark &'
+			]);
+			addVariant('second', '&:nth-child(2)');
 		})
 	]
 }
