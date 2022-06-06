@@ -1,14 +1,14 @@
 <div class="self-start grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] grid-rows-[repeat(auto-fit,1fr)] justify-items-center gap-6">
   <%= for game <- Games.get_all_games() do %>
     <section phx-click="open-game" phx-value-game-name={ game.name } class="w-full max-w-sm aspect-[4/3] grid rounded-lg shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 overflow-hidden cursor-pointer group">
-      <img src={ game.image_path } class="area-full w-full h-full max-w-full bg-theme-6 dark-t:bg-theme-1 group-hover:scale-[1.04] object-cover z-[2] transition-transform duration-500 ease">
+      <img src={ game.image_path } alt="game preview" class="area-full w-full h-full max-w-full bg-theme-6 dark-t:bg-theme-1 group-hover:scale-[1.04] object-cover z-[2] transition-transform duration-500 ease">
       
       <div class="area-full self-end h-2/3 flex flex-col justify-end bg-gradient-to-t from-[#000d] z-[3]">
         <div class="flex justify-between items-center px-5 py-4 text-neutral-50 font-display text-lg leading-tight">
           <h2><%= game.display_name %></h2>
 
           <%= if game.xp_multiplier > Decimal.new(1) do %>
-            <p><%= game.xp_multiplier %>x</p>
+            <p title={"Earn #{game.xp_multiplier}x as much XP than in other games"}><%= game.xp_multiplier %>x</p>
           <% end %>
         </div>
       </div>

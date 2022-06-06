@@ -9,7 +9,7 @@ window.util = {
 		const nextPos = target.scrollLeft + factor * target.offsetWidth;
 
 		// reached end
-		if (factor > 0 && nextPos >= target.scrollLeftMax || factor < 0 && nextPos <= 0) {
+		if (factor > 0 && nextPos >= target.scrollWidth - target.offsetWidth || factor < 0 && nextPos <= 0) {
 			liveSocket.execJS(source, source.attributes["data-hide"].value);
 		}
 
@@ -28,7 +28,7 @@ window.util = {
 
 window.addEventListener("phx:scroll-end", e => {
 	let element = document.getElementById(e.detail.id);
-	element.scrollTop = element.scrollTopMax;
+	element.scrollTop = element.scrollHeight;
 });
 
 window.addEventListener("phx:clear-input", e => {
@@ -37,7 +37,7 @@ window.addEventListener("phx:clear-input", e => {
 
 window.addEventListener("phx:init-scrollx", e => {
 	[...document.getElementsByClassName(e.detail.class)].forEach(e => {
-		if (e.scrollLeft !== e.scrollLeftMax) {
+		if (e.offsetWidth < e.scrollWidth) {
 			let button = e.getElementsByClassName("js-scrollx-right")[0];
 			liveSocket.execJS(button, button.attributes["data-show"].value);
 		}
