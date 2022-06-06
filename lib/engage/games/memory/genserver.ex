@@ -2,6 +2,7 @@ defmodule Engage.Games.Memory.GenServer do
   use GenServer
   alias Engage.Games.GameEvent
   alias Engage.Games.Memory.{GameBoard, Player}
+  alias Engage.UserCosmetics
 
   @game_name "memory"
   @card_delay 2000
@@ -69,7 +70,9 @@ defmodule Engage.Games.Memory.GenServer do
       cond do
         state.players.first === nil ->
           player = %Player{id: player_id, name: player_name}
+
           put_in(state.players.first, player)
+          |> get_card_skin(player_id)
 
         state.players.second === nil and state.players.first.id !== player_id ->
           player = %Player{id: player_id, name: player_name}
@@ -195,6 +198,24 @@ defmodule Engage.Games.Memory.GenServer do
     {:noreply, state}
   end
 
+  defp get_card_skin(state, player_id) do
+    UserCosmetics.get_all_equipped_user_cosmetics_for_user_id_and_game_id(
+      player_id,
+      state.game_id
+    )
+    |> Enum.find_value(
+      nil,
+      fn x ->
+        if x.cosmetic.exclusion_group === "card-skin" do
+          x.cosmetic.name
+        else
+          nil
+        end
+      end
+    )
+    |> (&put_in(state.board.card_skin, &1)).()
+  end
+
   defp reveal_card(state, player, index) do
     state = put_in(state.board.state[index].face_up?, true)
     :timer.send_after(0, {:send_board, state})
@@ -308,7 +329,12 @@ defmodule Engage.Games.Memory.GenServer do
         state
 
       :draw ->
-        insert_draw_game_event_into_db(state.game_id, state.players.second.id, state.players.first.id)
+        insert_draw_game_event_into_db(
+          state.game_id,
+          state.players.second.id,
+          state.players.first.id
+        )
+
         :timer.send_after(@card_delay, {:replay, state})
         state
 
@@ -331,8 +357,8 @@ defmodule Engage.Games.Memory.GenServer do
         :second
 
       first_player_score === second_player_score and
-        first_player_score + second_player_score === num_of_card_pairs(state) ->
-          :draw
+          first_player_score + second_player_score === num_of_card_pairs(state) ->
+        :draw
 
       true ->
         nil

@@ -129,6 +129,87 @@ defmodule EngageWeb.MemoryLive do
     )
   end
 
+  defp card_front(board) do
+    assigns = %{}
+    classes = "area-full no-backface rotate-y-180"
+
+    case board.card_skin do
+      # not all skins have a special front
+
+      _ ->
+        ~H"""
+        <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class={classes}>
+          <rect x=".5" y=".5" width="23" height="23" ry="1.92" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" class="fill-theme-2 dark-t:fill-theme-4 stroke-theme-3 dark-t:stroke-theme-5" />
+        </svg>
+        """
+    end
+  end
+
+  defp card_back(board) do
+    assigns = %{}
+    classes = "area-full no-backface rotate-y-0"
+
+    case board.card_skin do
+      "stars" ->
+        ~H"""
+        <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class={classes}>
+         <defs>
+           <linearGradient id="ta">
+             <stop stop-color="#e3dd24" offset="0" />
+             <stop stop-color="#e44e22" offset="1" />
+           </linearGradient>
+           <linearGradient id="tc" x1="23.5" x2=".5" y1=".5" y2="23.5" gradientUnits="userSpaceOnUse" xlink:href="#ta" />
+           <linearGradient id="tb" x1="19.1" x2="5.19" y1="4.38" y2="19.6" gradientUnits="userSpaceOnUse" xlink:href="#ta" />
+         </defs>
+         <rect x=".5" y=".5" width="23" height="23" ry="1.92" fill="#c4c6ca" fill-rule="evenodd" stroke="url(#tc)" stroke-linecap="round" stroke-linejoin="round" class="fill-[#f0f2f5] dark-t:fill-theme-3" />
+         <path d="m5.19 17.4c0.89-0.445 1-0.89 1.34-2 0.334 1.11 0.445 1.56 1.34 2-0.89 0.445-1 0.89-1.34 2-0.334-1.11-0.445-1.56-1.34-2zm11.2-9.33c0.89-0.445 1-0.89 1.34-2 0.334 1.11 0.445 1.56 1.34 2-0.89 0.445-1 0.89-1.34 2-0.334-1.11-0.445-1.56-1.34-2zm-6.7 4.78c0.89-0.445 1-0.89 1.34-2 0.334 1.11 0.445 1.56 1.34 2-0.89 0.445-1 0.89-1.34 2-0.334-1.11-0.445-1.56-1.34-2zm-4.21-5.27c1.4-0.7 1.58-1.4 2.1-3.15 0.525 1.75 0.7 2.45 2.1 3.15-1.4 0.7-1.58 1.4-2.1 3.15-0.525-1.75-0.7-2.45-2.1-3.15zm7.64 8.05c1.77-0.887 2-1.77 2.66-3.99 0.665 2.22 0.887 3.11 2.66 3.99-1.77 0.887-2 1.77-2.66 3.99-0.666-2.22-0.887-3.11-2.66-3.99z" fill="none" stroke="url(#tb)" stroke-width=".667" />
+        </svg>
+        """
+
+      "engage" ->
+        ~H"""
+        <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class={classes}>
+          <defs>
+            <linearGradient id="ta">
+              <stop stop-color="#9728e6" offset="0" />
+              <stop stop-color="#eb7a4c" offset="1" />
+            </linearGradient>
+            <linearGradient id="tb" x1="4.58" x2="0" y1="2.71" y2="6.43" gradientTransform="matrix(2.17 0 0 2.17 6.49 2.82)" gradientUnits="userSpaceOnUse" xlink:href="#ta" />
+            <linearGradient id="tc" x1="23.5" x2=".5" y1=".5" y2="23.5" gradientUnits="userSpaceOnUse" xlink:href="#ta" />
+          </defs>
+          <rect x=".5" y=".5" width="23" height="23" ry="1.92" fill-rule="evenodd" stroke="url(#tc)" stroke-linecap="round" stroke-linejoin="round" class="fill-[#f0f2f5] dark-t:fill-theme-3" />
+          <path d="m12.9 7.22c-0.913 0-1.72 0.195-2.42 0.584-0.701 0.39-1.25 0.946-1.64 1.67-0.39 0.724-0.584 1.56-0.584 2.52 0 3.19-1.82 4.78-1.82 4.78h6.46c1.1 0 2.03-0.283 2.79-0.851 0.757-0.579 1.27-1.31 1.54-2.2h-2.52c-0.367 0.746-0.985 1.12-1.85 1.12-0.601 0-1.11-0.19-1.52-0.568-0.412-0.378-0.646-0.902-0.701-1.57h6.76c0.0445-0.267 0.0666-0.567 0.0666-0.901 0-0.902-0.195-1.7-0.584-2.39-0.378-0.701-0.918-1.24-1.62-1.62-0.69-0.378-1.48-0.568-2.35-0.568zm-0.0666 1.92c0.612 0 1.13 0.183 1.55 0.55 0.423 0.356 0.64 0.835 0.651 1.44h-4.39c0.0891-0.623 0.329-1.11 0.719-1.45 0.401-0.356 0.89-0.534 1.47-0.534z" fill="url(#tb)" />
+        </svg>
+        """
+
+      "diamonds" ->
+        ~H"""
+        <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class={classes}>
+          <defs>
+            <linearGradient id="ta" x1=".5" x2="23.5" y1="23.5" y2=".5" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#c42f27" offset="0"/>
+              <stop stop-color="#db7125" offset="1"/>
+            </linearGradient>
+          </defs>
+          <rect x=".5" y=".5" width="23" height="23" ry="1.92" stroke="none" class="fill-theme-2 dark-t:fill-theme-3" />
+          <path d="m4.18 0.5 0.674 1.17 0.674-1.17h-1.35zm3.57 0 0.676 1.17 0.676-1.17h-1.35zm3.57 0 0.674 1.17 0.674-1.17h-1.35zm3.57 0 0.676 1.17 0.676-1.17h-1.35zm3.57 0 0.674 1.17 0.674-1.17h-1.35zm-16.6 0.0664c-0.369 0.0983-0.692 0.303-0.938 0.58l0.301 0.523 0.637-1.1zm20.2 0.00195 0.635 1.1 0.301-0.521c-0.245-0.277-0.567-0.48-0.936-0.578zm-19 0.0859-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm-19.6 3.1-0.783 1.36v1.39l0.783 1.36 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 0.783-1.36v-1.39l-0.783-1.36zm-19.6 3.1-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm-19.6 3.1-0.783 1.36v1.39l0.783 1.36 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 0.783-1.36v-1.39l-0.783-1.36zm-19.6 3.1-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm-19.6 3.1-0.783 1.36v1.39l0.783 1.36 1.19-2.05-1.19-2.05zm21.4 0-1.19 2.05 1.19 2.05 0.783-1.36v-1.39l-0.783-1.36zm-17.9 0.00195-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm-16.1 3.09-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0.00195-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm3.57 0-1.19 2.05 1.19 2.05 1.19-2.05-1.19-2.05zm-16.1 3.09-0.676 1.17h1.35l-0.676-1.17zm-3.57 0.00195-0.301 0.523c0.245 0.277 0.568 0.482 0.938 0.58l-0.637-1.1zm10.7 0-0.676 1.17h1.35l-0.676-1.17zm7.15 0-0.676 1.17h1.35l-0.676-1.17zm3.57 0-0.637 1.1c0.369-0.0988 0.693-0.302 0.938-0.58l-0.301-0.521zm-14.3 0.00195-0.674 1.17h1.35l-0.674-1.17zm7.14 0-0.674 1.17h1.35l-0.674-1.17z" fill="url(#ta)"/>
+          <rect x=".5" y=".5" width="23" height="23" ry="1.92" fill="none" class="stroke-theme-3 dark-t:stroke-theme-4" />
+        </svg>
+        """
+
+      _ ->
+        ~H"""
+        <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" font-family="Poppins" class={ "fill-theme-1 dark-t:fill-theme-5 " <> classes }>
+          <rect x=".5" y=".5" width="23" height="23" ry="1.92" fill-rule="evenodd" stroke="url(#tc)" stroke-linecap="round" stroke-linejoin="round" class="fill-[#f0f2f5] dark-t:fill-theme-3 stroke-theme-2 dark-t:stroke-theme-4" />
+          <text transform="rotate(19.5)" x="7.15" y="10.8" font-size="13px">?</text>
+          <text transform="rotate(10.1)" x="17.4" y="13.9" font-size="8.33px">?</text>
+          <text transform="rotate(-16.2)" x="3.26" y="23" font-size="9.72px">?</text>
+          <text transform="rotate(-9.15)" x="12" y="10.4" font-size="7.17px">?</text>
+        </svg>
+        """
+    end
+  end
+
   defp player_indicator_classes(game_board, current, n) do
     if nths_turn?(game_board, n) do
       " -text-accent-600 -dark-t:text-accent-400 outline outline-2" <>

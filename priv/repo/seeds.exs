@@ -135,6 +135,51 @@ Repo.insert!(
   )
 )
 
+Repo.insert!(
+  Cosmetic.changeset(
+    %Cosmetic{},
+    %{
+      name: "engage",
+      display_name: "Engage cards",
+      game_id: 2,
+      category: :game_item,
+      exclusion_group: "card-skin",
+      data: nil,
+      price: 500
+    }
+  )
+)
+
+Repo.insert!(
+  Cosmetic.changeset(
+    %Cosmetic{},
+    %{
+      name: "stars",
+      display_name: "Stars cards",
+      game_id: 2,
+      category: :game_item,
+      exclusion_group: "card-skin",
+      data: nil,
+      price: 500
+    }
+  )
+)
+
+Repo.insert!(
+  Cosmetic.changeset(
+    %Cosmetic{},
+    %{
+      name: "diamonds",
+      display_name: "Diamonds cards",
+      game_id: 2,
+      category: :game_item,
+      exclusion_group: "card-skin",
+      data: nil,
+      price: 500
+    }
+  )
+)
+
 Repo.insert!(%UserCosmetic{
   user_id: 1,
   cosmetic_id: 1

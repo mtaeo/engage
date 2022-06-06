@@ -110,24 +110,11 @@
         <div class="w-full grid grid-cols-4 xs:grid-cols-5 md:grid-cols-4 lg:grid-cols-6 max-w-2xl xs:max-w-xl md:max-w-lg lg:max-w-3xl gap-2 xxs:gap-4 xs:gap-6 lg:gap-8 text-3xl xxs:text-4xl sm:text-5xl md:text-4xl lg:text-5xl place-items-center text-theme-neutral-6 perspective">
           <%= for {index, card} <- @game_board.state do %>
             <div phx-click="make-move" phx-value-index={index} class={ "aspect-square w-full max-w-[4rem] xxs:max-w-[4.5rem] xs:max-w-[6rem] grid font-display select-none preserve-3d transition-transform duration-300" <> if card.face_up?, do: " rotate-y-180", else: " cursor-pointer"}>
-              <div class="area-full grid place-items-center bg-theme-3 dark-t:bg-theme-3 border-4 border-theme-4 dark-t:border-theme-2 rounded-2xl text-[1.2em] shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 no-backface rotate-y-0">
-                <svg version="1.1" viewBox="0 0 8.47 8.47" xmlns="http://www.w3.org/2000/svg" font-family="Poppins" class="fill-theme-1 dark-t:fill-theme-5">
-                	<text transform="rotate(19.5)" x="2.5229928" y="3.8059983" font-size="4.6px" style="line-height:1.25">
-                		<tspan x="2.5229928" y="3.8059983">?</tspan>
-                	</text>
-                	<text transform="rotate(10.1)" x="6.1344943" y="4.8958755" font-size="2.94px" style="line-height:1.25">
-                		<tspan x="6.1344943" y="4.8958755">?</tspan>
-                	</text>
-                	<text transform="rotate(-16.2)" x="1.1491958" y="8.1117506" font-size="3.43px" style="line-height:1.25">
-                		<tspan x="1.1491958" y="8.1117506">?</tspan>
-                	</text>
-                	<text transform="rotate(-9.15)" x="4.2224226" y="3.6758199" font-size="2.53px" style="line-height:1.25">
-                		<tspan x="4.2224226" y="3.6758199">?</tspan>
-                	</text>
-                </svg>
-              </div>
+              
+              <%= card_front(@game_board) %>
+              <%= card_back(@game_board) %>
 
-              <div class="area-full grid place-items-center bg-theme-2 dark-t:bg-theme-4 border-4 border-theme-3 dark-t:border-theme-5 rounded-2xl shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1 no-backface rotate-y-180">
+              <div class="area-full grid place-items-center no-backface rotate-y-180">
                 <%= card.symbol %>
               </div>
             </div>
