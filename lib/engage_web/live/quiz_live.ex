@@ -53,12 +53,15 @@ defmodule EngageWeb.QuizLive do
     quiz = Quizzes.get_daily_quiz()
 
     quiz =
-      put_in(
-        quiz.questions,
-        Enum.map(quiz.questions, fn question ->
-          put_in(question.answers, Enum.shuffle(question.answers))
-        end)
-      )
+      if quiz,
+        do:
+          put_in(
+            quiz.questions,
+            Enum.map(quiz.questions, fn question ->
+              put_in(question.answers, Enum.shuffle(question.answers))
+            end)
+          ),
+        else: nil
 
     take = if quiz, do: Quizzes.get_take(user.id, quiz.id), else: nil
     initial_take_answers = if take, do: Quizzes.get_take_answers(take.id)

@@ -35,6 +35,18 @@ Repo.insert!(%Game{
   image_path: "/images/game-previews/rock-paper-scissors.jpg"
 })
 
+Repo.insert!(%Game{
+  display_name: "Connect Four",
+  name: "connect-four",
+  description: "A two-player connection board game, in which the players take turns dropping colored tokens into a seven-column, six-row vertically suspended grid.
+                The pieces fall straight down, occupying the lowest available space within the column.
+                The objective of the game is to be the first to form a horizontal, vertical,
+                or diagonal line of four of one's own tokens.",
+  xp_multiplier: 5,
+  type: :multiplayer,
+  image_path: "/images/connect_four.png"
+})
+
 Repo.insert!(%XpToLevel{id: 1, level: 1, min_xp: 0})
 Repo.insert!(%XpToLevel{id: 2, level: 2, min_xp: 10})
 Repo.insert!(%XpToLevel{id: 3, level: 3, min_xp: 25})
