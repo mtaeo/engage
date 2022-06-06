@@ -88,6 +88,10 @@ defmodule EngageWeb.StoreLive do
 
     {:noreply, socket}
   end
+  
+  defp cosmetic_preview_path(cosmetic) do
+    "/images/store-previews/" <> cosmetic.game.name <> "/" <> cosmetic.name <> ".png"
+  end
 
   defp item_button(user, cosmetic) do
     assigns = %{}

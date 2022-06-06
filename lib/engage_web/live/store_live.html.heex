@@ -19,8 +19,8 @@
           <%= for cosmetic <- cosmetics do %>
             <li class="basis-64 shrink-0 rounded-lg shadow-equal shadow-theme-neutral-4 dark-t:shadow-theme-neutral-1">
               <div class="flex flex-col bg-theme-2 dark-t:bg-theme-3 rounded-lg overflow-clip clip-border">
-                <div class="basis-36 shrink-0 grid gap-4">
-                  <img src="" alt="preview image placeholder" class="grid place-items-center bg-theme-3 dark-t:bg-theme-4">
+                <div class="shrink-0 aspect-[16/9] grid gap-4 overflow-clip">
+                  <img src={cosmetic_preview_path(cosmetic)} alt="item preview image" class="w-full max-w-full grid place-items-center bg-theme-3 dark-t:bg-theme-4 hover:scale-[1.04] object-cover transition-transform duration-500 ease">
                 </div>
 
                 <div class="flex justify-between items-end gap-2 p-3 pt-5 relative font-display">
