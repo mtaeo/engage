@@ -15,7 +15,7 @@ defmodule EngageWeb.LiveHelpers do
     # with a freshly fetched User from the database
     case session do
       %{"current_user" => user} ->
-        fetched_user = Users.get_user!(user.id)
+        fetched_user = Users.get_user(user.id)
 
         socket
         |> LiveView.assign(theme: fetched_user.theme)

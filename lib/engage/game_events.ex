@@ -12,4 +12,9 @@ defmodule Engage.GameEvents do
     attrs
     |> Repo.insert()
   end
+
+  def get_game_statistics_for_user_id(user_id) when is_integer(user_id) do
+    Repo.all(from g in GameEvent, where: g.user_id == ^user_id)
+    |> Repo.preload([:game])
+  end
 end
