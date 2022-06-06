@@ -8,7 +8,7 @@ defmodule Engage.Users.User do
     field :bio, :string
     field :total_xp, :integer, default: 0
     field :coins, :integer, default: 1000
-    field :theme, Ecto.Enum, values: [:dark, :light, :automatic], default: :dark
+    field :theme, Ecto.Enum, values: [:dark, :light, :automatic], default: :automatic
     field :role, Ecto.Enum, values: [:guest, :user, :moderator, :admin], default: :user
     field :gravatar_style, Ecto.Enum, values: [:mp, :identicon, :monsterid, :wavatar, :retro, :robohash], default: :robohash
     field :password, :string, virtual: true, redact: true
