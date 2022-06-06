@@ -8,7 +8,7 @@
           <h2><%= game.display_name %></h2>
 
           <%= if game.xp_multiplier > Decimal.new(1) do %>
-            <p><%= game.xp_multiplier %>x</p>
+            <p title={"Earn #{game.xp_multiplier}x as much XP than in other games"}><%= game.xp_multiplier %>x</p>
           <% end %>
         </div>
       </div>
