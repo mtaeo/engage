@@ -10,6 +10,7 @@ Repo.insert!(%Game{
   description: "The classic pen-and-paper game for 2 players.
                 The player who succeeds in placing three of their marks in a horizontal,
                 vertical, or diagonal row is the winner.",
+  emotion: :happy,
   xp_multiplier: 1,
   type: :multiplayer,
   image_path: "/images/game-previews/tic_tac_toe.jpg"
@@ -20,6 +21,7 @@ Repo.insert!(%Game{
   name: "memory",
   description: "Each person turns over two cards at a time,
                 with the goal of turning over a matching pair, by using their memory.",
+  emotion: :sad,
   xp_multiplier: 5,
   type: :multiplayer,
   image_path: "/images/game-previews/memory.jpg"
@@ -30,6 +32,7 @@ Repo.insert!(%Game{
   name: "rock-paper-scissors",
   description: "A hand game originating from China, played between two people,
                 in which each player simultaneously forms one of three shapes with an outstretched hand.",
+  emotion: :angry,
   xp_multiplier: 1,
   type: :multiplayer,
   image_path: "/images/game-previews/rock-paper-scissors.jpg"
@@ -42,9 +45,10 @@ Repo.insert!(%Game{
                 The pieces fall straight down, occupying the lowest available space within the column.
                 The objective of the game is to be the first to form a horizontal, vertical,
                 or diagonal line of four of one's own tokens.",
+  emotion: :scared,
   xp_multiplier: 5,
   type: :multiplayer,
-  image_path: "/images/connect_four.png"
+  image_path: "/images/game-previews/connect_four.png"
 })
 
 Repo.insert!(%XpToLevel{id: 1, level: 1, min_xp: 0})
