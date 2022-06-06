@@ -1,0 +1,28 @@
+<p>user stats</p>
+<canvas id="chart-canvas" phx-hook="GameStatsPieChart" data-chart-data={ Jason.encode!(@chart_data) }></canvas>
+
+<%= if @arch_enemy do %>
+    <li class="xs:order-2 col-span-2 xs:col-span-1 flex flex-col justify-end">
+    <%= live_redirect to: Routes.user_profile_path(@socket, :index, @arch_enemy.username), class: "flex flex-col justify-end items-center gap-2 px-6 py-2 rounded-md hover:bg-theme-2 dark-t:hover:bg-theme-3 transition-colors" do %>
+        <div class="w-32 aspect-square relative">
+        <img src={ @arch_enemy.avatar_src } alt="avatar" loading="lazy" class="rounded-full border-3 border-yellow-500 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
+        <div class="absolute bottom-[15%] right-[15%] translate-x-1/2 translate-y-1/2 grid place-items-center w-10 aspect-square rounded-full bg-theme-1 dark-t:bg-theme-2 border-2 border-yellow-500">#1</div>
+        </div>
+
+        <div class="text-xl"><%= @arch_enemy.username %></div>
+    <% end %>
+    </li>
+<% end %>
+
+<%= if @most_dominated_enemy do %>
+    <li class="xs:order-2 col-span-2 xs:col-span-1 flex flex-col justify-end">
+    <%= live_redirect to: Routes.user_profile_path(@socket, :index, @most_dominated_enemy.username), class: "flex flex-col justify-end items-center gap-2 px-6 py-2 rounded-md hover:bg-theme-2 dark-t:hover:bg-theme-3 transition-colors" do %>
+        <div class="w-32 aspect-square relative">
+        <img src={ @most_dominated_enemy.avatar_src } alt="avatar" loading="lazy" class="rounded-full border-3 border-yellow-500 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
+        <div class="absolute bottom-[15%] right-[15%] translate-x-1/2 translate-y-1/2 grid place-items-center w-10 aspect-square rounded-full bg-theme-1 dark-t:bg-theme-2 border-2 border-yellow-500">#1</div>
+        </div>
+
+        <div class="text-xl"><%= @most_dominated_enemy.username %></div>
+    <% end %>
+    </li>
+<% end %>

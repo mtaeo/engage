@@ -1,5 +1,8 @@
 {
-    "scripts": {
-      "deploy": "cd .. && mix assets.deploy && rm -f _build/esbuild"
-    }
+  "dependencies": {
+    "chart.js": "^2.9.4"
+  },
+  "scripts": {
+    "deploy": "cd .. && mix assets.deploy && rm -f _build/esbuild"
   }
+}

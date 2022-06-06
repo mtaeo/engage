@@ -35,16 +35,16 @@ defmodule Engage.UsersTest do
     end
   end
 
-  describe "get_user!/1" do
+  describe "get_user/1" do
     test "raises if id is invalid" do
       assert_raise Ecto.NoResultsError, fn ->
-        Users.get_user!(-1)
+        Users.get_user(-1)
       end
     end
 
     test "returns the user with the given id" do
       %{id: id} = user = user_fixture()
-      assert %User{id: ^id} = Users.get_user!(user.id)
+      assert %User{id: ^id} = Users.(user.id)
     end
   end
 
@@ -170,7 +170,7 @@ defmodule Engage.UsersTest do
       email = unique_user_email()
       {:ok, user} = Users.apply_user_email(user, valid_user_password(), %{email: email})
       assert user.email == email
-      assert Users.get_user!(user.id).email != email
+      assert Users.get_user(user.id).email != email
     end
   end
 
