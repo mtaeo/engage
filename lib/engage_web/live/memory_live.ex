@@ -184,13 +184,13 @@ defmodule EngageWeb.MemoryLive do
 
       "diamonds" ->
         ~H"""
-        <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class={classes}>
           <defs>
             <linearGradient id="ta">
               <stop stop-color="#c42f27" offset="0"/>
               <stop stop-color="#db7125" offset="1"/>
             </linearGradient>
-            <linearGradient id="tb" x1=".5" x2="23.5" y1="23.5" y2=".5" gradientUnits="userSpaceOnUse" xlink:href="#ta" class={classes} />
+            <linearGradient id="tb" x1=".5" x2="23.5" y1="23.5" y2=".5" gradientUnits="userSpaceOnUse" xlink:href="#ta" />
             <linearGradient id="tc" x1="2" x2="22" y1="22" y2="2" gradientUnits="userSpaceOnUse" xlink:href="#ta"/>
           </defs>
           <rect x=".5" y=".5" width="23" height="23" ry="1.92" stroke="url(#tb)" class="fill-[#f0f2f5] dark-t:fill-theme-3" />
