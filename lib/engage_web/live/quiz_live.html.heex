@@ -65,6 +65,6 @@
         </p>
       </div>
 
-      <button class="px-4 py-2 rounded-lg border-2 border-theme-8 hover:border-theme-6 leading-none font-display transition-colors" onclick={copy_results(given_answers)}>Copy</button>
+      <button class="px-4 py-2 rounded-lg border-2 border-theme-8 hover:border-theme-6 leading-none font-display transition-colors" phx-click="clipboard-insert" onclick={copy_results(given_answers)}>Copy</button>
   <% end %>
 </div>

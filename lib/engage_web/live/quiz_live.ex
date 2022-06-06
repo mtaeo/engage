@@ -24,6 +24,10 @@ defmodule EngageWeb.QuizLive do
     {:noreply, socket}
   end
 
+  def handle_info(:clear_flash, socket) do
+    {:noreply, clear_flash(socket)}
+  end
+
   def handle_event("start-quiz", _, socket) do
     take = Quizzes.start_quiz(socket.assigns.user.id, socket.assigns.quiz.id)
 
@@ -47,6 +51,14 @@ defmodule EngageWeb.QuizLive do
       end
 
     {:noreply, socket}
+  end
+
+  def handle_event("clipboard-insert", _, socket) do
+    :timer.send_after(3500, :clear_flash)
+
+    {:noreply,
+     socket
+     |> put_flash(:info, "Copied quiz results to clipboard.")}
   end
 
   defp setup(socket, user) do
@@ -122,19 +134,21 @@ defmodule EngageWeb.QuizLive do
   end
 
   defp copy_results(answers) do
+    content = generate_content(answers)
+    "window.util.clipboardInsert('#{content}')"
+  end
+
+  defp generate_content(answers) do
     emojis =
       for a <- answers, into: "" do
         if a, do: "🟩", else: "🟥"
       end
 
-    content =
-      """
-      Engage Daily Quiz #{todays_date()}
-      #{emojis} #{Enum.count(answers, & &1)}/#{length(answers)}
-      #engage https://play-engage.com
-      """
-      |> String.replace("\n", "\\n")
-
-    "window.util.clipboardInsert('#{content}')"
+    """
+    Engage Daily Quiz #{todays_date()}
+    #{emojis} #{Enum.count(answers, & &1)}/#{length(answers)}
+    #engage https://www.play-engage.com
+    """
+    |> String.replace("\n", "\\n")
   end
 end
