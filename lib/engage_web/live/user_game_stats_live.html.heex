@@ -1,28 +1,52 @@
-<p>user stats</p>
-<canvas id="chart-canvas" phx-hook="GameStatsPieChart" data-chart-data={ Jason.encode!(@chart_data) }></canvas>
+<div class="justify-self-center self-start w-full max-w-sm flex flex-col gap-6 xs:gap-12">
+  <h1 class="sr-only">Your stats</h1>
 
-<%= if @arch_enemy do %>
-    <li class="xs:order-2 col-span-2 xs:col-span-1 flex flex-col justify-end">
-    <%= live_redirect to: Routes.user_profile_path(@socket, :index, @arch_enemy.username), class: "flex flex-col justify-end items-center gap-2 px-6 py-2 rounded-md hover:bg-theme-2 dark-t:hover:bg-theme-3 transition-colors" do %>
-        <div class="w-32 aspect-square relative">
-        <img src={ @arch_enemy.avatar_src } alt="avatar" loading="lazy" class="rounded-full border-3 border-yellow-500 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
-        <div class="absolute bottom-[15%] right-[15%] translate-x-1/2 translate-y-1/2 grid place-items-center w-10 aspect-square rounded-full bg-theme-1 dark-t:bg-theme-2 border-2 border-yellow-500">#1</div>
-        </div>
+  <div class="flex flex-wrap justify-center">
+    <%= if @arch_enemy do %>
+      <section class="flex flex-col gap-4 max-w-sm">
+        <h2 class="text-2xl text-center">Your arch enemy</h2>
 
-        <div class="text-xl"><%= @arch_enemy.username %></div>
+        <%= live_redirect to: Routes.user_profile_path(@socket, :index, @arch_enemy.username), class: "flex flex-col justify-end items-center gap-2 px-6 py-2 rounded-md hover:bg-theme-2 dark-t:hover:bg-theme-3 transition-colors" do %>
+          <div class="w-32 aspect-square">
+            <img src={ @arch_enemy.avatar_src } alt="avatar" loading="lazy" class="rounded-full border-3 border-red-500 dark-t:border-red-600 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
+          </div>
+
+          <div class="text-xl">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline w-7 h-7 text-red-500 dark-t:text-red-600">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+            </svg>
+
+            <%= @arch_enemy.username %>
+          </div>
+        <% end %>
+      </section>
     <% end %>
-    </li>
-<% end %>
 
-<%= if @most_dominated_enemy do %>
-    <li class="xs:order-2 col-span-2 xs:col-span-1 flex flex-col justify-end">
-    <%= live_redirect to: Routes.user_profile_path(@socket, :index, @most_dominated_enemy.username), class: "flex flex-col justify-end items-center gap-2 px-6 py-2 rounded-md hover:bg-theme-2 dark-t:hover:bg-theme-3 transition-colors" do %>
-        <div class="w-32 aspect-square relative">
-        <img src={ @most_dominated_enemy.avatar_src } alt="avatar" loading="lazy" class="rounded-full border-3 border-yellow-500 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
-        <div class="absolute bottom-[15%] right-[15%] translate-x-1/2 translate-y-1/2 grid place-items-center w-10 aspect-square rounded-full bg-theme-1 dark-t:bg-theme-2 border-2 border-yellow-500">#1</div>
-        </div>
+    <%= if @most_dominated_enemy do %>
+      <section class="flex flex-col gap-4 max-w-sm">
+        <h2 class="text-2xl text-center">Your most dominated opponent</h2>
 
-        <div class="text-xl"><%= @most_dominated_enemy.username %></div>
+        <%= live_redirect to: Routes.user_profile_path(@socket, :index, @most_dominated_enemy.username), class: "flex flex-col justify-end items-center gap-2 px-6 py-2 rounded-md hover:bg-theme-2 dark-t:hover:bg-theme-3   transition-colors" do %>
+          <div class="w-32 aspect-square">
+            <img src={ @most_dominated_enemy.avatar_src } alt="avatar" loading="lazy" class="rounded-full border-3 border-red-500 dark-t:border-red-600 shadow-equal shadow-theme-neutral-5 dark-t:shadow-theme-neutral-1">
+          </div>
+
+          <div class="text-xl">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="inline w-7 h-7 text-red-500 dark-t:text-red-600">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+            </svg>
+
+            <%= @most_dominated_enemy.username %>
+          </div>
+        <% end %>
+      </section>
     <% end %>
-    </li>
-<% end %>
+  </div>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-2xl text-center">Most played games</h2>
+    <canvas id="chart-canvas" phx-hook="GameStatsPieChart" data-chart-data={ Jason.encode!(@chart_data) } class="max-w-sm"></canvas>
+  </section>
+</div>
