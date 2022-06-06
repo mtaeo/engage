@@ -206,7 +206,7 @@ defmodule Engage.Games.Memory.GenServer do
     |> Enum.find_value(
       nil,
       fn x ->
-        if x.cosmetic.exclusion_group === "memory-card-skin" do
+        if x.cosmetic.exclusion_group === "card-skin" do
           x.cosmetic.name
         else
           nil
@@ -214,8 +214,6 @@ defmodule Engage.Games.Memory.GenServer do
       end
     )
     |> (&put_in(state.board.card_skin, &1)).()
-
-    state
   end
 
   defp reveal_card(state, player, index) do
