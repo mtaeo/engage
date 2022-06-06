@@ -68,6 +68,7 @@ defmodule EngageWeb.Router do
     live "/store", StoreLive, :index
     live "/leaderboard", LeaderboardLive, :index
     live "/challenges/quiz", QuizLive, :index
+    live "/discover", DiscoverGamesLive, :index
 
     live "/proxy/user", UserProfileProxyLive, :index
     live "/user/:username", UserProfileLive, :index

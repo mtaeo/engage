@@ -6,6 +6,7 @@ defmodule Engage.Games.Game do
     field :display_name, :string
     field :description, :string
     field :type, Ecto.Enum, values: [:singleplayer, :multiplayer]
+    field :emotion, Ecto.Enum, values: [:angry, :cry, :happy, :scared]
     field :xp_multiplier, :decimal, default: 1
     field :image_path, :string
   end
