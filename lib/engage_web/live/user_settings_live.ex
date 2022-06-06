@@ -80,7 +80,7 @@ defmodule EngageWeb.UserSettingsLive do
       case Users.update_user_avatar(socket.assigns.user, avatar_style) do
         {:ok, user} ->
           socket
-          |> put_flash(:info, "Avatar sytle updated!")
+          |> put_flash(:info, "Avatar style updated!")
           |> assign(
             avatar_changeset: User.avatar_changeset(user),
             avatar_uri: Gravatar.get_image_src_by_email(user.email, user.gravatar_style)
