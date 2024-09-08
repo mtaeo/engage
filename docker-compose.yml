@@ -1,0 +1,30 @@
+version: '3.8'  # Specify the version of Docker Compose
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: engage_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: username
+      DB_PASSWORD: password
+      DB_NAME: engage_db
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+
+volumes:
+  postgres_data:
