@@ -2,6 +2,21 @@
 
 Web platform containing a variety of multiplayer and singleplayer games to play with friends while earning virtual coins and unlocking rewards.
 
+## Screenshots
+### 🎬 [Demo Video (Google Drive)](https://drive.google.com/file/d/19K8jlp3_TFNXwmesKoO2-kkCiDihK7IC/view?usp=drive_link)
+![List of Games](/screenshots/games.png)
+![Leaderboard](/screenshots/leaderboard.png)
+![Connect Four](/screenshots/connect_four.png)
+![Memory](/screenshots/memory.png)
+![Tic-Tac-Toe](/screenshots/tic_tac_toe.png)
+![Rock-Paper-Scissors](/screenshots/rock_paper_scissors.png)
+![Cosmetics Store](/screenshots/cosmetics_store.png)
+![User Game Stats](/screenshots/user_game_stats.png)
+![Game Lobby](/screenshots/game_lobby.png)
+![Daily Challenge Quiz](/screenshots/daily_challenge_quiz.png)
+![User Profile](/screenshots/user_profile.png)
+![Register](/screenshots/register.png)
+
 ## Usage
 
 Clone the repository
@@ -33,15 +48,15 @@ To start Engage web application:
     $ mix ecto.create
     $ mix ecto.migrate
     ```
-    
+
 4. Seed the database with:
     ```bash
     $ mix run priv/repo/seeds.exs
     ```
-    
+
 5. Create corresponding .env.dev file as provided at the bottom of the readme
 
-6. Start Phoenix server after setting environment variables 
+6. Start Phoenix server after setting environment variables
     ```bash
     $ source .env.dev && mix phx.server
     ```
