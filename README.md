@@ -17,8 +17,17 @@ Web platform containing a variety of multiplayer and singleplayer games to play 
 ![User Profile](/screenshots/user_profile.png)
 ![Register](/screenshots/register.png)
 
-## Usage
+## How to Run
 
+### Docker Containers
+```bash
+$ git clone https://github.com/mtaeo/engage.git engage
+$ cd engage
+$ docker-compose up --build
+```
+Visit `localhost:4000`
+
+### Deprecated Way
 Clone the repository
 
 ```bash
